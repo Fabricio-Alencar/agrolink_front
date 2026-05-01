@@ -1,0 +1,122 @@
+/* =========================================================
+   🎯 RESPONSABILIDADE: SIDEBAR (FILTROS)
+   ========================================================= */
+
+.sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.filter-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    margin-bottom: 15px;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.filter-header svg {
+    width: 20px;
+    margin-right: 10px;
+    fill: var(--text-dark);
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+.filter-group label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.filter-group label svg {
+    width: 16px;
+    margin-right: 6px;
+    fill: var(--text-gray);
+}
+
+.filter-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    outline: none;
+    background-color: #f9f9f9;
+}
+
+.distance-slider {
+    width: 100%;
+    margin: 10px 0;
+    accent-color: var(--text-dark);
+}
+
+.distance-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--text-gray);
+    font-weight: bold;
+}
+
+.results-count {
+    color: var(--primary-btn);
+    font-weight: bold;
+    text-align: center;
+}
+
+/* =========================================================
+   📱 FILTRO LEGAL PARA TELAS MOBILE (max-width: 768px)
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 90%; 
+        margin: 0 auto 20px auto; /* Centraliza horizontalmente */
+        float: none; /* Garante que não haja interferência de floats antigos */
+        display: block;
+        box-sizing: border-box;
+    }
+
+    .filter-card {
+        padding: 15px;
+        /* Mantém as bordas arredondadas conforme solicitado */
+        border-radius: 12px; 
+        background: #fdfdfd;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra levemente mais forte para mobile */
+    }
+
+    /* Ajuste nos grupos de filtros para ficarem lado a lado se possível */
+    .filter-group-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Coloca dois filtros por linha no mobile */
+        gap: 10px;
+    }
+
+    /* Se houver um slider de distância, ele ocupa a linha inteira */
+    .filter-group.full-width-mobile {
+        grid-column: span 2;
+    }
+
+    .filter-header {
+        font-size: 16px;
+        cursor: pointer; /* Indica que pode ser clicável para minimizar via JS no futuro */
+        justify-content: center;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 10px;
+    }
+}

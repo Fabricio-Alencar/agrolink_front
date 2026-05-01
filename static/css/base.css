@@ -1,0 +1,177 @@
+/* =========================
+   RESET GLOBAL
+   Remove estilos padrão do navegador
+   e padroniza o box model
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   CONFIGURAÇÃO BASE
+========================= */
+html {
+    font-size: 100%; /* 1rem = 16px */
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f7f5;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* =========================
+   HEADER
+========================= */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: #2e7d32;
+    color: white;
+}
+
+/* LOGO */
+.logo {
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    font-weight: bold;
+}
+
+/* NAV */
+.nav {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav a {
+    color: white;
+    text-decoration: none;
+    transition: 0.2s;
+    font-size: clamp(0.9rem, 1.2vw, 1.1rem);
+}
+
+.nav a:hover {
+    opacity: 0.7;
+}
+
+/* =========================
+   MAIN (CONTEÚDO)
+========================= */
+.main {
+    padding: 2rem 5%; /* mantém layout bonito */
+}
+
+/* =========================
+   TOPO (TÍTULO)
+========================= */
+.topo {
+    text-align: start;
+    margin-bottom: clamp(1rem, 3vw, 1.5rem);
+}
+
+.topo h1 {
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: bold;
+}
+
+
+
+/* =========================
+   BUSCA (FULL WIDTH REAL)
+   Ignora o padding do .main
+========================= */
+.busca {
+    width: 100vw; /* 🔥 ocupa toda largura da tela */
+    
+    /* 🔥 quebra o container centralizado */
+    margin-left: calc(-50vw + 50%);
+    
+    margin-bottom: clamp(0.5rem, 3vw, 1.5rem);
+    
+    padding: 0 5%; /* mantém alinhamento interno */
+}
+
+
+/* =========================
+   WRAPPER DO INPUT
+   Permite posicionar o ícone dentro
+========================= */
+.input-wrapper {
+    position: relative; /* 🔥 base para posicionamento absoluto */
+    width: 100%;
+}
+
+/* =========================
+   ÍCONE (LUPA)
+========================= */
+.icone-busca {
+    position: absolute;
+    left: 1rem; /* distância da esquerda */
+    top: 50%;
+    transform: translateY(-50%); /* centraliza verticalmente */
+
+    width: clamp(2rem, 1.2vw, 5rem);
+    height: clamp(2rem, 1.2vw, 5rem);
+    
+
+    pointer-events: none; /* não interfere no clique */
+}
+
+/* =========================
+   INPUT
+========================= */
+.busca input {
+    width: 100%;
+    display: block;
+    background-color: #F0FFC0;
+
+    /* espaço extra à esquerda pra não sobrepor o ícone */
+    padding-left: 4rem;
+
+    padding-top: clamp(0.6rem, 1.2vw, 1rem);
+    padding-bottom: clamp(0.6rem, 1.2vw, 1rem);
+    padding-right: 1rem;
+
+    border-radius: clamp(0.5rem, 1.5vw, 1.5rem);
+    border: 0.125rem solid #ccc;
+
+    font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+
+    outline: none;
+}
+
+/* FOCO */
+.busca input:focus {
+    border-color: #2e7d32;
+    box-shadow: 0 0 0.3rem rgba(46, 125, 50, 0.3);
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+@media (max-width: 48rem) {
+
+    .header {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+    }
+
+    .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .icone-busca {
+        width: clamp(1.5rem, 0.5vw, 5rem);
+        height: clamp(1.5rem, 0.5vw, 5rem);
+        
+    }
+}

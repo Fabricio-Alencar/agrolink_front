@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta - AgroLink</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/css/cadastro/variaveis_globais.css">
+    <link rel="stylesheet" href="../static/css/cadastro/fundo.css">
+    <link rel="stylesheet" href="../static/css/cadastro/titulo_e_logo.css">
+    <link rel="stylesheet" href="../static/css/cadastro/card.css">
+    <link rel="stylesheet" href="../static/css/cadastro/botoes_tipos_escolha.css">
+    <link rel="stylesheet" href="../static/css/cadastro/inputs.css">
+    <link rel="stylesheet" href="../static/css/cadastro/botao_cadastro.css">
+    <link rel="stylesheet" href="../static/css/cadastro/responsividade.css">
+    <link rel="stylesheet" href="../static/css/alertas_customizados.css">
+
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+    <header class="page-header">
+        <img src="../static/assets/login/logo.png" alt="Logo AgroConnect" class="logo">
+        <h1>Bem-vindo ao AgroLink</h1>
+    </header>
+
+    <main class="register-card">
+        <form id="register-form">
+
+            <div class="account-type-section">
+                <label class="field-label">Tipo de conta</label>
+                <div class="toggle-container">
+                    <button type="button" class="toggle-btn active" id="type-produtor">Produtor</button>
+                    <button type="button" class="toggle-btn" id="type-estabelecimento">Estabelecimento</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="fullname">Nome completo</label>
+                <div class="input-wrapper">
+                    <i data-lucide="user"></i>
+                    <input type="text" id="fullname" placeholder="Insira seu nome completo" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <div class="input-wrapper">
+                    <i data-lucide="mail"></i>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="phone">Telefone</label>
+                <div class="input-wrapper">
+                    <i data-lucide="phone"></i>
+                    <input type="tel" id="phone" placeholder="(11) 99999-9999" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="estado">Estado</label>
+                <div class="input-wrapper estado">
+                    <i data-lucide="map-pin"></i>
+                    <select id="estado" required>
+                        <option value="">Selecione o estado</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="cidade">Cidade</label>
+                <div class="input-wrapper cidade">
+                    <i data-lucide="map"></i>
+                    <select id="cidade" required>
+                        <option value="">Selecione a cidade</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <div class="input-wrapper">
+                    <i data-lucide="lock"></i>
+                    <input type="password" id="password" placeholder="••••••••" required>
+
+                    <button type="button" class="toggle-password" id="btn-toggle-password">
+                        <i data-lucide="eye"></i>
+                    </button>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Confirme sua senha</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="lock"></i>
+                        <input type="password_confirm" id="password_confirm" placeholder="••••••••" required>
+    
+                        <button type="button" class="toggle-password" id="btn-toggle-password_confirm">
+                            <i data-lucide="eye"></i>
+                        </button>
+                    </div>
+            </div>
+
+            <!-- ALTERADO AQUI -->
+            <button type="submit" id="btn-registrar" class="btn-submit">
+                Criar conta
+            </button>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="/login"
+                   style="text-decoration: none; color: #666; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                    <i data-lucide="arrow-left" style="width: 16px;"></i>
+                    Voltar para o login
+                </a>
+            </div>
+
+        </form>
+    </main>
+
+    <script src="../static/js/cadastro/localizacao.js"></script>
+    <script src="../static/js/cadastro/logica.js"></script>
+
+
+</body>
+</html>

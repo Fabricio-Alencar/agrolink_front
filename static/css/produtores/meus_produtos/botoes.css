@@ -1,0 +1,104 @@
+/* =========================
+   AÇÕES (CONTAINER DOS BOTÕES)
+========================= */
+.acoes {
+    display: flex;
+
+    column-gap: 2rem; /* Espaço horizontal entre botões */
+    row-gap: 1rem;   /* Espaço vertical quando quebrar linha */
+
+    flex-wrap: wrap; /* 🔥 PERMITE quebra de linha */
+
+    justify-content: flex-start; /* Alinha à esquerda */
+
+    margin-bottom: clamp(1rem, 3vw, 2rem); /* Espaçamento abaixo */
+}
+
+/* =========================
+   BOTÃO DE AÇÃO
+========================= */
+.acao-btn {
+    display: flex; /* Layout horizontal (ícone + texto) */
+    align-items: center; /* Centraliza verticalmente */
+    gap: 0.7rem; /* Espaço entre ícone e texto */
+    padding: clamp(0.2rem, 0.5vw, 0.35rem) clamp(0.5rem, 1.5vw, 0.7rem);
+    width: auto; 
+    flex: 0 0 auto; /* Não cresce nem encolhe */
+    /* Altura responsiva */
+    height: clamp(2.5rem, 2.5vw, 5rem);
+    /* Bordas arredondadas */
+    border-radius: clamp(1rem, 0.5vw, 2rem);
+    border: 0.1rem solid #A4A4A4;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    /* Fonte responsiva (controlada) */
+    font-size: clamp(0.9rem, 1.1vw, 1.2rem);
+    transition: 0.2s;
+}
+
+/* =========================
+   ÍCONE
+========================= */
+
+[data-lucide="plus"] {
+    color: #ffffff;
+    width: clamp(1rem, 1.6vw, 3rem);
+    height: clamp(1rem, 1.6vw, 3rem);
+    stroke-width: 2.5;
+}
+
+[data-lucide="upload"],
+[data-lucide="download"] {
+    color: #000000;
+    width: clamp(1rem, 1.4vw, 3rem);
+    height: clamp(1rem, 1.4vw, 3rem);
+    stroke-width: 2;
+}
+
+/* =========================
+   TEXTO
+========================= */
+.acao-btn span {
+    white-space: normal; /* 🔥 PERMITE quebra dentro do botão */
+    word-break: break-word; /* Evita estouro com palavras grandes */
+}
+
+/* =========================
+   HOVER (TODOS OS BOTÕES)
+========================= */
+.acao-btn:hover {
+    background-color: #acacac;
+    border-color: #383838;
+}
+
+/* =========================
+   ÚLTIMO BOTÃO (DESTAQUE)
+========================= */
+.acao-btn:first-child {
+    background-color: #000;
+    color: #fff;
+    border-color: #000;
+}
+
+/* =========================
+   HOVER DO ÚLTIMO BOTÃO
+========================= */
+.acao-btn:first-child:hover {
+    background-color: #333;
+    border-color: #808080;
+}
+
+/* =========================
+   RESPONSIVO (MOBILE)
+========================= */
+@media (max-width: 48rem) {
+    .acoes {
+        column-gap: 1%;
+    }
+
+    .acao-btn {
+        gap: clamp(0.2rem, 1vw, 0.4rem);
+
+    }
+}

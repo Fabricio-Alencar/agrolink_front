@@ -1,0 +1,136 @@
+/* =========================================================
+   BLOCO: DESCRIÇÃO + UPLOAD
+========================================================= */
+.linha-form.big {
+    display: flex;
+    gap: 1rem;
+}
+
+/* ambos lados iguais */
+.linha-form.big .caixa-grande {
+    flex: 1;
+    height: 300px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   DESCRIÇÃO (TEXTAREA)
+========================================================= */
+#descricaoProduto {
+    width: 100%;
+    height: 100%;
+
+    resize: none;
+
+    padding: 1rem;
+
+    background: #F0FFC0;
+    border: 1px solid #433838;
+    border-radius: 0.5rem;
+
+    font-size: 0.9rem;
+
+    overflow-y: auto;
+    line-height: 1.3;
+}
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+.upload-box {
+    border: 2px dashed #aaa;
+    border-radius: 0.5rem;
+
+    height: 100%;
+    width: 100%;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    background: #fafafa;
+}
+
+/* placeholder */
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+
+    color: #666;
+    text-align: center;
+}
+
+.upload-placeholder img {
+    width: 40px;
+    opacity: 0.7;
+}
+
+/* preview */
+.upload-preview {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+/* drag effect */
+.upload-box.drag {
+    border-color: #2e7d32;
+    background: #f1fff1;
+}
+
+#uploadBox.drag-over {
+    border: 2px dashed #4CAF50;
+    background-color: #f0fff4;
+}
+
+
+.btn-remover-imagem {
+    position: absolute;
+    bottom: 10px;
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    z-index: 10;
+}
+
+.btn-remover-imagem:hover {
+    background: #d9363e;
+}
+
+/* =========================================================
+   RESPONSIVO DESSE BLOCO
+========================================================= */
+@media (max-width: 48rem) {
+
+    .linha-form.big {
+        flex-direction: column;
+    }
+
+    .linha-form.big .caixa-grande {
+        height: auto;
+        min-height: 250px;
+    }
+
+    #descricaoProduto {
+        min-height: 200px;
+    }
+
+    .upload-box {
+        min-height: 250px;
+    }
+}

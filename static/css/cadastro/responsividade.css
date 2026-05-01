@@ -1,0 +1,11 @@
+@media (max-width: 480px) {
+    /* Diminui as bordas internas no celular */
+    .register-card {
+        padding: 25px;
+    }
+    
+    /* Diminui o texto do título no celular */
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+}

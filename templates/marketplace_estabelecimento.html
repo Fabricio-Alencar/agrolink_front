@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    
+    <!-- Responsividade para dispositivos móveis -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Marketplace de Produtores</title>
+
+    <!-- ícone da aba de navegação -->
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
+    
+    <!-- IMPORTAÇÃO DE FONTES DO GOOGLE -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ARQUIVO CSS PRINCIPAL -->
+    <link rel="stylesheet" href="../static/css/drawer.css">
+    <link rel="stylesheet" href="../static/css/notificacao.css">
+
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/layout_inicial_e_variaveis_globais.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/card_produtos.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/drawer.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/header.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/modal_pedidos.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/responsividade.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/sarch_bar.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/side_bar.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/marketplace_estabelecimentos/titulo.css">
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="cabecalho-esquerda">
+            <button class="menu-hamburger" id="botaoAbrirMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo">🌱 AgroLink</div>
+        </div>
+    </header>
+    
+    <aside class="painel-lateral" id="painelLateral">
+        
+        <div class="painel-cabecalho-verde">
+            <h1 class="painel-logo-drawer">AgroLink</h1>
+            <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
+        </div>
+    
+        <div class="painel-conteudo">
+            
+            <div class="cartao-usuario">
+                <img src="https://via.placeholder.com/60" alt="Foto de Perfil" class="usuario-foto">
+                <div class="usuario-dados">
+                    <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
+                    <span class="usuario-tipo" id="usuarioTipo">...</span>
+                </div>
+            </div>
+    
+            <nav class="painel-navegacao">
+                <a href="/marketplace" class="item-navegacao ativo">
+                    <span class="icone-box">📦</span> Marketplace
+                </a>
+                
+                <a href="/negociacoes_estabelecimento" class="item-navegacao">
+                    <span class="icone-box">🛍️</span> Negociações
+                </a>
+                
+                <!--<a href="perfil.html" class="item-navegacao">
+                    <span class="icone-box">👤</span> Perfil
+                </a>-->
+            </nav>
+    
+            <footer class="painel-rodape">
+                <button class="botao-logout" onclick="Auth.logout()">
+                    <span class="icone-box">🚪</span> Sair da Conta
+                </button>
+            </footer>
+        </div>
+    </aside>
+    
+    <!-- máscara do fundo -->
+    <div id="mascaraMenu" class="mascara-menu"></div>
+
+    <!-- SEÇÃO SUPERIOR (TÍTULO + BUSCA) -->
+    <div class="top-section">
+
+        <!-- TÍTULO -->
+        <h1>Marketplace</h1>
+
+        <!-- CAMPO DE BUSCA -->
+        <div class="search-container">
+
+            <!-- ÍCONE DE LUPA -->
+            <svg viewBox="0 0 24 24">
+               <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 
+                16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 
+                5.91 16 9.5 16c1.61 0 3.09-.59 
+                4.23-1.57l.27.28v.79l5 4.99L20.49 
+                19l-4.99-5zm-6 0C7.01 14 5 
+                11.99 5 9.5S7.01 5 9.5 5 
+                14 7.01 14 9.5 11.99 14 
+                9.5 14z"/>
+            </svg> 
+            
+            <!-- INPUT DE BUSCA -->
+            <input type="text" id="searchInput" placeholder="Buscar produtos ou produtores...">
+
+        </div>
+
+    </div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="main-container">
+        
+        <!-- SIDEBAR DE FILTROS -->
+        <aside class="sidebar">
+
+            <div class="filter-card">
+
+                <!-- TÍTULO DOS FILTROS -->
+                <div class="filter-header">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+                    </svg>
+                    Filtros
+                </div>
+
+                <!-- FILTRO POR CATEGORIA -->
+                <div class="filter-group">
+                    <label>Categoria</label>
+
+                    <select id="filterCategory">
+                        <option value="Todos">Todos</option>
+                        <option value="frutas">Frutas</option>
+                        <option value="legumes">Legumes</option>
+                        <option value="hortalicas">Hortaliças</option>
+                        <option value="graos">Grãos e Cereais</option>
+                        <option value="oleaginosas">Oleaginosas e Sementes</option>
+                        <option value="ervas">Ervas e Temperos</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                </div>
+
+                <!-- FILTRO POR ESTADO -->
+                <div class="filter-group">
+                    <label>Estado</label>
+                    <select id="filterEstado">
+                        <option value="">Selecione o estado</option>
+                    </select>
+                </div>
+
+                <!-- FILTRO POR CIDADE -->
+                <div class="filter-group">
+                    <label>Cidade</label>
+                    <select id="filterCidade">
+                        <option value="">Selecione a cidade</option>
+                    </select>
+                </div>
+
+                <!-- FILTRO DE DISTÂNCIA -->
+                 
+               <!--
+                <div class="filter-group">
+
+                    <label>Distância máxima: <span id="distLabel">50</span> km</label>
+                    
+                    <input type="range" id="filterDistance" class="distance-slider" min="0" max="100" value="50">
+                    
+                    <div class="distance-labels">
+                        <span>5km</span>
+                        <span>100km</span>
+                    </div>
+
+                </div>
+                -->
+
+            </div>
+            
+            <!-- CONTADOR DE RESULTADOS -->
+            <p class="results-count" id="resultsCount">0 Produtos encontrados</p>
+
+        </aside>
+
+        <!-- GRID DE PRODUTOS (SERÁ PREENCHIDO VIA JS) -->
+        <main class="products-grid" id="productsGrid"></main>
+
+    </div>
+
+    <!-- MODAL DE PEDIDO -->
+    <div class="modal-overlay" id="orderModal">
+
+        <div class="modal-content">
+
+            <!-- BOTÃO VOLTAR -->
+            <button class="btn-voltar" onclick="fecharModal()">
+                Voltar
+            </button>
+            
+            <!-- TÍTULO -->
+            <h2 class="modal-title">Criar Pedido</h2>
+
+            <div class="modal-grid">
+
+                <!-- COLUNA ESQUERDA (FORMULÁRIO) -->
+                <div>
+
+                    <!-- QUANTIDADE -->
+                    <div class="form-group">
+                        <label>Quantidade <span>*</span></label>
+
+                        <div class="qtd-row">
+                            <input type="number" id="inputQtd" class="form-control" placeholder="0" min="1">
+
+                            <!-- UNIDADE -->
+                            <div class="unit-display">
+                                <span>Unidade</span>
+                                <strong id="modalUnit">Kg</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DATA -->
+                    <div class="form-group">
+                        <label>Data de Entrega <span>*</span></label>
+                        <input type="date" id="inputData" class="form-control">
+                    </div>
+
+                    <!-- DESCRIÇÃO -->
+                    <div class="form-group">
+                        <label>Descrição (Opcional)</label>
+                        <textarea id="inputDesc" class="form-control" placeholder="Ex: instruções de entrega"></textarea>
+                    </div>
+
+                </div>
+
+                <!-- COLUNA DIREITA (RESUMO) -->
+                <div>
+                    <div class="resumo-box">
+                        <h3>Resumo do Pedido</h3>
+
+                        <div class="resumo-item">Produto: <strong id="resumoProduto">-</strong></div>
+                        <div class="resumo-item">Produtor: <strong id="resumoProdutor">-</strong></div>
+
+                        <div class="resumo-item">Quantidade: <strong id="resumoQtd">- Kg</strong></div>
+                        <div class="resumo-item">Data: <strong id="resumoData">-</strong></div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- BOTÃO FINAL -->
+            <button class="btn-publicar" onclick="emitirPedido()">
+                Publicar Pedido
+            </button>
+
+        </div>
+    </div>
+
+    <!-- SCRIPT JS -->
+<script src="../static/js/auth.js"></script>
+<script src="../static/js/notificacao.js"></script>
+<script type="module" src="../static/js/drawer.js"></script>
+<script type="module" src="../static/js/estabelecimentos/market_place_estabelecimentos/main.js"></script>
+
+
+</body>
+</html>

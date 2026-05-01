@@ -1,0 +1,20 @@
+/* Container do Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilo da Logomarca */
+.logo {
+    width: 25%;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
+
+/* Título de Boas-vindas */
+.page-header h1 {
+    color: var(--primary-green);
+    font-size: 2.0rem;
+    font-weight: 700;
+    font-weight: bold;
+}

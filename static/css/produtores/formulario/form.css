@@ -1,0 +1,54 @@
+/* =========================================================
+   CAMPOS GERAIS
+========================================================= */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+/* inputs e selects */
+input, select {
+    padding: 1rem;
+
+    background: #F0FFC0;
+    border: 1px solid #433838;
+    border-radius: 0.5rem;
+}
+
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-image: url("data:image/svg+xml,%3Csvg fill='black' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7l5 5 5-5H5z'/%3E%3C/svg%3E");
+
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem; /* espaço para a seta */
+}
+
+option {
+    font-size: 1.1rem;  /* aumenta texto das opções */
+    padding: 3rem;      /* ⚠️ funciona em alguns navegadores apenas */
+}
+
+/* =========================================================
+   LINHAS
+========================================================= */
+.linha-form {
+    display: flex;
+    gap: 1rem;
+}
+
+/* cada campo igual */
+.linha-form .campo {
+    flex: 1;
+}
+
+/* campo maior */
+.campo.caixa-grande {
+    flex: 1;
+    height: 180px;
+}

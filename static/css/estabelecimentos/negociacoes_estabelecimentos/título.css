@@ -1,0 +1,20 @@
+/* ============================================================
+   RESPONSABILIDADE: CABEÇALHO DA PÁGINA (TÍTULO + CONTROLES)
+   ============================================================ */
+.page-header {
+    display: flex;
+    justify-content: space-between; /* Espaço entre título e botões */
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;                /* Quebra em telas menores */
+    gap: 16px;
+}
+
+/* Título principal */
+h1 { 
+    padding: 10px 150px;
+
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: bold;
+}

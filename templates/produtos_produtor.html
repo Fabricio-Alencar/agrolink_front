@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroConnect - Produtores</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/notificacao.css">
+    <link rel="stylesheet" href="../static/css/drawer.css">
+
+    <!-- ícone da aba de navegação -->
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
+
+
+    
+    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/botoes.css">
+    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/grid.css">
+    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/card.css">
+    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/botoes_card.css">
+    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/status.css">
+    
+    <link rel="stylesheet" href="../static/css/produtores/formulario/modal.css">
+    <link rel="stylesheet" href="../static/css/produtores/formulario/buttons_modal.css">
+    <link rel="stylesheet" href="../static/css/produtores/formulario/form.css">
+    <link rel="stylesheet" href="../static/css/produtores/formulario/upload_descricao.css">
+    <link rel="stylesheet" href="../static/css/produtores/exclusao.css">
+    <link rel="stylesheet" href="../static/css/produtores/planilha.css">
+
+</head>
+
+<body>
+
+<header class="header">
+    <div class="cabecalho-esquerda">
+        <button class="menu-hamburger" id="botaoAbrirMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo">🌱 AgroLink</div>
+    </div>
+</header>
+
+<aside class="painel-lateral" id="painelLateral">
+    
+    <div class="painel-cabecalho-verde">
+        <h1 class="painel-logo-drawer">AgroLink</h1>
+        <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
+    </div>
+
+    <div class="painel-conteudo">
+        
+        <div class="cartao-usuario">
+            <img src=https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=150&h=150" alt="Foto de Perfil" class="usuario-foto">
+            <div class="usuario-dados">
+                <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
+                <span class="usuario-tipo" id="usuarioTipo">...</span>
+            </div>
+        </div>
+
+        <nav class="painel-navegacao">
+            <a href="/meus_produtos" class="item-navegacao ativo">
+                <span class="icone-box">📦</span> Meus Produtos
+            </a>
+
+            <a href="/negociacoes_produtor" class="item-navegacao">
+                <span class="icone-box">🛍️</span> Negociações
+            </a>
+            
+            <!--<a href="perfil.html" class="item-navegacao">
+                <span class="icone-box">👤</span> Perfil
+            </a>-->
+        </nav>
+
+        <footer class="painel-rodape">
+            <button class="botao-logout" onclick="Auth.logout()">
+                <span class="icone-box">🚪</span> Sair da Conta
+            </button>
+        </footer>
+    </div>
+</aside>
+
+<!-- máscara do fundo -->
+<div id="mascaraMenu" class="mascara-menu"></div>
+
+<main class="main">
+    <section class="topo">
+        <h1>Meus Produtos</h1>
+    </section>
+
+    <section class="busca">
+        <div class="input-wrapper">
+            <img src="../static/assets/lupa.png" class="icone-busca" alt="Lupa">
+            <input id="searchInput" type="text" placeholder="Pesquisar Produtos...">
+        </div>
+    </section>
+
+    <section class="acoes">
+
+        <button class="acao-btn" onclick="abrirModalCriar()">
+            <i data-lucide="plus"></i>            
+            <span>Adicionar Produto</span>
+        </button>
+        
+        <!--
+        <button class="acao-btn" id="btnBaixarTemplate">
+            <i data-lucide="download"></i>            
+            <span>Baixar Template Excel</span>
+        </button>
+
+        <button class="acao-btn" onclick="abrirModalPlanilha()">
+            <i data-lucide="upload"></i>            
+            <span>Enviar Planilha</span>
+        </button> -->
+
+        
+    </section>
+
+    <section id="produtosContainer" class="produtores-container"></section>
+</main>
+
+
+
+
+<!-- Modal para editar/adicionar produto-->
+<div id="modalProduto" class="modal">
+    <div class="modal-content">
+        <button class="btn-fechar" onclick="fecharModal()"></button>
+
+        <div class="titulo-modal">
+            <img src="../static/assets/caixa.png" alt="Ícone produto">
+            <h2>Adicionar Produto</h2>
+        </div>
+
+        <input type="hidden" id="editandoNomeOriginal">
+
+        <div class="campo">
+            <label for="nomeProduto">Nome do produto</label>
+            <input type="text" id="nomeProduto" placeholder="Ex: Laranja">
+        </div>
+
+        <div class="campo">
+            <label for="categoriaProduto">Categoria</label>
+            <select id="categoriaProduto">
+                <option value="frutas">Frutas</option>
+                <option value="legumes">Legumes</option>
+                <option value="hortalicas">Hortaliças</option>
+                <option value="graos">Grãos e Cereais</option>
+                <option value="oleaginosas">Oleaginosas e Sementes</option>
+                <option value="ervas">Ervas e Temperos</option>
+                <option value="outros">Outros</option>
+            </select>
+        </div>
+
+        <div class="linha-form">
+            <div class="campo">
+                <label id="labelPreco" for="precoProduto">Preço por Quilograma (Kg) (R$)</label>
+                <input type="number" id="precoProduto" placeholder="Ex: 3.00" step="0.01" min="0">
+            </div>
+
+            <div class="campo">
+                <label for="unidadeProduto">Forma de Venda</label>
+                <select id="unidadeProduto">
+                    <optgroup label="Peso">
+                        <option value="kg">Quilograma (Kg)</option>
+                        <option value="g">Grama (g)</option>
+                        <option value="arroba">Arroba (15kg)</option>
+                        <option value="t">Tonelada (t)</option>
+                    </optgroup>
+                    
+                    <optgroup label="Quantidade">
+                        <option value="unidade">Unidade (un)</option>
+                        <option value="duzia">Dúzia (12 un)</option>
+                        <option value="cento">Cento (100 un)</option>
+                        <option value="milheiro">Milheiro (1.000 un)</option>
+                    </optgroup>
+                    
+                    <optgroup label="Embalagens e Volumes">
+                        <option value="caixa">Caixa</option>
+                        <option value="saca">Saca (60kg)</option>
+                        <option value="maco">Maço</option>
+                        <option value="bandeja">Bandeja</option>
+                        <option value="litro">Litro (L)</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label id="labelQuantidade" for="quantidadeProduto">Estoque Disponível (em Quilograma (Kg))</label>
+            <input type="number" id="quantidadeProduto" placeholder="Ex: 10" min="0">
+        </div>
+
+        <div class="linha-form big">
+            <div class="campo caixa-grande">
+                <label for="descricaoProduto">Descrição (opcional)</label>
+                <textarea id="descricaoProduto" placeholder="Ex: Fruta doce e fresca"></textarea>
+            </div>
+
+            <div class="campo caixa-grande">
+                <label>Foto do produto (opcional)</label>
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" id="fotoProduto" accept="image/*" hidden>
+                </div>
+            </div>
+        </div>
+
+        <div class="botoes-modal">
+            <button class="btn-rascunho" onclick="finalizarAcao('rascunho')">
+                <img src="../static/assets/rascunho.png" alt="">
+                Salvar Rascunho
+            </button>
+            <button class="btn-publicar" onclick="finalizarAcao('publicado')">
+                <img src="../static/assets/publicado.png" alt="">
+                Publicar Produto
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para Envio de Planilha -->
+<div id="modalPlanilha" class="modal">
+    <div class="modal-content modal-planilha-content">
+        <button class="btn-fechar" onclick="fecharModalPlanilha()"></button>
+        <div class="titulo-modal">
+            <h2>Enviar Planilha de Produtos</h2>
+        </div>
+
+        <div id="estadoUpload" class="estado-planilha active">
+            <div class="upload-zone" id="dropZonePlanilha" onclick="document.getElementById('inputPlanilha').click()">
+                <img src="../static/assets/upload.png" alt="Upload" style="width: 40px; margin-bottom: 10px;">
+                <p>Arraste um arquivo Excel ou clique para selecionar</p>
+                <small>Formatos aceitos: .xlsx, .xls</small>
+                <input type="file" id="inputPlanilha" accept=".xlsx, .xls" hidden>
+            </div>
+            <div class="botoes-modal">
+                <button class="btn-rascunho" onclick="fecharModalPlanilha()">Cancelar</button>
+            </div>
+        </div>
+
+        <div id="estadoResultado" class="estado-planilha">
+            <div class="resultado-header">
+                <p>Arquivo: <strong id="nomeArquivo">---</strong></p>
+                <button class="btn-trocar-arquivo" onclick="resetarModalPlanilha()">Trocar arquivo</button>
+            </div>
+            
+            <div class="badges-resultado">
+                <span class="badge badge-sucesso"><span id="qtdValidos">0</span> válidos</span>
+                <span class="badge badge-erro"><span id="qtdErros">0</span> com erro</span>
+            </div>
+
+            <div class="lista-erros-container">
+                <div id="secaoErros">
+                    <h3 style="color: #FF1744; margin-bottom: 10px;">Produtos com Erro</h3>
+                    <div id="listaErros"></div>
+                </div>
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+                <div id="secaoValidos">
+                    <h3 style="color: #00C853; margin-bottom: 10px;">Produtos Válidos</h3>
+                    <div id="listaValidos"></div>
+                </div>
+            </div>
+
+            <div class="botoes-modal">
+                <button class="btn-rascunho" onclick="fecharModalPlanilha()">Cancelar</button>
+                <button class="btn-publicar" id="btnConfirmarPlanilha" disabled>
+                    Adicionar Produtos
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para confirmar exclusão de produto -->
+<div id="modalExcluir" class="modal">
+    <div class="modal-content modal-pequeno">
+        <div class="titulo-modal">
+            <h2>Confirmar Exclusão</h2>
+        </div>
+        <p id="mensagemExcluir" class="texto-modal"></p>
+        <div class="botoes-modal-excluir">
+            <button class="btn-cancelar-exclusao" onclick="fecharModalExcluir()">Cancelar</button>
+            <button id="btnConfirmarExclusao" class="btn-confirmar-exclusao">Excluir</button>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  lucide.createIcons();
+</script>
+<script src="../static/js/auth.js"></script>
+<script src="../static/js/drawer.js"></script>
+
+<script src="../static/js/produtores/api.js"></script>
+
+<script src="../static/js/produtores/template_excel.js"></script>
+
+<script src="../static/js/produtores/form_base.js"></script>
+<script src="../static/js/produtores/criar_produto.js"></script>
+<script src="../static/js/produtores/excluir_produto.js"></script>
+<script src="../static/js/produtores/editar_produto.js"></script>
+
+<script src="../static/js/produtores/renderizar.js"></script>
+
+
+<!--<script src="../static/js/produtores/planilha.js"></script>-->
+<!--<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>-->
+
+<script src="../static/js/notificacao.js"></script>
+
+</body>
+</html>

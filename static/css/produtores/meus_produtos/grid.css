@@ -1,0 +1,37 @@
+/* =========================
+   GRID DE PRODUTORES
+   Container que organiza os cards
+========================= */
+.produtores-container {
+    display: grid;
+
+    /* 🔥 Grid responsivo automático:
+       - auto-fit: cria quantas colunas couberem
+       - minmax: cada card tem no mínimo 17.5rem
+                 e no máximo ocupa o espaço disponível */
+    grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr));
+
+    /* espaço entre os cards (responsivo também) */
+    gap: clamp(0.8rem, 2vw, 1.5rem);
+
+    /* limita largura máxima do grid */
+    max-width: 100%;
+
+    /* centraliza o container na tela */
+    margin: 0 auto;
+}
+
+
+/* =========================
+   TELAS GRANDES
+   Ajusta layout para monitores grandes
+========================= */
+@media (min-width: 75rem) {
+
+    .produtores-container {
+
+        /* força exatamente 4 colunas fixas
+           (evita cards muito esticados em telas grandes) */
+        grid-template-columns: repeat(4, 1fr);
+    }
+}

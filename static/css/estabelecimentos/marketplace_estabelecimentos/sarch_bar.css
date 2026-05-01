@@ -1,0 +1,74 @@
+/* =========================================================
+   🎯 RESPONSABILIDADE: BUSCA (SEARCH BAR)
+   ========================================================= */
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background: #dce8b5;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    padding: 15px 20px;
+    
+    /* AJUSTES PARA RESPONSIVIDADE */
+    /* Substituído margin-left fixo por auto para centralização inteligente */
+    margin: 1.5% auto 0 auto; 
+    /* Define um limite máximo para telas grandes */
+    max-width: 1340px; 
+    /* Garante que a barra ocupe a largura disponível, mas com margens seguras */
+    width: 90%; 
+    
+    transition: 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-container svg {
+    fill: #7a9c59;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+    /* Impede que o ícone seja esmagado em telas muito pequenas */
+    flex-shrink: 0; 
+}
+
+.search-container:hover svg {
+    transform: scale(1.1);
+}
+
+.search-container:focus-within svg {
+    transform: scale(1.2) rotate(10deg);
+    fill: #4CAF50;
+}
+
+.search-container input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    color: #555;
+}
+
+.search-container:focus-within {
+    border: 2px solid #2e7d32;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+}
+
+/* =========================================================
+   📱 AJUSTES PARA DISPOSITIVOS MÓVEIS (RESPONSIVO)
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .search-container {
+        /* Aumenta a largura relativa em celulares */
+        width: 95%; 
+        padding: 12px 15px;
+        margin-top: 5%;
+    }
+
+    .search-container input {
+        /* Melhora a legibilidade em telas menores */
+        font-size: 14px; 
+    }
+}

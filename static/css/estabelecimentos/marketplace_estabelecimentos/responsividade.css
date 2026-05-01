@@ -1,0 +1,37 @@
+/* =========================================================
+   🎯 RESPONSABILIDADE: RESPONSIVIDADE (MOBILE)
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .main-container {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+    }
+
+    .modal-grid {
+        grid-template-columns: 1fr;
+    }
+
+    header {
+        justify-content: center;
+        position: relative;
+    }
+
+    .menu-icon {
+        position: absolute;
+        left: 20px;
+    }
+
+    .logo-container {
+        margin-left: 0;
+    }
+
+    .top-section h1 {
+        text-align: center;
+    }
+}

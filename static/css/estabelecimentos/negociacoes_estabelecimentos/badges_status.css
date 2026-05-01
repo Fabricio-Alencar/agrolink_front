@@ -1,0 +1,98 @@
+/* ============================================================
+   RESPONSABILIDADE: BADGES DE STATUS
+   ============================================================ */
+.badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+    text-transform: capitalize;
+}
+
+.badge.pendente { background-color: var(--status-orange); }
+.badge.aceito { background-color: var(--status-blue); }
+.badge.recusado { background-color: var(--status-red); }
+.badge.cancelado { background-color: var(--status-black); }
+.badge.entregue { background-color: var(--status-green); } 
+.badge.finalizado { background-color: var(--status-gray); } 
+
+/* Corpo do card */
+.card-body { flex-grow: 1; }
+
+/* Linha de preço/quantidade */
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 16px 0;
+    background: var(--bg-color);
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.qty { 
+    color: var(--text-muted); 
+    font-size: 14px; 
+}
+
+.price { 
+    color: var(--primary); 
+    font-weight: 600; 
+    font-size: 16px; 
+    text-align: right;
+}
+
+/* Descrição truncada */
+.desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 16px;
+    line-height: 1.4;
+}
+
+/* Linha de informações (data/local) */
+.info-row {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Ações do card */
+.card-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* Botão detalhes */
+.btn-details {
+    flex: 1;
+    background:#5FAE3E;;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+/* Botão deletar */
+.btn-delete {
+    background: var(--status-red);
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}

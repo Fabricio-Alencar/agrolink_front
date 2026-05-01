@@ -1,0 +1,81 @@
+/* =========================================================
+   BOTÕES DO MODAL (AJUSTADO)
+========================================================= */
+.botoes-modal {
+    display: flex;
+    gap: 1rem;
+
+    flex-wrap: nowrap; /* 🔥 impede quebrar linha */
+}
+
+/* botão base */
+.btn-rascunho,
+.btn-publicar {
+    max-height: 40px;
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    padding: 0.9rem 1rem;
+
+    border: none;
+    border-radius: 0.6rem;
+
+    cursor: pointer;
+
+    font-size: 0.95rem;
+    font-weight: 500;
+
+    transition: 0.2s ease;
+}
+
+/* rascunho */
+.btn-rascunho {
+    background: #ccc;
+    color: #000;
+}
+
+.btn-rascunho:hover {
+    background: #bdbdbd;
+}
+
+/* publicar */
+.btn-publicar {
+    background: #000;
+    color: white;
+}
+
+.btn-publicar:hover {
+    background: #222;
+}
+
+/* ícones */
+.btn-rascunho img {
+    width: 2.3rem;
+    height: 2rem;
+}
+
+.btn-publicar img {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* =========================================================
+   RESPONSIVO (MANTÉM LADO A LADO)
+========================================================= */
+@media (max-width: 48rem) {
+
+    .botoes-modal {
+        flex-direction: row; /* 🔥 garante lado a lado */
+    }
+
+    .btn-rascunho,
+    .btn-publicar {
+        flex: 1;          /* ocupa metade cada um */
+        min-width: 0;     /* evita overflow */
+    }
+}

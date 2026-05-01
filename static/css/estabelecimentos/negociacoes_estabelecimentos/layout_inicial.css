@@ -1,0 +1,29 @@
+/* ============================================================
+   RESPONSABILIDADE: RESET GLOBAL
+   Remove inconsistências entre navegadores
+   ============================================================ */
+* {
+    margin: 0;                      /* Remove margens padrão */
+    padding: 0;                     /* Remove paddings padrão */
+    box-sizing: border-box;        /* Inclui padding/border no tamanho */
+    font-family: 'Inter', sans-serif; /* Fonte global */
+}
+
+/* ============================================================
+   RESPONSABILIDADE: BASE DA PÁGINA
+   Define comportamento geral do body
+   ============================================================ */
+body {
+    background-color: var(--bg-color); /* Fundo da aplicação */
+    color: var(--text-main);           /* Cor padrão de texto */
+}
+
+/* ============================================================
+   RESPONSABILIDADE: CONTAINER CENTRAL
+   Controla largura e espaçamento da página
+   ============================================================ */
+.container {
+    max-width: 1200px;   /* Limita largura máxima */
+    margin: 0 auto;      /* Centraliza na tela */
+    padding: 24px;       /* Espaçamento interno */
+}

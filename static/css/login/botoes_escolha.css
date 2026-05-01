@@ -1,0 +1,24 @@
+.toggle-container {
+    display: flex;
+    background: var(--gray-light);
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.toggle-btn {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    cursor: pointer;
+    background: transparent;
+    font-weight: 500;
+    color: var(--primary);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.toggle-btn.active {
+    background: var(--primary);
+    color: var(--white);
+}

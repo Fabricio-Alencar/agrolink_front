@@ -1,0 +1,46 @@
+/* ============================================================
+   RESPONSABILIDADE: GRID DE CARDS
+   ============================================================ */
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+/* ============================================================
+   RESPONSABILIDADE: CARD DE PEDIDO
+   ============================================================ */
+.card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    border: 1px solid #ebebeb;
+}
+
+/* Cabeçalho do card */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+/* Nome do produtor */
+.producer-name { 
+    font-weight: 600; 
+    font-size: 16px; 
+}
+
+/* Nome do produto */
+.product-name { 
+    font-size: 14px; 
+    color: var(--text-muted); 
+    display: flex; 
+    align-items: center; 
+    gap: 4px; 
+    margin-top: 4px;
+}

@@ -1,0 +1,14 @@
+/* =========================================================
+   🎯 RESPONSABILIDADE: TOPO (TÍTULO)
+   ========================================================= */
+
+.top-section {
+    padding: 50px 0px;
+}
+
+.top-section h1 {
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: bold;
+    text-align: center;    
+}

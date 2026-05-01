@@ -1,0 +1,109 @@
+/* =========================
+   BOTÕES DO CARD
+   Container geral dos botões
+========================= */
+.botoes-card {
+    display: flex; /* coloca os botões lado a lado */
+    gap: 1rem; /* espaço entre os botões */
+
+    /* altura responsiva (mínimo 2.2rem, cresce até 3rem) */
+    height: clamp(2.2rem, 3vw, 3rem);
+
+    align-items: stretch; /* faz todos os filhos terem a mesma altura */
+
+    margin-top: auto; /* empurra os botões para o final do card */
+}
+
+
+/* =========================
+   BOTÃO EDITAR
+========================= */
+.editar-card-btn {
+    font-family: 'Inter', sans-serif;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+
+    flex: 1; /* ocupa todo espaço disponível */
+    height: 100%; /* acompanha altura do container */
+
+    border-radius: 0.5rem;
+    border: 0.1rem solid #A19D9D; /* borda cinza */
+
+    background-color: #ffffff;
+    color: #000000;
+
+    cursor: pointer;
+
+    /* tamanho da fonte responsivo */
+    font-size: clamp(1rem, 1.2vw, 0.95rem);
+
+    transition: background 0.2s, transform 0.15s;
+}
+
+[data-lucide="square-pen"] {
+    color: #000000;
+    width: clamp(1.5rem, 1.6vw, 3rem);
+    height: clamp(1.5rem, 1.6vw, 3rem);
+    stroke-width: 1;
+}
+
+
+/* =========================
+   BOTÃO EXCLUIR (QUADRADO)
+========================= */
+.excluir-card-btn {
+    background: url("../../../assets/excluir.png") center / contain no-repeat;
+
+    height: 100%; /* segue altura do container */
+
+    aspect-ratio: 1 / 1; /* mantém formato quadrado */
+
+    width: auto; /* deixa o aspect-ratio controlar a largura */
+
+    flex: 0 0 auto; /* impede que o flex estique o botão */
+
+    border-radius: 0.5rem;
+    border: none;
+
+    cursor: pointer;
+
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+
+/* =========================
+   HOVER (efeito ao passar mouse)
+========================= */
+.editar-card-btn:hover {
+    background-color: #dfa232; /* muda fundo para dourado */
+    transform: scale(1.02); /* leve aumento */
+    border: #000 solid 0.1rem;
+}
+
+.excluir-card-btn:hover {
+    background-color: #000000; /* fundo preto no hover */
+    transform: scale(1.05); /* cresce mais que o editar */
+    border: #000 solid 0.1rem;
+}
+
+
+/* =========================
+   RESPONSIVO (TELAS PEQUENAS)
+========================= */
+@media (max-width: 48rem) {
+
+    /* botão editar fica mais compacto */
+    .editar-card-btn {
+        padding: 0.2rem 0.6rem;
+        font-size: 1rem;
+    }
+
+    /* garante que o botão excluir continue quadrado */
+    .excluir-card-btn {
+        height: 100%;
+    }
+
+}

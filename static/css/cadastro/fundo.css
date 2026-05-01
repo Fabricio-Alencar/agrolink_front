@@ -1,0 +1,10 @@
+/* Alinhamento centralizado de toda a tela */
+body {
+    background-color: var(--bg-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;       /* Centraliza horizontalmente */
+    justify-content: center;   /* Centraliza verticalmente */
+    padding: 10px 20px;
+}

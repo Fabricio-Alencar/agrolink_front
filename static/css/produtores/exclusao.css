@@ -1,0 +1,42 @@
+/* Ajustes para o modal de exclusão */
+.modal-pequeno {
+    max-width: 450px !important;
+    padding: 25px !important;
+}
+
+.texto-modal {
+    color: #666;
+    font-size: 14px;
+    margin: 20px 0;
+    line-height: 1.5;
+}
+
+.botoes-modal-excluir {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.btn-cancelar-exclusao {
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-confirmar-exclusao {
+    padding: 10px 20px;
+    background: #0d0d16; /* Cor escura da imagem */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-confirmar-exclusao:hover {
+    background: #1a1a2e;
+}

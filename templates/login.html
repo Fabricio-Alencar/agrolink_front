@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroLink - Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/login/variaveis_globais.css">
+    <link rel="stylesheet" href="../static/css/login/layout_geral.css">
+    <link rel="stylesheet" href="../static/css/login/botoes_escolha.css">
+    <link rel="stylesheet" href="../static/css/login/card.css">
+    <link rel="stylesheet" href="../static/css/login/inputs.css">
+    <link rel="stylesheet" href="../static/css/login/botoes_inferiores.css">
+    <link rel="stylesheet" href="../static/css/login/rodape.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
+    <link rel="stylesheet" href="../static/css/login/variaveis_globais.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <link rel="stylesheet" href="../static/css/alertas_customizados.css">
+</head>
+<body>
+
+    <header class="page-header">
+        <img src="../static/assets/login/logo.png" alt="Logo AgroConnect" class="logo">
+        <h1>AgroLink</h1>
+        <p>Conectando produtores e compradores</p>
+    </header>
+
+    <main class="login-card">
+        <img src="../static/assets/login/minhoca_grande.png" alt="Mascote" class="mascote-espiando">
+        <h2>Entre na sua conta</h2>
+        
+        <div class="toggle-container">
+            <button class="toggle-btn active" id="btn-produtor" type="button">Produtor</button>
+            <button class="toggle-btn" id="btn-estabelecimento" type="button">Estabelecimento</button>
+        </div>
+
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">E-mail</label>
+                <div class="input-wrapper">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <input type="email" id="email" placeholder="seu@email.com" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha</label>
+                <div class="input-wrapper">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+            </div>
+
+                <button type="submit" class="btn-primary">Entrar</button>
+
+                <a href="/cadastro" class="btn-secondary">Criar conta</a>
+        </form>
+
+    </main>
+
+    <footer class="page-footer">
+        Conectando pequenos produtores ao mercado local
+    </footer>
+
+
+
+    <script src="../static/js/login/lógica.js"></script>
+    <script src="../static/js/auth.js"></script>
+
+</body>
+</html>

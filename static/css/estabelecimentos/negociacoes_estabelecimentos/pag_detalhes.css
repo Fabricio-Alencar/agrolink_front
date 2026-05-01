@@ -1,0 +1,136 @@
+/* ============================================================
+   RESPONSABILIDADE: PÁGINA DE DETALHES
+   ============================================================ */
+
+/* Botão voltar */
+.btn-back {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 24px;
+    color: var(--text-main);
+}
+
+/* Card principal */
+.details-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 32px;
+    box-shadow: var(--shadow);
+}
+
+/* Cabeçalho do detalhe */
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 16px;
+}
+
+/* Grid de conteúdo */
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+/* Grupo de informações */
+.info-group { margin-bottom: 24px; }
+
+.info-label { 
+    font-size: 14px; 
+    font-weight: 600; 
+    margin-bottom: 6px; 
+    display: block; 
+    color: var(--text-main);
+}
+
+.info-value { 
+    color: #5FAE3E;; 
+    font-size: 20px; 
+    font-weight: 600;
+}
+
+.info-text { 
+    color: var(--text-muted); 
+    font-size: 15px;
+}
+
+/* Caixa de descrição */
+.desc-box {
+    width: 100%;
+    height: 120px;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none;
+    background: #fdfdfd;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Imagem do produto */
+.product-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Lista de contatos */
+.contact-list {
+    list-style: none;
+    margin-top: 12px;
+    background: var(--bg-color);
+    padding: 16px;
+    border-radius: 8px;
+}
+
+.contact-list li {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed #ddd;
+    padding-bottom: 4px;
+}
+
+/* Botões de ação */
+.action-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+}
+
+/* Botões gerais */
+.btn-action {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-finalize { background: #5FAE3E;; }
+.btn-cancel { background: var(--status-red); }
+

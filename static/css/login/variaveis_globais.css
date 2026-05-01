@@ -1,0 +1,18 @@
+/* Definição de variáveis para consistência de cores */
+:root {
+    --bg-color: #D0E9C1;
+    --primary: #00873E;
+    --primary-dark: #006C32;
+    --white: #FFFFFF;
+    --text-main: #1A1A1A;
+    --text-muted: #6C8271;
+    --gray-light: #F3F5EA;
+    --border: #D1D5DB;
+}
+
+/* Configuração de fonte base e reset global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}

@@ -1,0 +1,71 @@
+/* ============================================================
+   RESPONSABILIDADE: BARRA DE FILTROS
+   ============================================================ */
+.filters-bar {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    text-align: center;
+    align-items: center;
+}
+
+/* Campo de busca */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #dce8b5;
+    border: 2px solid transparent;
+    border-radius: 30px;
+    padding: 15px 20px;
+    transition: 0.3s ease;
+    max-width: 1340px;
+    width: 85%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-box svg {
+    fill: #7a9c59;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    transition: all 0.3s ease;
+}
+
+.search-box:hover svg {
+    transform: scale(1.1);
+}
+
+.search-box:focus-within svg {
+    transform: scale(1.2) rotate(10deg);
+    fill: #4CAF50;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    outline: none;
+    width: 100%;
+    font-size: 16px;
+    color:var(--text-main);
+}
+
+.search-box:focus-within {
+    border: 2px solid #2e7d32;
+    box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
+}
+
+
+
+/* Select de status */
+.status-select {
+    padding: 10px 16px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: white;
+    outline: none;
+    min-width: 150px;
+    max-height:50px;
+    color: var(--text-main);
+    font-weight: 600; 
+}

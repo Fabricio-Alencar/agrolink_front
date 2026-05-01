@@ -1,0 +1,23 @@
+/* ============================================================
+   RESPONSABILIDADE: TOGGLE DE VISUALIZAÇÃO (Lista/Calendário)
+   ============================================================ */
+.view-toggle { 
+    display: flex; 
+    gap: 8px; 
+}
+
+.toggle-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    background: white;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Botão ativo */
+.toggle-btn.active {
+    background: var(--status-blue);
+    color: white;
+}

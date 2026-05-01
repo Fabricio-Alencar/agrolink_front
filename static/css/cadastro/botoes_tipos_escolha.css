@@ -1,0 +1,40 @@
+/* Container do título "Tipo de conta" */
+.account-type-section {
+    display: flex;          
+    flex-direction: column; 
+    align-items: center;    
+    margin-bottom: 25px;
+    text-align: center;     
+    font-weight: 700;
+    font-weight: bold;
+}
+
+/* Caixa que segura os dois botões */
+.toggle-container {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    width: 100%;            
+    max-width: 400px;       
+}
+
+/* O botão em si (desativado) */
+.toggle-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-gray);
+    background: var(--white);
+    color: #6B7280;
+    font-weight: 500;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* O botão quando está selecionado (ativo) */
+.toggle-btn.active {
+    background: var(--toggle-active-bg);
+    border-color: var(--primary-green);
+    color: var(--primary-green);
+}

@@ -1,0 +1,214 @@
+/* =========================
+   CONFIGURAÇÕES GERAIS
+========================= */
+:root {
+    --verde-oliva: #558b2f;
+    --verde-menta-claro: #D1FFDA;
+    --verde-texto-ativo: #008137;
+    --cinza-texto: #4a4a68;
+    --vermelho-suave: #fff0f0;
+    --vermelho-texto: #d32f2f;
+}
+
+body { 
+    font-family: 'Inter', sans-serif; 
+    margin: 0; 
+    background-color: #f4f4f4;
+}
+
+/* =========================
+   HEADER DA PÁGINA
+========================= */
+.cabecalho-principal {
+    background-color: var(--verde-oliva);
+    padding: 1rem 2rem;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.cabecalho-esquerda {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.menu-hamburger {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 25px;
+    padding: 0;
+}
+
+.menu-hamburger span {
+    width: 100%;
+    height: 3px;
+    background: white;
+    border-radius: 2px;
+}
+
+/* =========================
+   DRAWER (PAINEL LATERAL)
+========================= */
+.painel-lateral {
+    line-height: 1.5;
+    position: fixed;
+    top: 0;
+    left: -325px; /* Escondido */
+    width: 320px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 2000;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 20px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Removido para o cabeçalho preencher tudo */
+}
+
+.painel-lateral.ativo {
+    left: 0;
+}
+
+.camada-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.3);
+    display: none;
+    z-index: 1999;
+}
+
+.camada-overlay.ativo {
+    display: block;
+}
+
+/* =========================
+   CONTEÚDO INTERNO DO MENU
+========================= */
+
+/* Cabeçalho com fundo verde preenchido */
+.painel-cabecalho-verde {
+    background-color: var(--verde-menta-claro);
+    padding: 2.5rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    line-height: 0;
+}
+
+.painel-logo-drawer {
+    font-family: 'Comfortaa', sans-serif;
+    padding: 0;
+    color: var(--verde-oliva);
+    font-size: 2.8rem; /* Logo aumentada */
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -1.5px;
+}
+
+.botao-fechar-drawer {
+    background: none;
+    border: none;
+    font-size: 1.5rem; /* Botão menor */
+    cursor: pointer;
+    color: var(--verde-oliva);
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* Área interna com padding */
+.painel-conteudo {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* CARTÃO DE USUÁRIO */
+.cartao-usuario {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 1.5rem;
+}
+
+.usuario-foto {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #eee;
+}
+
+.usuario-dados {
+    display: flex;
+    flex-direction: column;
+}
+
+.usuario-nome { color: #333; font-size: 1.1rem; font-weight: 600; }
+.usuario-tipo { color: #777; font-size: 0.85rem; }
+
+/* NAVEGAÇÃO */
+.painel-navegacao {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.item-navegacao {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    text-decoration: none;
+    color: var(--cinza-texto);
+    font-weight: 500;
+    font-size: 1.05rem;
+    border-radius: 12px;
+    transition: 0.2s;
+}
+
+.item-navegacao.ativo {
+    background-color: var(--verde-menta-claro);
+    color: var(--verde-texto-ativo);
+    font-weight: 600;
+}
+
+.item-navegacao:hover:not(.ativo) {
+    background-color: #f5f7f5;
+}
+
+/* FOOTER / LOGOUT */
+.painel-rodape {
+    margin-top: auto;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+}
+
+.botao-logout {
+    width: 100%;
+    background-color: var(--vermelho-suave);
+    color: var(--vermelho-texto);
+    border: none;
+    padding: 0.9rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: 0.2s;
+}
+
+.botao-logout:hover {
+    background-color: #ffdce0;
+}

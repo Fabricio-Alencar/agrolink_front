@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroConnect - Negociações</title>
+
+        <!-- IMPORTAÇÃO DE FONTES DO GOOGLE -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+        <!-- ícone da aba de navegação -->
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/drawer.css">
+    <link rel="stylesheet" href="../static/css/notificacao.css">
+
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/var_globais.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/layout_inicial.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/header.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/drawer.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/título.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/barra_filtros.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/toggle_lista_calendário.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/card_pedido.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/badges_status.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/pag_detalhes.css">
+    <link rel="stylesheet" href="../static/css/estabelecimentos/negociacoes_estabelecimentos/responsividade.css">
+    
+</head>
+<body>
+    
+    <header class="header">
+        <div class="cabecalho-esquerda">
+            <button class="menu-hamburger" id="botaoAbrirMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo">🌱 AgroLink</div>
+        </div>
+    </header>
+    
+    <aside class="painel-lateral" id="painelLateral">
+        
+        <div class="painel-cabecalho-verde">
+            <h1 class="painel-logo-drawer">AgroLink</h1>
+            <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
+        </div>
+    
+        <div class="painel-conteudo">
+            
+            <div class="cartao-usuario">
+                <img src="https://via.placeholder.com/60" alt="Foto de Perfil" class="usuario-foto">
+                <div class="usuario-dados">
+                    <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
+                    <span class="usuario-tipo" id="usuarioTipo">...</span>
+                </div>
+            </div>
+    
+            <nav class="painel-navegacao">
+                <a href="/marketplace" class="item-navegacao">
+                    <span class="icone-box">📦</span> Marketplace
+                </a>
+                
+                <a href="/negociacoes_estabelecimento" class="item-navegacao ativo">
+                    <span class="icone-box">🛍️</span> Negociações
+                </a>
+                
+                <!--<a href="perfil.html" class="item-navegacao">
+                    <span class="icone-box">👤</span> Perfil
+                </a>-->
+            </nav>
+    
+            <footer class="painel-rodape">
+                <button class="botao-logout" onclick="Auth.logout()">
+                    <span class="icone-box">🚪</span> Sair da Conta
+                </button>
+            </footer>
+        </div>
+    </aside>
+    
+    <!-- máscara do fundo -->
+    <div id="mascaraMenu" class="mascara-menu"></div>
+
+
+
+    <main id="view-lista" class="container">
+        <div class="page-header">
+            <h1>Negociações/Pedidos</h1>
+            <div class="view-toggle">
+                <button class="toggle-btn active">Lista</button>
+                <button class="toggle-btn">Calendário 📅</button>
+            </div>
+        </div>
+
+        <div class="filters-bar">
+            <div class="search-box">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="#5FAE3E"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                <input type="text" id="searchInput" placeholder="Buscar produtos ou produtores...">
+            </div>
+            <select id="statusFilter" class="status-select">
+                <option value="Todos">Status (Todos)</option>
+                <option value="Pendente">Pendentes</option>
+                <option value="Aceito">Aceitos</option>
+                <option value="Entregue">Entregues</option>
+                <option value="Finalizado">Finalizados</option>
+                <option value="Cancelado">Cancelados</option>
+            </select>
+        </div>
+
+        <div id="orders-grid" class="orders-grid"></div>
+    </main>
+
+    <main id="view-detalhes" class="container" style="display: none;">
+        <button onclick="hideDetails()" class="btn-back">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            Voltar
+        </button>
+
+        <div class="details-card" id="details-content"></div>
+    </main>
+    <script src="../static/js/auth.js"></script>
+    <script type="module" src="../static/js/drawer.js"></script>
+    <script type="module" src="../static/js/negociacoes/main_estabelecimento.js"></script>
+</body>
+</html>

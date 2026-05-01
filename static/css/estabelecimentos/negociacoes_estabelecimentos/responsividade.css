@@ -1,0 +1,17 @@
+/* ============================================================
+   RESPONSABILIDADE: RESPONSIVIDADE
+   ============================================================ */
+@media (max-width: 768px) {
+    .details-grid { 
+        grid-template-columns: 1fr; /* Coluna única no mobile */
+        gap: 24px; 
+    }
+
+    .action-buttons { 
+        flex-direction: column; /* Botões empilhados */
+    }
+
+    .details-card { 
+        padding: 20px; /* Menor padding em telas pequenas */
+    }
+}

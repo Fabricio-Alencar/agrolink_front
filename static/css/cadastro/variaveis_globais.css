@@ -1,0 +1,19 @@
+/* Definição de variáveis para consistência de cores */
+:root {
+    --bg-color: #D0E9C1;
+    --primary-green: #00873E;
+    --primary-hover: #006C32;
+    --white: #FFFFFF;
+    --text-dark: #1A1A1A;
+    --text-label: #4B5563;
+    --border-gray: #D1D5DB;
+    --toggle-active-bg: #E7F3D9;
+}
+
+/* Reset de estilos globais e fonte base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}

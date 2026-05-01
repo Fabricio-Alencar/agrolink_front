@@ -1,0 +1,99 @@
+/* Nomes dos campos (Ex: "E-mail", "Senha") */
+.input-group {
+    display: block !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #4B5563 !important;
+    margin-bottom: 8px !important;
+    margin-top: 8px;
+    text-align: left !important;
+}
+
+.field-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: #3f5f36;
+    letter-spacing: 0.3px;
+}
+
+/* Container que junta o ícone e a caixa de digitar */
+.input-wrapper {
+    position: relative !important; 
+    display: flex !important;
+    align-items: center !important;
+    width: 100%;
+}
+
+/* O Ícone posicionado à esquerda */
+.input-wrapper svg, 
+.input-wrapper i {
+    position: absolute !important;
+    left: 16px !important;         
+    width: 18px !important;
+    height: 18px !important;
+    color: #9CA3AF !important;     
+    pointer-events: none !important; 
+    z-index: 10 !important;        
+}
+
+/* A Caixa de digitação */
+.input-wrapper input {
+    width: 100% !important;
+    padding: 14px 16px 14px 48px !important; /* O 48px afasta o texto do ícone */
+    border: 1.5px solid #D1D5DB !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+}
+
+/* O ícone de Olhinho para mostrar senha (fica à direita) */
+.toggle-password {
+    position: absolute !important;
+    right: 16px !important;
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    z-index: 11 !important;
+}
+
+/* Exceção para o olhinho não seguir a regra do ícone da esquerda */
+.toggle-password i, 
+.toggle-password svg {
+    position: static !important; 
+}
+
+.input-wrapper select {
+    width: 100% !important;
+    padding: 14px 16px 14px 48px !important; /* espaço pro ícone */
+    border: 1.5px solid #D1D5DB !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    background-color: #FFFFFF !important;
+    outline: none !important;
+    box-sizing: border-box !important;
+
+    appearance: none; /* remove estilo padrão do navegador */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    cursor: pointer;
+}
+
+.input-wrapper.estado::after,
+.input-wrapper.cidade::after {
+    content: "▼";
+    position: absolute;
+    right: 16px;
+    font-size: 12px;
+    color: #9CA3AF;
+    pointer-events: none;
+}
+
+.input-wrapper select:focus {
+    border-color: #3f5f36 !important;
+    box-shadow: 0 0 0 2px rgba(63, 95, 54, 0.1);
+}

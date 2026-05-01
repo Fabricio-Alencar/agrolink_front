@@ -1,0 +1,21 @@
+/* Estilo base do botão verde */
+.btn-submit {
+    width: 100%;
+    background: var(--primary-green);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Efeito ao passar o mouse */
+.btn-submit:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 135, 62, 0.2);
+}

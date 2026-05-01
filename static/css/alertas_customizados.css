@@ -1,0 +1,128 @@
+/* =========================================
+   CUSTOMIZAÇÃO DO SWEETALERT2
+   ========================================= */
+
+/* 1. ALERTA DE SUCESSO (Topo - Retângulo Pequeno) */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-modal {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 260px !important; 
+    padding: 0.8rem !important;
+    border-radius: 16px !important;
+    position: fixed !important;
+    top: 20px !important; 
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Ícone de Sucesso Mini */
+div:where(.swal2-container) div:where(.swal2-icon).swal2-success {
+    transform: scale(0.4) !important;
+    margin: -15px auto -10px auto !important;
+}
+
+/* Título Sucesso */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-modal .swal2-title {
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    font-size: 1rem !important;
+    color: #28a745 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+/* Texto Sucesso */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-modal .swal2-html-container {
+    font-size: 0.8rem !important;
+    margin: 2px 0 0 0 !important;
+    text-align: center !important;
+}
+
+/* 2. TOAST DE ERRO (Lateral - Ícone e Texto Centralizados) */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-toast {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 220px !important; 
+    padding: 1.2rem 0.5rem !important;
+    border-radius: 12px !important;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1) !important;
+}
+
+/* Reset do Ícone de Erro */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-toast .swal2-icon {
+    grid-column: 1 / span 3 !important;
+    margin: 0 auto 10px auto !important; 
+    display: flex !important;
+    justify-content: center !important;
+    transform: scale(0.8) !important;
+}
+
+/* Título do Erro (Mensagem) */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-toast .swal2-title {
+    grid-column: 1 / span 3 !important;
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 0.85rem !important;
+    /* Removemos a cor fixa daqui para não conflitar */
+    font-weight: 500 !important;
+    display: flex !important;
+}
+
+/* --- ADICIONE ESTAS REGRAS ABAIXO PARA CORRIGIR AS CORES --- */
+
+/* Forçar Verde se o Toast for de Sucesso */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-toast.swal2-icon-success .swal2-title {
+    color: #28a745 !important;
+}
+
+/* Forçar Vermelho se o Toast for de Erro */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-toast.swal2-icon-error .swal2-title {
+    color: #e74c3c !important;
+}
+
+
+/* Força a remoção do grid lateral do SweetAlert */
+.swal2-toast {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.swal2-toast .swal2-title, 
+.swal2-toast .swal2-html-container {
+    display: block !important; /* Muda de flex/grid para block para obedecer o textAlign */
+    width: 100% !important;
+    text-align: center !important;
+}
+
+/* Remove o scroll horizontal do container do SweetAlert */
+.swal2-container {
+    overflow-x: hidden !important;
+}
+
+/* Garante que o popup não ultrapasse a largura definida e esconda o que sobrar */
+div:where(.swal2-container) div:where(.swal2-popup).swal2-toast {
+    max-width: 100vw !important; /* Impede que seja maior que a tela */
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+}
+
+/* Ajuste fino nos textos para eles quebrarem a linha se forem grandes demais */
+.swal2-title, .swal2-html-container {
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+}
