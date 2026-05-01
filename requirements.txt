@@ -1,0 +1,19 @@
+# Servidor de Produção
+gunicorn==23.0.0
+
+# Essenciais Flask
+Flask>=3.0.0
+flask-cors
+Flask-SQLAlchemy
+SQLAlchemy
+
+# Utilitários
+python-dotenv
+requests
+psycopg2-binary
+
+# Remova versões fixas dessas para o pip achar a melhor pré-compilada
+pydantic
+pydantic-settings
+pillow
+numpy
