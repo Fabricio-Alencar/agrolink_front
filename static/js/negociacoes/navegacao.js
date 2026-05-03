@@ -122,6 +122,14 @@ export function showDetails(id, tipoUsuario) {
                     <span class="info-label">🤝 Negociante:</span>
                     <span class="info-value" style="font-size:18px;">${order.negociante_nome}</span>
                 </div>
+                <div class="info-group">
+                    <span class="info-label">📞 Telefone:</span>
+                    <span class="info-text">${order.negociante_telefone}</span>
+                </div>
+                <div class="info-group">
+                    <span class="info-label">📧 Email:</span>
+                    <span class="info-text">${order.negociante_email}</span>
+                </div>
             </div>
         </div>
 
