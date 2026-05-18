@@ -1,75 +1,171 @@
 /**
  * ARQUIVO: editar_produto.js
- * OBJETIVO: Lógica para edição recebendo o objeto direto da lista.
+ * OBJETIVO:
+ * Lógica para edição de produtos.
  */
 
+
+// =========================
+// PREPARA EDIÇÃO
+// =========================
 async function prepararEdicao(produto) {
+
+    // 🛡️ valida produto
     if (!produto) return;
 
-    const { preview, placeholder, btnRemover } = window.uploadElements;
+    // elementos upload
+    const {
+        preview,
+        placeholder,
+        btnRemover
+    } = window.uploadElements;
 
-    document.querySelector("#modalProduto h2").innerText = "Editar Produto";
-    document.getElementById("editandoNomeOriginal").value = produto.id; 
+    // =========================
+    // ALTERA TÍTULO
+    // =========================
+    document.querySelector(
+        "#modalProduto h2"
+    ).innerText = "Editar Produto";
 
-    document.getElementById("nomeProduto").value = produto.nome;
-    document.getElementById("categoriaProduto").value = produto.categoria;
-    document.getElementById("unidadeProduto").value = produto.unidade;
-    document.getElementById("descricaoProduto").value = produto.descricao || "";
-    document.getElementById("precoProduto").value = produto.preco;
-    document.getElementById("quantidadeProduto").value = produto.quantidade;
+    // salva ID
+    document.getElementById(
+        "editandoNomeOriginal"
+    ).value = produto.id;
 
-    // 🔹 IMAGEM
+    // =========================
+    // PREENCHE CAMPOS
+    // =========================
+    document.getElementById(
+        "nomeProduto"
+    ).value = produto.nome;
+
+    document.getElementById(
+        "categoriaProduto"
+    ).value = produto.categoria;
+
+    document.getElementById(
+        "unidadeProduto"
+    ).value = produto.unidade;
+
+    document.getElementById(
+        "descricaoProduto"
+    ).value = produto.descricao || "";
+
+    document.getElementById(
+        "precoProduto"
+    ).value = produto.preco;
+
+    document.getElementById(
+        "quantidadeProduto"
+    ).value = produto.quantidade;
+
+    // =========================
+    // IMAGEM
+    // =========================
     if (produto.foto) {
 
-        let caminhoFoto;
+        // 📸 URL direta Azure Blob Storage
+        preview.src = produto.foto;
 
-        if (produto.foto.startsWith('http')) {
-            caminhoFoto = produto.foto;
-        } else if (produto.foto.startsWith('/static')) {
-            caminhoFoto = `${API_URL}${produto.foto}`;
-        } else {
-            caminhoFoto = `${API_URL}/static/uploads/produtos/${produto.foto}`;
-        }
-
-        preview.src = caminhoFoto;
-
+        // fallback caso imagem falhe
         preview.onerror = () => {
+
             preview.onerror = null;
-            preview.src = `${API_URL}/static/uploads/produtos/foto_generica.png`;
+
+            preview.src =
+                "https://via.placeholder.com/300x300.png?text=Sem+Imagem";
         };
 
         preview.style.display = "block";
+
         placeholder.style.display = "none";
+
         btnRemover.style.display = "block";
 
     } else {
-        preview.src = "../static/uploads/produtos/foto_generica.png";
+
+        // imagem padrão
+        preview.src =
+            "https://via.placeholder.com/300x300.png?text=Sem+Imagem";
+
         preview.style.display = "block";
+
         placeholder.style.display = "none";
+
         btnRemover.style.display = "block";
     }
 
-    document.getElementById("modalProduto").classList.add("active");
+    // =========================
+    // ABRE MODAL
+    // =========================
+    document
+        .getElementById("modalProduto")
+        .classList.add("active");
+
+    // atualiza labels
     atualizarLabelsUnidade();
 }
 
+
+// =========================
+// EXECUTA EDIÇÃO
+// =========================
 async function executarEdicao(formData) {
-    const idParaEditar = document.getElementById("editandoNomeOriginal").value;
+
+    // pega ID
+    const idParaEditar =
+        document.getElementById(
+            "editandoNomeOriginal"
+        ).value;
+
+    // valida
     if (!idParaEditar || !formData) return;
 
     try {
-        const resultado = await API.atualizarProduto(idParaEditar, formData);
-        
+
+        // 🚀 chama API
+        const resultado =
+            await API.atualizarProduto(
+                idParaEditar,
+                formData
+            );
+
+        // ✅ sucesso
         if (resultado && !resultado.erro) {
-            exibirNotificacao('edicao', "Alterações salvas com sucesso!");
+
+            exibirNotificacao(
+                'edicao',
+                "Alterações salvas com sucesso!"
+            );
+
+            // fecha modal
             fecharModal();
+
+            // atualiza lista
             await renderProdutos();
+
         } else {
-            exibirNotificacao('erro', resultado?.erro || "Erro ao atualizar!");
+
+            // ❌ erro backend
+            exibirNotificacao(
+                'erro',
+                resultado?.erro ||
+                "Erro ao atualizar!"
+            );
         }
 
     } catch (error) {
-        console.error("Erro na edição:", error);
-        exibirNotificacao('erro', "Erro de conexão com o servidor!");
+
+        // ❌ erro rede
+        console.error(
+            "Erro na edição:",
+            error
+        );
+
+        exibirNotificacao(
+            'erro',
+            error.message ||
+            "Erro de conexão com servidor!"
+        );
     }
 }
