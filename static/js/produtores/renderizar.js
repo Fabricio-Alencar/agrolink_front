@@ -1,57 +1,28 @@
 /**
  * ARQUIVO: renderizar.js
- * OBJETIVO:
+ * OBJETIVO: 
  * - Renderizar os produtos do produtor na tela de forma otimizada.
  * - Implementa busca com debounce para evitar sobrecarga de requisições.
  */
 
+
 async function renderProdutos(listaParaRenderizar) {
-
     // =========================
-    // BUSCA DADOS
+    // BUSCA DADOS (API ou lista filtrada)
     // =========================
-    const lista =
-        listaParaRenderizar ||
-        await API.meusProdutos();
+    const lista = listaParaRenderizar || await API.meusProdutos();
+    const container = document.getElementById("produtosContainer");
+    
+    console.log("📦 Produtos recebidos:", lista);
 
-    const container =
-        document.getElementById(
-            "produtosContainer"
-        );
-
-    console.log(
-        "📦 Produtos recebidos:",
-        lista
-    );
-
-    // =========================
-    // VALIDA CONTAINER
-    // =========================
     if (!container) {
-
-        console.warn(
-            "⚠️ Container 'produtosContainer' não encontrado"
-        );
-
+        console.warn("⚠️ Container 'produtosContainer' não encontrado no DOM");
         return;
     }
 
-    // =========================
-    // VALIDA ARRAY
-    // =========================
     if (!Array.isArray(lista)) {
-
-        console.error(
-            "❌ API retornou algo inválido:",
-            lista
-        );
-
-        container.innerHTML = `
-            <p class="sem-resultados">
-                Erro ao carregar produtos
-            </p>
-        `;
-
+        console.error("❌ API retornou algo que não é array:", lista);
+        container.innerHTML = '<p class="sem-resultados">Erro ao carregar produtos</p>';
         return;
     }
 
@@ -81,98 +52,38 @@ async function renderProdutos(listaParaRenderizar) {
         "outros": "Outros"
     };
 
-    // =========================
-    // FORMATAR LABEL
-    // =========================
     function formatarLabel(valor) {
-
-        if (!valor) {
-            return "Não informado";
-        }
-
-        return (
-            dicionarioTraducao[
-                valor.toLowerCase()
-            ] ||
-
-            valor.charAt(0).toUpperCase() +
-            valor.slice(1)
-        );
+        if (!valor) return "Não informado";
+        return dicionarioTraducao[valor.toLowerCase()] || valor.charAt(0).toUpperCase() + valor.slice(1);
     }
 
     // =========================
-    // NORMALIZA FOTO
+    // FUNÇÃO PARA NORMALIZAR FOTO
     // =========================
     function resolverCaminhoFoto(produto) {
+        console.log("🖼️ Foto original:", produto.foto);
 
-        console.log(
-            "🖼️ Foto original:",
-            produto.foto
-        );
-
-        // sem foto
         if (!produto.foto) {
-
-            console.warn(
-                "⚠️ Produto sem foto"
-            );
-
-            return `
-                ${API_URL}/static/uploads/produtos/foto_generica.png
-            `;
+            console.warn("⚠️ Produto sem foto, usando fallback");
+            return `${API_URL}/static/uploads/produtos/foto_generica.png`;
         }
 
-        // url completa
-        if (
-            produto.foto.startsWith("http")
-        ) {
-
-            console.log(
-                "✅ URL completa"
-            );
-
+        // Caso já venha completa
+        if (produto.foto.startsWith("http")) {
+            console.log("✅ Foto já é URL completa");
             return produto.foto;
         }
 
-        // já possui /static
-        if (
-            produto.foto.startsWith("/static")
-        ) {
-
-            const url =
-                `${API_URL}${produto.foto}`;
-
-            console.log(
-                "🔧 URL corrigida:",
-                url
-            );
-
+        // Caso venha com /static
+        if (produto.foto.startsWith("/static")) {
+            const url = `${API_URL}${produto.foto}`;
+            console.log("🔧 Foto corrigida (static):", url);
             return url;
         }
 
-        // blob storage
-        if (
-            produto.foto.includes(
-                "blob.core.windows.net"
-            )
-        ) {
-
-            console.log(
-                "☁️ Imagem Blob Storage"
-            );
-
-            return produto.foto;
-        }
-
-        // fallback local
-        const url =
-            `${API_URL}/static/uploads/produtos/${produto.foto}`;
-
-        console.log(
-            "🔧 URL montada:",
-            url
-        );
-
+        // Caso venha só nome do arquivo
+        const url = `${API_URL}/static/uploads/produtos/${produto.foto}`;
+        console.log("🔧 Foto montada:", url);
         return url;
     }
 
@@ -181,251 +92,100 @@ async function renderProdutos(listaParaRenderizar) {
     // =========================
     const htmlCards = lista.map(produto => {
 
-        const produtoJSON =
-            JSON.stringify(produto)
-                .replace(/'/g, "&apos;");
+        const produtoJSON = JSON.stringify(produto).replace(/'/g, "&apos;");
+        const caminhoFoto = resolverCaminhoFoto(produto);
 
-        const caminhoFoto =
-            resolverCaminhoFoto(produto);
-
-        const precoFormatado =
-            new Intl.NumberFormat(
-                'pt-BR',
-                {
-                    style: 'currency',
-                    currency: 'BRL'
-                }
-            ).format(
-                produto.preco || 0
-            );
+        const precoFormatado = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(produto.preco || 0);
 
         return `
             <div class="produtor-card">
-
-                <!-- STATUS -->
                 <div class="status ${produto.status || ''}">
-
-                    <img
-                        src="/static/assets/${produto.status}.png"
-                        class="status-icon"
-                    >
-
-                    <span>
-                        ${produto.status || 'indefinido'}
-                    </span>
-
+                    <img src="/static/assets/${produto.status}.png" class="status-icon">
+                    <span>${produto.status || 'indefinido'}</span>
                 </div>
-
-                <!-- IMAGEM -->
+                
                 <div class="card-image-container">
-
-                    <img
-                        src="${caminhoFoto}"
-                        alt="${produto.nome}"
+                    <img 
+                        src="${caminhoFoto}" 
+                        alt="${produto.nome}" 
                         loading="lazy"
-
-                        onerror="
-                            console.error(
-                                '❌ Erro ao carregar imagem:',
-                                this.src
-                            );
-
-                            this.src='${API_URL}/static/uploads/produtos/foto_generica.png';
-                        "
-                    >
-
+                        onerror="console.error('❌ Erro ao carregar imagem:', this.src); this.src='${API_URL}/static/uploads/produtos/foto_generica.png';"
+                    >                  
                 </div>
-
-                <!-- INFORMAÇÕES -->
+                
                 <div class="produtor-info">
+                    <h2>${produto.nome}</h2>
 
-                    <h2>
-                        ${produto.nome}
-                    </h2>
-
-                    <span class="
-                        categoria
-                        ${produto.categoria || 'geral'}
-                    ">
-
-                        ${formatarLabel(
-                            produto.categoria
-                        )}
-
+                    <span class="categoria ${produto.categoria || 'geral'}">
+                        ${formatarLabel(produto.categoria)}
                     </span>
 
                     <p class="descricao">
-
-                        ${
-                            produto.descricao ||
-                            'Sem descrição disponível.'
-                        }
-
+                        ${produto.descricao || 'Sem descrição disponível.'}
                     </p>
 
                     <strong class="preco">
-
-                        ${precoFormatado}
-                        /
-                        ${formatarLabel(
-                            produto.unidade
-                        )}
-
+                        ${precoFormatado} /${formatarLabel(produto.unidade)}
                     </strong>
 
                     <p class="quantidade">
-
-                        Disponível:
-                        ${produto.quantidade || 0}
-
-                        ${formatarLabel(
-                            produto.unidade
-                        )}(s)
-
+                        Disponível: ${produto.quantidade || 0} ${formatarLabel(produto.unidade)}(s)
                     </p>
 
-                    <!-- BOTÕES -->
                     <div class="botoes-card">
-
-                        <button
-                            class="editar-card-btn"
-
-                            onclick='prepararEdicao(
-                                ${produtoJSON}
-                            )'
-                        >
-
-                            <i data-lucide="square-pen"></i>
-
-                            <span>
-                                Editar
-                            </span>
-
+                        <button class="editar-card-btn" onclick='prepararEdicao(${produtoJSON})'>
+                            <i data-lucide="square-pen"></i>            
+                            <span>Editar</span>
                         </button>
 
-                        <button
-                            class="excluir-card-btn"
-
-                            title="Excluir Produto"
-
-                            onclick="
-                                prepararExclusao(
-                                    ${produto.id},
-                                    '${produto.nome}'
-                                )
-                            "
-                        >
+                        <button class="excluir-card-btn" title="Excluir Produto" onclick="prepararExclusao(${produto.id}, '${produto.nome}')">
                         </button>
-
                     </div>
-
                 </div>
-
-            </div>
-        `;
+            </div>`;
     }).join('');
 
-    // =========================
-    // RENDERIZA HTML
-    // =========================
-    container.innerHTML =
-        htmlCards ||
+    container.innerHTML = htmlCards || '<p class="sem-resultados">Nenhum produto encontrado.</p>';
 
-        `
-            <p class="sem-resultados">
-                Nenhum produto encontrado.
-            </p>
-        `;
+    console.log("✅ Renderização concluída");
 
-    console.log(
-        "✅ Renderização concluída"
-    );
-
-    // =========================
-    // LUCIDE ICONS
-    // =========================
     if (window.lucide) {
         lucide.createIcons();
     }
 }
 
 // ==========================================
-// FILTRO BUSCA + DEBOUNCE
+// FILTRO DE BUSCA COM DEBOUNCE
 // ==========================================
 let debounceTimer;
-
-const searchInput =
-    document.getElementById(
-        "searchInput"
-    );
+const searchInput = document.getElementById("searchInput");
 
 if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+        clearTimeout(debounceTimer);
+        
+        debounceTimer = setTimeout(async () => {
+            const termoBusca = e.target.value.toLowerCase().trim();
+            console.log("🔍 Buscando por:", termoBusca);
 
-    searchInput.addEventListener(
-        "input",
-        (e) => {
+            const todosProdutos = await API.meusProdutos();
 
-            clearTimeout(
-                debounceTimer
+            const filtrados = todosProdutos.filter(p => 
+                (p.nome && p.nome.toLowerCase().includes(termoBusca)) 
             );
 
-            debounceTimer =
-                setTimeout(
-                    async () => {
+            console.log("📊 Produtos filtrados:", filtrados);
 
-                        const termoBusca =
-                            e.target.value
-                                .toLowerCase()
-                                .trim();
-
-                        console.log(
-                            "🔍 Buscando:",
-                            termoBusca
-                        );
-
-                        const todosProdutos =
-                            await API.meusProdutos();
-
-                        const filtrados =
-                            todosProdutos.filter(
-                                p =>
-                                    (
-                                        p.nome &&
-                                        p.nome
-                                            .toLowerCase()
-                                            .includes(
-                                                termoBusca
-                                            )
-                                    )
-                            );
-
-                        console.log(
-                            "📊 Filtrados:",
-                            filtrados
-                        );
-
-                        renderProdutos(
-                            filtrados
-                        );
-
-                    },
-                    300
-                );
-        }
-    );
+            renderProdutos(filtrados);
+        }, 300);
+    });
 }
 
-// ===============================
 // INICIALIZAÇÃO
-// ===============================
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        console.log(
-            "🚀 DOM carregado"
-        );
-
-        renderProdutos();
-    }
-);
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("🚀 DOM carregado, iniciando renderização...");
+    renderProdutos();
+});
