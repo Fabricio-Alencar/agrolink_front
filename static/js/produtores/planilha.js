@@ -293,13 +293,13 @@ document.getElementById("btnConfirmarPlanilha").onclick = async () => {
     for (const produto of listaProdutosValidos) {
         try {
             const formData = new FormData();
-            formData.append("nomeProduto", produto.nome);
-            formData.append("categoriaProduto", produto.categoria);
-            formData.append("precoProduto", produto.precoOriginal);
-            formData.append("unidadeProduto", produto.unidade);
-            formData.append("quantidadeProduto", produto.quantidadeOriginal);
-            formData.append("descricaoProduto", produto.descricao);
-            formData.append("statusProduto", produto.status); 
+            formData.append("nome", produto.nome);
+            formData.append("categoria", produto.categoria);
+            formData.append("preco", produto.precoOriginal);
+            formData.append("unidade", produto.unidade);
+            formData.append("quantidade", produto.quantidadeOriginal);
+            formData.append("descricao", produto.descricao);
+            formData.append("status", produto.status); 
 
             const resposta = await API.criarProduto(formData);
 
