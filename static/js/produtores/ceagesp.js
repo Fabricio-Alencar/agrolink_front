@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         try {
             // Se o seu Flask estiver rodando em outra porta (ex: 5000), ajuste aqui embaixo:
-            const urlBackend = `https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net//api/cotacoes-ceagesp?produto=${encodeURIComponent(nomeDigitado)}&categoria=${encodeURIComponent(categoriaSelecionada)}`;
+            const urlBackend = `https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net/api/cotacoes-ceagesp?produto=${encodeURIComponent(nomeDigitado)}&categoria=${encodeURIComponent(categoriaSelecionada)}`;
             
             // Fazemos uma requisição simples, sem headers customizados para evitar problemas com o CORS global
             const resposta = await fetch(urlBackend, {
