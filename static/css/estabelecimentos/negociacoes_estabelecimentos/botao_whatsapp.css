@@ -1,0 +1,41 @@
+/* =========================================
+   BOTÃO DO WHATSAPP (PÁGINA DE DETALHES)
+   ========================================= */
+
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #25D366; /* Verde oficial do WhatsApp */
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px; /* Bordas suaves para ser amigável */
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.25);
+    transition: all 0.3s ease;
+    width: fit-content;
+    margin-top: 20px; /* Dá um respiro em relação aos detalhes do pedido */
+}
+
+/* Efeito de hover intuitivo */
+.btn-whatsapp:hover {
+    background-color: #1ea952;
+    box-shadow: 0 6px 14px rgba(37, 211, 102, 0.35);
+    transform: translateY(-2px); /* Elevação sutil */
+    color: #ffffff;
+}
+
+/* Efeito de clique */
+.btn-whatsapp:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.2);
+}
+
+/* Garante que o ícone acompanhe a cor do texto */
+.btn-whatsapp svg {
+    fill: currentColor;
+}
