@@ -79,3 +79,195 @@
         min-width: 0;     /* evita overflow */
     }
 }
+
+/* ==========================================================================
+   ESTILOS DO BOTÃO E MODAL CEAGESP
+   ========================================================================== */
+
+/* Wrapper que faz o input e o botão parecerem estar na mesma caixa */
+.input-preco-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border: 1px solid #D1D5DB; /* Cor da borda padrão do seu sistema */
+    border-radius: 8px;
+    padding: 4px 4px 4px 12px;
+    background-color: #ffffff;
+    transition: border-color 0.2s;
+}
+
+.input-preco-wrapper:focus-within {
+    border-color: #2E7D32; /* Cor de foco verde do AgroLink */
+}
+
+/* Prefixo do R$ */
+.moeda-prefixo {
+    color: #4B5563;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+/* Ajuste do input original para tirar bordas e se fundir ao wrapper */
+.input-preco-wrapper input[type="number"] {
+    border: none !important;
+    outline: none !important;
+    padding: 8px 0 !important;
+    flex: 1;
+    width: 100%;
+    background: transparent;
+    box-shadow: none !important;
+}
+
+/* Ocultar as setinhas do input number (opcional para ficar mais limpo) */
+.input-preco-wrapper input[type="number"]::-webkit-inner-spin-button, 
+.input-preco-wrapper input[type="number"]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+/* Botão CEAGESP interno */
+.btn-ceagesp {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #F3F4F6;
+    color: #6B7280;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+}
+
+.btn-ceagesp:hover {
+    background-color: #E5E7EB;
+    color: #374151;
+}
+
+/* ==========================================================================
+   ESTILOS DO DROPDOWN (MODAL DE SUGESTÃO)
+   ========================================================================== */
+
+.ceagesp-dropdown {
+    position: absolute;
+    top: calc(100% + 8px); /* Fica logo abaixo do input */
+    left: 0;
+    width: 100%;
+    min-width: 300px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #E5E7EB;
+    z-index: 1000;
+    overflow: hidden;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.ceagesp-dropdown.oculto {
+    display: none;
+}
+
+/* Header do Dropdown (Verde claro) */
+.ceagesp-header {
+    background-color: #F0F4E8; /* Verde bem clarinho da referência */
+    padding: 12px 16px;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.ceagesp-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #111827;
+    font-weight: 600;
+}
+
+.ceagesp-header p {
+    margin: 4px 0 0 0;
+    font-size: 0.8rem;
+    color: #4B5563;
+}
+
+/* Lista de preços */
+.ceagesp-lista {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.ceagesp-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #F3F4F6;
+    cursor: pointer;
+    transition: background-color 0.1s;
+}
+
+.ceagesp-item:hover {
+    background-color: #F9FAFB;
+}
+
+.ceagesp-item:last-child {
+    border-bottom: none;
+}
+
+.ceagesp-classificacao {
+    color: #4B5563;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.ceagesp-preco {
+    color: #2E7D32; /* Verde forte */
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* Rodapé do Dropdown */
+.ceagesp-footer {
+    padding: 10px 16px;
+    background-color: #F9FAFB;
+    border-top: 1px solid #E5E7EB;
+    font-size: 0.75rem;
+    color: #6B7280;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Estado de Erro (Produto não encontrado) */
+.ceagesp-aviso {
+    background-color: #FEF3C7; /* Amarelo clarinho */
+    border-left: 4px solid #F59E0B; /* Borda laranja */
+    padding: 16px;
+    margin: 8px;
+    border-radius: 6px;
+}
+
+.ceagesp-aviso strong {
+    color: #92400E;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+}
+
+.ceagesp-aviso p {
+    color: #B45309;
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Customização do Scrollbar para a lista */
+.ceagesp-lista::-webkit-scrollbar { width: 6px; }
+.ceagesp-lista::-webkit-scrollbar-track { background: #f1f1f1; }
+.ceagesp-lista::-webkit-scrollbar-thumb { background: #4CAF50; border-radius: 4px; }
+.ceagesp-lista::-webkit-scrollbar-thumb:hover { background: #388E3C; }
