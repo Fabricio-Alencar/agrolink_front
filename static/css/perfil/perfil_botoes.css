@@ -1,0 +1,21 @@
+/* =========================
+   BOTÕES DO PERFIL
+========================= */
+.btn-delete {
+    background-color: #5a8553; 
+    color: #ffffff;
+    border: none;
+    padding: 14px 28px; 
+    border-radius: 4px; 
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    width: fit-content;
+    margin: 20px auto 0 auto; 
+    transition: filter 0.2s ease;
+}
+
+.btn-delete:hover {
+    filter: brightness(0.9);
+}

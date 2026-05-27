@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Produtor</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/drawer.css">
+    <link rel="stylesheet" href="../static/css/perfil/perfil_layout.css">
+    <link rel="stylesheet" href="../static/css/perfil/perfil_foto.css">
+    <link rel="stylesheet" href="../static/css/perfil/perfil_formulario.css">
+    <link rel="stylesheet" href="../static/css/perfil/perfil_botoes.css">
+    <link rel="stylesheet" href="../static/css/perfil/perfil_modal.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="cabecalho-esquerda">
+            <button class="menu-hamburger" id="botaoAbrirMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo">🌱 AgroLink</div>
+        </div>
+    </header>
+    
+    <div class="camada-overlay" id="mascaraMenu"></div>
+    <aside class="painel-lateral" id="painelLateral">
+        
+        <div class="painel-cabecalho-verde">
+            <h1 class="painel-logo-drawer">AgroLink</h1>
+            <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
+        </div>
+    
+        <div class="painel-conteudo">
+            
+            <div class="cartao-usuario">
+                <img src="../static/assets/user.webp" alt="Foto de Perfil" class="usuario-foto">
+                <div class="usuario-dados">
+                    <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
+                    <span class="usuario-tipo" id="usuarioTipo">...</span>
+                </div>
+            </div>
+    
+            <nav class="painel-navegacao">
+            </nav>
+    
+            <footer class="painel-rodape">
+                <button class="botao-logout" onclick="Auth.logout()">
+                    <span class="icone-box">🚪</span> Sair da Conta
+                </button>
+            </footer>
+        </div>
+    </aside>
+
+    <main class="profile-container">
+        
+        <aside class="profile-sidebar">
+            <img src="../static/assets/login/minhoca_grande.png" alt="Mascote" class="mascot-img" onerror="this.style.display='none'">
+            
+            <div class="profile-upload-zone" id="profile-upload-zone">
+                <img src="../static/assets/user.webp" alt="Foto de Perfil" class="profile-img" id="profile-img">
+                <div class="upload-overlay">
+                    <i class="fa-solid fa-camera"></i>
+                    <span>Alterar Foto</span>
+                </div>
+                <input type="file" id="file-input" accept="image/*" hidden>
+            </div>
+
+            <button class="btn-delete" id="btn-delete-account">Excluir Conta</button>
+        </aside>
+
+        <section class="profile-content">
+            <div class="profile-header">
+                <h1 class="user-name">João Silva</h1>
+                <h2 class="user-role">Produtor</h2>
+            </div>
+            
+            <hr class="divider">
+
+            <form class="user-info-form" id="user-form" onsubmit="event.preventDefault();">
+                
+                <div class="form-group">
+                    <label>Nome completo</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user field-icon"></i>
+                        <input type="text" class="form-control" value="João Silva" readonly>
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-envelope field-icon"></i>
+                        <input type="email" class="form-control" value="seu@email.com" readonly>
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Telefone</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-phone field-icon"></i>
+                        <input type="tel" class="form-control" value="(11) 99999-9999" readonly>
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Localização</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-location-dot field-icon"></i>
+                        <input type="text" class="form-control" value="Cidade, Estado" readonly>
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Senha</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-lock field-icon"></i>
+                        <input type="password" class="form-control" value="••••••••" readonly>
+                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                    </div>
+                </div>
+
+            </form>
+        </section>
+    </main>
+
+    <div class="modal-overlay" id="delete-modal">
+        <div class="modal-content">
+            <h2>Excluir Conta</h2>
+            <p>Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita e todos os seus dados serão apagados.</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" id="btn-cancel-delete">Cancelar</button>
+                <button class="btn-confirm-delete" id="btn-confirm-delete">Sim, Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../static/js/auth.js"></script>
+    <script src="../static/js/drawer.js"></script>
+    <script type="module" src="../static/js/perfil/main.js"></script>
+    <script src="../static/js/notificacao.js"></script>
+    
+</body>
+</html>
