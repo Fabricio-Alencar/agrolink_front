@@ -77,7 +77,9 @@
     
             <footer class="painel-rodape">
                 <button class="botao-logout" onclick="Auth.logout()">
-                    <span class="icone-box">🚪</span> Sair da Conta
+                    <span class="icone-box">
+                        <i data-lucide="log-out"></i>
+                    </span> Sair da Conta
                 </button>
             </footer>
         </div>
@@ -187,8 +189,13 @@
         </aside>
 
         <!-- GRID DE PRODUTOS (SERÁ PREENCHIDO VIA JS) -->
-        <main class="products-grid" id="productsGrid"></main>
+<main class="products-grid" id="productsGrid">
 
+    <p id="mensagemCarregandoMarketplace" class="mensagem-carregando">
+        Buscando produtos disponíveis...
+    </p>
+
+</main>
     </div>
 
     <!-- MODAL DE PEDIDO -->
@@ -262,6 +269,8 @@
     </div>
 
     <!-- SCRIPT JS -->
+<script src="https://unpkg.com/lucide@latest"></script>
+
 <script src="../static/js/auth.js"></script>
 <script src="../static/js/notificacao.js"></script>
 <script type="module" src="../static/js/drawer.js"></script>

@@ -75,7 +75,9 @@
     
             <footer class="painel-rodape">
                 <button class="botao-logout" onclick="Auth.logout()">
-                    <span class="icone-box">🚪</span> Sair da Conta
+                    <span class="icone-box">
+                        <i data-lucide="log-out"></i>
+                    </span> Sair da Conta
                 </button>
             </footer>
         </div>
@@ -88,11 +90,11 @@
 
     <main id="view-lista" class="container">
         <div class="page-header">
-            <h1>Negociações/Pedidos</h1>
-            <div class="view-toggle">
+            <h1>Pedidos</h1>
+            <!--<div class="view-toggle">
                 <button class="toggle-btn active">Lista</button>
                 <button class="toggle-btn">Calendário 📅</button>
-            </div>
+            </div>-->
         </div>
 
         <div class="filters-bar">
@@ -110,8 +112,13 @@
             </select>
         </div>
 
-        <div id="orders-grid" class="orders-grid"></div>
-    </main>
+<div id="orders-grid" class="orders-grid">
+
+    <p id="mensagemCarregandoPedidos" class="mensagem-carregando">
+        Buscando pedidos...
+    </p>
+
+</div>    </main>
 
     <main id="view-detalhes" class="container" style="display: none;">
         <button onclick="hideDetails()" class="btn-back">
@@ -121,6 +128,8 @@
 
         <div class="details-card" id="details-content"></div>
     </main>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <script src="../static/js/auth.js"></script>
     <script type="module" src="../static/js/drawer.js"></script>
     <script type="module" src="../static/js/negociacoes/main_produtor.js"></script>
