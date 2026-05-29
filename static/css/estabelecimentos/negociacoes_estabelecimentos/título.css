@@ -1,20 +1,48 @@
 /* ============================================================
-   RESPONSABILIDADE: CABEÇALHO DA PÁGINA (TÍTULO + CONTROLES)
+   CABEÇALHO DA PÁGINA
    ============================================================ */
+
 .page-header {
     display: flex;
-    justify-content: space-between; /* Espaço entre título e botões */
+    justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
+
+    text-align: center;
+
     margin-bottom: 24px;
-    flex-wrap: wrap;                /* Quebra em telas menores */
     gap: 16px;
 }
 
 /* Título principal */
-h1 { 
-    padding: 10px 150px;
+h1 {
+    width: 100%;
+
+    padding: 10px 20px;
+
+    text-align: center;
 
     font-size: clamp(2rem, 4vw, 3.4rem);
+
     font-family: 'Comfortaa', sans-serif;
+
     font-weight: bold;
+}
+
+/* ============================================================
+   RESPONSIVIDADE MOBILE
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .page-header {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    h1 {
+        padding: 10px;
+
+        font-size: clamp(1.8rem, 7vw, 2.5rem);
+    }
 }

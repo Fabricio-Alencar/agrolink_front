@@ -25,25 +25,40 @@
                 <span></span>
                 <span></span>
             </button>
+
             <div class="logo">🌱 AgroLink</div>
         </div>
     </header>
     
     <div class="camada-overlay" id="mascaraMenu"></div>
+
     <aside class="painel-lateral" id="painelLateral">
         
         <div class="painel-cabecalho-verde">
             <h1 class="painel-logo-drawer">AgroLink</h1>
-            <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
+
+            <button class="botao-fechar-drawer" id="botaoFecharMenu">
+                &times;
+            </button>
         </div>
     
         <div class="painel-conteudo">
             
             <div class="cartao-usuario">
-                <img src="../static/uploads/perfis/user.webp" alt="Foto de Perfil" class="usuario-foto">
+                <img 
+                    src="../static/uploads/perfis/user.webp" 
+                    alt="Foto de Perfil" 
+                    class="usuario-foto"
+                >
+
                 <div class="usuario-dados">
-                    <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
-                    <span class="usuario-tipo" id="usuarioTipo">...</span>
+                    <strong class="usuario-nome" id="usuarioNome">
+                        Carregando...
+                    </strong>
+
+                    <span class="usuario-tipo" id="usuarioTipo">
+                        Buscando informações...
+                    </span>
                 </div>
             </div>
     
@@ -52,7 +67,12 @@
     
             <footer class="painel-rodape">
                 <button class="botao-logout" onclick="Auth.logout()">
-                    <span class="icone-box">🚪</span> Sair da Conta
+
+                    <span class="icone-box">
+                        <i data-lucide="log-out"></i>
+                    </span>
+
+                    Sair da Conta
                 </button>
             </footer>
         </div>
@@ -61,89 +81,197 @@
     <main class="profile-container">
         
         <aside class="profile-sidebar">
-            <img src="../static/assets/login/minhoca_grande.png" alt="Mascote" class="mascot-img" onerror="this.style.display='none'">
+
+            <img 
+                src="../static/assets/login/minhoca_grande.png" 
+                alt="Mascote" 
+                class="mascot-img"
+                onerror="this.style.display='none'"
+            >
             
             <div class="profile-upload-zone" id="profile-upload-zone">
-                <img src="../static/assets/user.webp" alt="Foto de Perfil" class="profile-img" id="profile-img">
+
+                <img 
+                    src="../static/assets/user.webp" 
+                    alt="Foto de Perfil" 
+                    class="profile-img" 
+                    id="profile-img"
+                >
+
                 <div class="upload-overlay">
                     <i class="fa-solid fa-camera"></i>
                     <span>Alterar Foto</span>
                 </div>
-                <input type="file" id="file-input" accept="image/*" hidden>
+
+                <input 
+                    type="file" 
+                    id="file-input" 
+                    accept="image/*" 
+                    hidden
+                >
             </div>
 
-            <button class="btn-delete" id="btn-delete-account">Excluir Conta</button>
+            <button class="btn-delete" id="btn-delete-account">
+                Excluir Conta
+            </button>
+
         </aside>
 
         <section class="profile-content">
+
             <div class="profile-header">
-                <h1 class="user-name">João Silva</h1>
-                <h2 class="user-role">Produtor</h2>
+
+                <h1 class="user-name">
+                    Carregando perfil...
+                </h1>
+
+                <h2 class="user-role">
+                    Buscando dados do usuário...
+                </h2>
+
             </div>
             
             <hr class="divider">
 
-            <form class="user-info-form" id="user-form" onsubmit="event.preventDefault();">
+            <form 
+                class="user-info-form" 
+                id="user-form" 
+                onsubmit="event.preventDefault();"
+            >
                 
                 <div class="form-group">
+
                     <label>Nome completo</label>
+
                     <div class="input-wrapper">
+
                         <i class="fa-solid fa-user field-icon"></i>
-                        <input type="text" class="form-control" value="João Silva" readonly>
+
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            value="Carregando..."
+                            readonly
+                        >
+
                         <i class="fa-solid fa-pen-to-square edit-icon"></i>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>E-mail</label>
+
                     <div class="input-wrapper">
+
                         <i class="fa-solid fa-envelope field-icon"></i>
-                        <input type="email" class="form-control" value="seu@email.com" readonly>
+
+                        <input 
+                            type="email" 
+                            class="form-control" 
+                            value="Carregando..."
+                            readonly
+                        >
+
                         <i class="fa-solid fa-pen-to-square edit-icon"></i>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>Telefone</label>
+
                     <div class="input-wrapper">
+
                         <i class="fa-solid fa-phone field-icon"></i>
-                        <input type="tel" class="form-control" value="(11) 99999-9999" readonly>
+
+                        <input 
+                            type="tel" 
+                            class="form-control" 
+                            value="Carregando..."
+                            readonly
+                        >
+
                         <i class="fa-solid fa-pen-to-square edit-icon"></i>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>Localização</label>
+
                     <div class="input-wrapper">
+
                         <i class="fa-solid fa-location-dot field-icon"></i>
-                        <input type="text" class="form-control" value="Cidade, Estado" readonly>
+
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            value="Carregando..."
+                            readonly
+                        >
+
                         <i class="fa-solid fa-pen-to-square edit-icon"></i>
+
                     </div>
                 </div>
 
                 <div class="form-group">
+
                     <label>Senha</label>
+
                     <div class="input-wrapper">
+
                         <i class="fa-solid fa-lock field-icon"></i>
-                        <input type="password" class="form-control" value="••••••••" readonly>
+
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            value="Carregando..."
+                            readonly
+                        >
+
                         <i class="fa-solid fa-pen-to-square edit-icon"></i>
+
                     </div>
                 </div>
 
             </form>
+
         </section>
+
     </main>
 
     <div class="modal-overlay" id="delete-modal">
+
         <div class="modal-content">
+
             <h2>Excluir Conta</h2>
-            <p>Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita e todos os seus dados serão apagados.</p>
+
+            <p>
+                Tem certeza de que deseja excluir sua conta?
+                Esta ação não pode ser desfeita e todos os seus
+                dados serão apagados.
+            </p>
+
             <div class="modal-actions">
-                <button class="btn-cancel" id="btn-cancel-delete">Cancelar</button>
-                <button class="btn-confirm-delete" id="btn-confirm-delete">Sim, Excluir</button>
+
+                <button class="btn-cancel" id="btn-cancel-delete">
+                    Cancelar
+                </button>
+
+                <button class="btn-confirm-delete" id="btn-confirm-delete">
+                    Sim, Excluir
+                </button>
+
             </div>
         </div>
     </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <script src="../static/js/auth.js"></script>
     <script src="../static/js/drawer.js"></script>

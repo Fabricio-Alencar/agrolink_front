@@ -75,68 +75,137 @@ export function showDetails(id, tipoUsuario) {
 
     // Injeção do HTML
     container.innerHTML = `
-        <div class="details-header">
-            <h2>Detalhes do Pedido</h2>
-            <span class="badge ${statusClass}" style="font-size: 14px; padding: 6px 16px;">${order.status}</span>
-        </div>
-        
-        <div class="details-grid">
-            <div class="col-left">
-                <div class="info-group">
-                    <span class="info-label">📦 Produto:</span>
-                    <span class="info-value">${order.produto_nome}</span>
+    <div class="details-header">
+        <h2>Detalhes do Pedido</h2>
+
+        <span class="badge ${statusClass}" style="font-size: 14px; padding: 6px 16px;">
+            ${order.status}
+        </span>
+    </div>
+    
+    <div class="details-grid">
+
+        <div class="col-left">
+
+            <div class="info-group">
+                <span class="info-label">
+                    <i data-lucide="package"></i>
+                    Produto:
+                </span>
+
+                <span class="info-value">
+                    ${order.produto_nome}
+                </span>
+            </div>
+            
+            <div style="display:flex; gap:40px; margin-bottom:24px;">
+
+                <div>
+                    <span class="info-label">
+                        <i data-lucide="boxes"></i>
+                        Quantidade:
+                    </span>
+
+                    <span class="info-text">
+                        ${order.quantidade}
+                    </span>
                 </div>
-                
-                <div style="display:flex; gap:40px; margin-bottom:24px;">
-                    <div>
-                        <span class="info-label">Quantidade:</span>
-                        <span class="info-text">${order.quantidade}</span>
-                    </div>
-                    <div>
-                        <span class="info-label">Preço Unitário:</span>
-                        <span class="info-text">R$ ${order.produto_preco}</span>
-                    </div>
-                </div>
-                
-                <div class="info-group">
-                    <span class="info-label">📅 Data de entrega:</span>
-                    <span class="info-text">${order.data_entrega || 'A combinar'}</span>
-                </div>
-                
-                <div class="info-group">
-                    <span class="info-label">Descrição do Pedido:</span>
-                    <textarea class="desc-box" readonly>${order.descricao || 'Descrição adicional.'}</textarea>
+
+                <div>
+                    <span class="info-label">
+                        <i data-lucide="badge-dollar-sign"></i>
+                        Preço Unitário:
+                    </span>
+
+                    <span class="info-text">
+                        R$ ${order.produto_preco}
+                    </span>
                 </div>
 
             </div>
+            
+            <div class="info-group">
 
-            <div class="col-right">
-                <img 
-                    src="${urlImagem}" 
-                    alt="${order.produto_nome}" 
-                    class="product-img"
-                    onerror="console.error('❌ Erro ao carregar imagem:', this.src); this.src='${API_URL}/static/uploads/produtos/foto_generica.png';"
-                >
+                <span class="info-label">
+                    <i data-lucide="calendar-days"></i>
+                    Data de entrega:
+                </span>
 
-                <div class="info-group">
-                    <span class="info-label">🤝 Negociante:</span>
-                    <span class="info-value" style="font-size:18px;">${order.negociante_nome}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">📞 Telefone:</span>
-                    <span class="info-text">${order.negociante_telefone}</span>
-                </div>
-                <div class="info-group">
-                    <span class="info-label">📧 Email:</span>
-                    <span class="info-text">${order.negociante_email}</span>
-                </div>
+                <span class="info-text">
+                    ${order.data_entrega || 'A combinar'}
+                </span>
             </div>
+            
+            <div class="info-group">
+
+                <span class="info-label">
+                    <i data-lucide="file-text"></i>
+                    Descrição do Pedido:
+                </span>
+
+                <textarea class="desc-box" readonly>
+${order.descricao || 'Descrição adicional.'}
+                </textarea>
+
+            </div>
+
         </div>
 
-        <div class="action-buttons" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
-            ${botoesHTML}
+        <div class="col-right">
+
+            <img 
+                src="${urlImagem}" 
+                alt="${order.produto_nome}" 
+                class="product-img"
+                onerror="console.error('❌ Erro ao carregar imagem:', this.src); this.src='${API_URL}/static/uploads/produtos/foto_generica.png';"
+            >
+
+            <div class="info-group">
+
+                <span class="info-label">
+                    <i data-lucide="handshake"></i>
+                    Negociante:
+                </span>
+
+                <span class="info-value" style="font-size:18px;">
+                    ${order.negociante_nome}
+                </span>
+            </div>
+
+            <div class="info-group">
+
+                <span class="info-label">
+                    <i data-lucide="phone"></i>
+                    Telefone:
+                </span>
+
+                <span class="info-text">
+                    ${order.negociante_telefone}
+                </span>
+            </div>
+
+            <div class="info-group">
+
+                <span class="info-label">
+                    <i data-lucide="mail"></i>
+                    Email:
+                </span>
+
+                <span class="info-text">
+                    ${order.negociante_email}
+                </span>
+            </div>
+
         </div>
-    `;
+
+    </div>
+
+    <div class="action-buttons" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+        ${botoesHTML}
+    </div>
+`;
+
+lucide.createIcons();
 
     document.getElementById('view-lista').style.display = 'none';
     document.getElementById('view-detalhes').style.display = 'block';

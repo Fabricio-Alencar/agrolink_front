@@ -27,3 +27,12 @@ body {
     margin: 0 auto;      /* Centraliza na tela */
     padding: 24px;       /* Espaçamento interno */
 }
+
+.info-label svg {
+    width: 20px;
+    height: 20px;
+    position: relative;
+    top: 4px;
+
+    flex-shrink: 0;
+}

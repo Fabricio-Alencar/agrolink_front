@@ -88,8 +88,10 @@
 
         <footer class="painel-rodape">
             <button class="botao-logout" onclick="Auth.logout()">
-                <span class="icone-box">🚪</span> Sair da Conta
-            </button>
+                    <span class="icone-box">
+                        <i data-lucide="log-out"></i>
+                    </span> Sair da Conta
+                </button>
         </footer>
     </div>
 </aside>
@@ -129,8 +131,13 @@
         
     </section>
 
-    <section id="produtosContainer" class="produtores-container"></section>
-</main>
+<section id="produtosContainer" class="produtores-container">
+
+    <p id="mensagemCarregando" class="mensagem-carregando">
+        Buscando produtos...
+    </p>
+
+</section></main>
 
 
 
@@ -168,16 +175,8 @@
         <div class="linha-form">
             <div class="campo">
                 <label id="labelPreco" for="precoProduto">Preço por Unidade (R$)</label>
-                <div class="input-preco-wrapper">
-                    <span class="moeda-prefixo">R$</span>
                     <input type="number" id="precoProduto" placeholder="0,00" step="0.01" min="0">
                     
-                    <button type="button" id="btnCeagesp" class="btn-ceagesp">
-                        <i data-lucide="bar-chart-2" style="width: 16px; height: 16px;"></i> CEAGESP
-                    </button>
-
-                    <div id="dropdownCeagesp" class="ceagesp-dropdown oculto"></div>
-                </div>
             </div>
 
             <div class="campo">
@@ -327,8 +326,6 @@
 <script src="../static/js/produtores/editar_produto.js"></script>
 
 <script src="../static/js/produtores/renderizar.js"></script>
-<script src="../static/js/produtores/ceagesp.js"></script>
-
 
 <script src="../static/js/produtores/planilha.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>

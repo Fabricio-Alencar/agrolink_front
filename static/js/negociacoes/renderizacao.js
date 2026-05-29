@@ -18,7 +18,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
     const card = document.createElement('div');
     card.className = 'card';
 
-    // 👇 NOVA LÓGICA REFINADA DO BOTÃO SECUNDÁRIO 👇
     let botaoSecundario = '';
     let acaoSecundaria = null; 
     let novoStatus = '';
@@ -141,7 +140,7 @@ export async function renderOrders(listaExterna = null, tipoUsuarioParam = null)
         let lista = listaExterna || cacheNegociacoes || [];
 
         if (lista.length === 0) {
-            grid.innerHTML = '<p class="aviso">Nenhuma negociação encontrada.</p>';
+            grid.innerHTML = '<p class="aviso">Nenhum pedido encontrado.</p>';
             return;
         }
 
