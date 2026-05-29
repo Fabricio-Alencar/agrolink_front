@@ -65,17 +65,25 @@
         </div>
 
         <nav class="painel-navegacao">
-            <a href="/meus_produtos" class="item-navegacao ativo">
-                <span class="icone-box">📦</span> Meus Produtos
+        
+            <a href="{{ url_for('meus_produtos') }}"
+               class="item-navegacao {% if request.endpoint == 'meus_produtos' %}ativo{% endif %}">
+                <span class="icone-box">📦</span>
+                Meus Produtos
             </a>
-
-            <a href="/negociacoes_produtor" class="item-navegacao">
-                <span class="icone-box">🛍️</span> Negociações
+        
+            <a href="{{ url_for('negociacao_produtor') }}"
+               class="item-navegacao {% if request.endpoint == 'negociacao_produtor' %}ativo{% endif %}">
+                <span class="icone-box">🛍️</span>
+                Negociações
             </a>
-            
-            <a href="/perfil" class="item-navegacao">
-                <span class="icone-box">👤</span> Perfil
+        
+            <a href="{{ url_for('perfil') }}"
+               class="item-navegacao {% if request.endpoint == 'perfil' %}ativo{% endif %}">
+                <span class="icone-box">👤</span>
+                Perfil
             </a>
+        
         </nav>
 
         <footer class="painel-rodape">
