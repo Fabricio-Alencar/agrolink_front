@@ -184,7 +184,7 @@ function validarDadosDaPlanilha(produtosRecebidos) {
         const qtd = parseFloat(qtdRaw);
         if (isNaN(qtd) || qtd < 0) errosDesteProduto.push("Estoque inválido ou negativo");
 
-        const descricao = item.descricaoopcional || item.descricao || "Importado via planilha.";
+        const descricao = item.descricaoopcional || item.descricao || "";
 
         if (errosDesteProduto.length > 0) {
             listaDeErrosEncontrados.push({ linha: numeroLinhaReal, nome: nome || "Sem Nome", detalhes: errosDesteProduto });
@@ -255,20 +255,20 @@ function apresentarResultadosNoModal(totalValidos, listaErros) {
 
     // 2. Renderiza os Cards Válidos adaptando a mesma estrutura, mas aplicando tons verdes elegantes inline
     listaProdutosValidos.forEach(p => {
-        divValidos.innerHTML += `
-            <div class="card-erro-planilha" style="border-color: #c8e6c9; background-color: #f9fdf9;">
-                <div class="card-erro-header">
-                    <h4 style="color: #2e7d32;">${p.nome}</h4>
-                    <select onchange="mudarStatusImportacao(${p.identificadorTemporario}, this.value)" style="padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; cursor: pointer;">
-                        <option value="publicado" ${p.status === 'publicado' ? 'selected' : ''}>Publicar</option>
-                        <option value="rascunho" ${p.status === 'rascunho' ? 'selected' : ''}>Salvar Rascunho</option>
-                    </select>
-                </div>
-                <div class="card-erro-info">
-                    <p><strong>Estoque mapeado:</strong> ${p.exibicaoQuantidade}</p>
-                    <p><strong>Preço unitário:</strong> ${p.exibicaoPreco}</p>
-                </div>
-            </div>`;
+    divValidos.innerHTML += `
+        <div class="card-erro-planilha card-valido-planilha">
+            <div class="card-erro-header">
+                <h4>${p.nome}</h4>
+                <select class="select-status-importacao" onchange="mudarStatusImportacao(${p.identificadorTemporario}, this.value)">
+                    <option value="publicado" ${p.status === 'publicado' ? 'selected' : ''}>Publicar</option>
+                    <option value="rascunho" ${p.status === 'rascunho' ? 'selected' : ''}>Salvar Rascunho</option>
+                </select>
+            </div>
+            <div class="card-erro-info">
+                <p><strong>Estoque mapeado:</strong> ${p.exibicaoQuantidade}</p>
+                <p><strong>Preço unitário:</strong> ${p.exibicaoPreco}</p>
+            </div>
+        </div>`;
     });
 
     // Atualiza o botão de finalização

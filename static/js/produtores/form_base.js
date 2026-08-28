@@ -12,7 +12,12 @@ let usarImagemGenerica = false;
 // --- CONFIGURAÇÃO VISUAL DO UPLOAD ---
 const placeholder = document.createElement("div");
 placeholder.classList.add("upload-placeholder");
-placeholder.innerHTML = `<img src="../static/assets/upload.png"><p>Selecione ou arraste sua imagem</p>`;
+
+placeholder.innerHTML = `
+    <i data-lucide="upload" class="icone-upload"></i>
+    <p>Selecione ou arraste sua imagem</p>
+`;
+
 
 const preview = document.createElement("img");
 preview.classList.add("upload-preview");

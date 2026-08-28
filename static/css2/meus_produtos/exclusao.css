@@ -1,0 +1,176 @@
+/* =========================
+   MODAL DE EXCLUSÃO
+========================= */
+.modal-pequeno {
+    width: min(100%, 28rem);
+    max-width: 28rem !important;
+
+    padding: var(--space-lg) !important;
+}
+
+
+/* =========================
+   TEXTO DO MODAL
+========================= */
+.texto-modal {
+    margin: var(--space-lg) 0;
+
+    color: #666;
+
+    font-size: var(--fs-h4);
+    line-height: 1.5;
+}
+
+
+/* =========================
+   BOTÕES DO MODAL
+========================= */
+.botoes-modal-excluir {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    gap: var(--space-sm);
+
+    margin-top: var(--space-md);
+}
+
+
+/* =========================
+   BOTÃO CANCELAR
+========================= */
+.btn-cancelar-exclusao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 3rem;
+
+    padding: var(--space-sm) var(--space-lg);
+
+    border: 0.0625rem solid #ccc;
+    border-radius: 0.5rem;
+
+    background: var(--cor-branco);
+    color: var(--cor-texto-principal);
+
+    font-family: inherit;
+    font-size: var(--fs-small);
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.15s ease;
+}
+
+
+/* =========================
+   BOTÃO CONFIRMAR
+========================= */
+.btn-confirmar-exclusao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 3rem;
+
+    padding: var(--space-sm) var(--space-lg);
+
+    border: 0.0625rem solid #000;
+    border-radius: 0.5rem;
+
+    background: #0d0d16;
+    color: var(--cor-branco);
+
+    font-family: inherit;
+    font-size: var(--fs-small);
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.15s ease;
+}
+
+
+/* =========================
+   HOVER
+========================= */
+.btn-cancelar-exclusao:hover {
+    background: #f5f5f5;
+    border-color: #aaa;
+}
+
+.btn-confirmar-exclusao:hover {
+    background: #1a1a2e;
+}
+
+
+/* =========================
+   ACTIVE
+========================= */
+.btn-cancelar-exclusao:active,
+.btn-confirmar-exclusao:active {
+    transform: scale(0.98);
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 767px) {
+
+    .botoes-modal-excluir {
+        width: 100%;
+    }
+
+    .btn-cancelar-exclusao,
+    .btn-confirmar-exclusao {
+        flex: 1;
+    }
+}
+
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .modal-pequeno {
+        padding: var(--space-xl) !important;
+    }
+
+    .texto-modal {
+        font-size: var(--fs-h4);
+    }
+
+    .botoes-modal-excluir {
+        gap: var(--space-md);
+    }
+
+    .btn-cancelar-exclusao,
+    .btn-confirmar-exclusao {
+        min-width: 7rem;
+    }
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .texto-modal {
+        font-size: var(--fs-body);
+    }
+
+    .btn-cancelar-exclusao,
+    .btn-confirmar-exclusao {
+        min-height: 3.25rem;
+
+        font-size: 1rem;
+    }
+}

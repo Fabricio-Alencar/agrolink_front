@@ -13,9 +13,7 @@
 .estado-planilha {
     display: none;
     flex-direction: column;
-
     gap: var(--space-md);
-
     margin-top: var(--space-md);
 }
 
@@ -32,27 +30,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     width: 100%;
-
     padding: clamp(2rem, 8vw, 2.5rem) var(--space-md);
-
     background-color: #FCFCFC;
-
     border: 0.125rem dashed #CCCCCC;
     border-radius: clamp(0.5rem, 1vw, 0.6rem);
-
     cursor: pointer;
-
     text-align: center;
-
     transition: all 0.3s ease;
 }
 
 .upload-zone:hover,
 .upload-zone.drag-over {
     background-color: #F1F8F1;
-
     border-color: var(--cor-primaria);
 }
 
@@ -62,16 +52,13 @@
 ========================= */
 .upload-zone p {
     margin-bottom: var(--space-xs);
-
     color: var(--cor-texto-principal);
-
     font-size: clamp(0.85rem, 1vw, 1rem);
     font-weight: 500;
 }
 
 .upload-zone small {
     color: var(--cor-texto-secundario);
-
     font-size: clamp(0.7rem, 0.9vw, 0.8rem);
 }
 
@@ -83,7 +70,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-
     gap: var(--space-sm);
 }
 
@@ -93,19 +79,13 @@
 ========================= */
 .btn-trocar-arquivo {
     padding: var(--space-xs) var(--space-sm);
-
     background-color: transparent;
-
     border: 0.1rem solid #CCCCCC;
     border-radius: clamp(0.4rem, 1vw, 0.5rem);
-
     color: var(--cor-texto-principal);
-
     cursor: pointer;
-
     font-family: inherit;
     font-size: clamp(0.75rem, 1vw, 0.875rem);
-
     transition: all 0.2s ease;
 }
 
@@ -120,17 +100,13 @@
 .badges-resultado {
     display: flex;
     flex-wrap: wrap;
-
     gap: var(--space-xs);
 }
 
 .badge {
     padding: var(--space-xs) var(--space-sm);
-
     border-radius: 0.75rem;
-
     color: var(--cor-branco);
-
     font-size: clamp(0.75rem, 1vw, 0.875rem);
     font-weight: 600;
 }
@@ -150,49 +126,54 @@
 .alerta-geral {
     display: flex;
     align-items: flex-start;
-
     gap: var(--space-sm);
-
     padding: var(--space-sm);
-
     background-color: #FFEBEE;
-
     border: 0.1rem solid #FFCDD2;
     border-radius: clamp(0.5rem, 1vw, 0.6rem);
-
     color: #C62828;
-
     font-size: clamp(0.8rem, 1vw, 0.875rem);
 }
 
 
 /* =========================
-   LISTA DE ERROS
+   LISTA DE ERROS E VÁLIDOS
 ========================= */
 .lista-erros-container {
     display: flex;
     flex-direction: column;
-
     gap: var(--space-md);
-
     max-height: 18.75rem;
-
     padding-right: var(--space-xs);
-
     overflow-y: auto;
 }
 
 
 /* =========================
-   CARD DE ERRO
+   CARDS DE ITEM
 ========================= */
 .card-erro-planilha {
     padding: var(--space-md);
-
     background-color: var(--cor-branco);
-
     border: 0.1rem solid #FFCDD2;
     border-radius: clamp(0.5rem, 1vw, 0.6rem);
+}
+
+.card-erro-planilha.card-valido-planilha {
+    border-color: #C8E6C9;
+    background-color: #F9FDF9;
+}
+
+.card-valido-planilha .card-erro-header h4 {
+    color: #2E7D32;
+}
+
+.select-status-importacao {
+    padding: 0.25rem 0.5rem;
+    border: 0.0625rem solid #CCCCCC;
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    cursor: pointer;
 }
 
 
@@ -203,34 +184,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: var(--space-sm);
-
     margin-bottom: var(--space-sm);
 }
 
 .card-erro-header h4 {
     display: flex;
     align-items: center;
-
     gap: var(--space-xs);
-
     margin: 0;
-
     color: #C62828;
-
     font-size: clamp(0.9rem, 1vw, 1rem);
 }
 
 
 /* =========================
-   INFORMAÇÕES DO ERRO
+   INFORMAÇÕES DO ERRO / ITEM
 ========================= */
 .card-erro-info p {
     margin: 0.125rem 0;
-
     color: var(--cor-texto-secundario);
-
     font-size: clamp(0.75rem, 1vw, 0.875rem);
 }
 
@@ -240,19 +213,14 @@
 ========================= */
 .card-erro-motivos {
     margin-top: var(--space-sm);
-
     padding: var(--space-sm);
-
     background-color: #FFEBEE;
-
     border-radius: clamp(0.4rem, 1vw, 0.6rem);
 }
 
 .card-erro-motivos p {
     margin-bottom: var(--space-xs);
-
     color: #C62828;
-
     font-size: clamp(0.75rem, 1vw, 0.875rem);
     font-weight: 600;
 }
@@ -260,9 +228,7 @@
 .card-erro-motivos ul {
     margin: 0;
     padding-left: var(--space-lg);
-
     color: #C62828;
-
     font-size: clamp(0.7rem, 0.9vw, 0.8125rem);
 }
 
@@ -280,7 +246,6 @@
 
 .lista-erros-container::-webkit-scrollbar-thumb {
     background: #CCCCCC;
-
     border-radius: 0.25rem;
 }
 
@@ -293,7 +258,6 @@
    TABLET
 ========================= */
 @media (min-width: 768px) {
-
     .modal-planilha-content {
         width: 90%;
     }
@@ -310,7 +274,6 @@
 
     .alerta-geral {
         align-items: center;
-
         padding: var(--space-md);
     }
 
@@ -324,7 +287,6 @@
    DESKTOP
 ========================= */
 @media (min-width: 1024px) {
-
     .modal-planilha-content {
         max-width: 37.5rem;
     }
@@ -341,4 +303,3 @@
         max-height: 18.75rem;
     }
 }
-

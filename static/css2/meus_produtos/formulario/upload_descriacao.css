@@ -1,0 +1,248 @@
+/* =========================
+   DESCRIÇÃO + UPLOAD
+========================= */
+.linha-form.big {
+    display: flex;
+    flex-direction: column;
+
+    gap: var(--space-md);
+}
+
+.linha-form.big .caixa-grande {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    min-height: 15.6rem;
+}
+
+
+/* =========================
+   DESCRIÇÃO
+========================= */
+#descricaoProduto {
+    width: 100%;
+    min-height: 12.5rem;
+
+    flex: 1;
+
+    padding: var(--space-md);
+
+    background-color: #F0FFC0;
+
+    border: 0.1rem solid #433838;
+    border-radius: clamp(0.5rem, 1vw, 0.6rem);
+
+    resize: none;
+
+    color: var(--cor-texto-principal);
+
+    font-family: inherit;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    line-height: 1.4;
+
+    overflow-y: auto;
+}
+
+
+/* =========================
+   ÁREA DE UPLOAD
+========================= */
+.upload-box {
+    border: 2px dashed #aaa;
+    border-radius: 0.5rem;
+
+    height: 100%;
+    width: 100%;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    overflow: hidden;
+
+    background: #fafafa;
+}
+
+
+/* =========================
+   PLACEHOLDER DO UPLOAD
+========================= */
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: var(--space-xs);
+
+    color: var(--cor-texto-secundario);
+
+    text-align: center;
+}
+
+
+/* =========================
+   ÍCONE DE UPLOAD
+========================= */
+.icone-upload {
+    align-self: center;
+    width: clamp(2rem, 4vw, 2.8rem);
+    height: clamp(2rem, 4vw, 2.8rem);
+
+    margin-bottom: var(--space-xs);
+
+    color: var(--cor-primaria);
+
+    stroke-width: 1.8;
+
+    transition: transform 0.2s ease;
+}
+
+
+/* =========================
+   TEXTO DO UPLOAD
+========================= */
+.upload-placeholder span {
+    color: var(--cor-texto-principal);
+
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    font-weight: 500;
+}
+
+.upload-placeholder small {
+    color: var(--cor-texto-secundario);
+
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+}
+
+
+/* =========================
+   PREVISUALIZAÇÃO
+========================= */
+.upload-preview {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: none;
+}
+
+
+/* =========================
+   EFEITO DE ARRASTAR
+========================= */
+.upload-box.drag {
+    background-color: #F1FFF1;
+
+    border-color: var(--cor-primaria);
+}
+
+#uploadBox.drag-over {
+    background-color: #F0FFF4;
+
+    border: 0.125rem dashed var(--cor-primaria);
+}
+
+
+/* =========================
+   HOVER DO UPLOAD
+========================= */
+.upload-box:hover .icone-upload {
+    transform: translateY(-0.2rem);
+}
+
+.upload-box.drag .icone-upload,
+#uploadBox.drag-over .icone-upload {
+    transform: translateY(-0.2rem);
+
+    color: var(--cor-primaria);
+}
+
+
+/* =========================
+   BOTÃO REMOVER IMAGEM
+========================= */
+.btn-remover-imagem {
+    position: absolute;
+
+    bottom: var(--space-sm);
+
+    padding: var(--space-xs) var(--space-sm);
+
+    background-color: #FF4D4F;
+    color: var(--cor-branco);
+
+    border: none;
+    border-radius: clamp(0.4rem, 1vw, 0.6rem);
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+
+    z-index: 10;
+
+    transition: background-color 0.2s ease;
+}
+
+.btn-remover-imagem:hover {
+    background-color: #D9363E;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .linha-form.big {
+        flex-direction: row;
+
+        gap: var(--space-md);
+    }
+
+    .linha-form.big .caixa-grande {
+        height: 18.75rem;
+        min-height: 0;
+    }
+
+    #descricaoProduto {
+        min-height: 0;
+
+        padding: var(--space-lg);
+    }
+
+    .upload-box {
+        min-height: 0;
+    }
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .linha-form.big {
+        gap: var(--space-lg);
+    }
+
+    .linha-form.big .caixa-grande {
+        height: 18.75rem;
+    }
+
+    #descricaoProduto {
+        font-size: clamp(0.9rem, 1vw, 1rem);
+    }
+
+    .upload-placeholder {
+        gap: var(--space-sm);
+    }
+}

@@ -1,0 +1,44 @@
+/* =========================
+   EMPTY STATE
+========================= */
+.sem-produtos {
+    grid-column: 1 / -1; /* ocupa todas as colunas do grid */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-md);
+
+    padding: var(--space-xll);
+
+    text-align: center;
+
+    background-color: var(--cor-branco);
+
+    border: 0.1rem dashed var(--cor-borda-cards);
+    border-radius: 0.75rem;
+}
+
+.sem-produtos h2 {
+    color: var(--cor-texto-principal);
+    font-size: var(--fs-h3);
+}
+
+.sem-produtos p {
+    max-width: 30rem;
+
+    color: var(--cor-texto-secundario);
+    line-height: 1.5;
+}
+
+.sem-produtos [data-lucide="package-search"],.sem-produtos [data-lucide="package-open"],.sem-produtos [data-lucide="search-x"],.sem-produtos [data-lucide="inbox"],.sem-produtos [data-lucide="triangle-alert"] {
+    width: 4rem;
+    height: 4rem;
+
+    color: var(--cor-primaria);
+
+    stroke-width: 1.6;
+}
+

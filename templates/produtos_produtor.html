@@ -10,94 +10,90 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="../static/css/base.css">
-    <link rel="stylesheet" href="../static/css/notificacao.css">
-    <link rel="stylesheet" href="../static/css/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/global.css">
+    <link rel="stylesheet" href="../static/css2/geral/base.css">
+    <link rel="stylesheet" href="../static/css2/geral/header.css">
+    <link rel="stylesheet" href="../static/css2/geral/layout.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra_busca.css">
+    <link rel="stylesheet" href="../static/css2/geral/categorias.css">
+    <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+    <link rel="stylesheet" href="../static/css2/geral/drawer.css">
+
+
+
+    <link rel="stylesheet" href="../static/css2/meus_produtos/botoes.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/grid.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/card.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/botoes_card.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/status.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/sem_produto.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/exclusao.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/modal.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/botoes_modal.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/upload_descriacao.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/planilha.css">
 
     <!-- ícone da aba de navegação -->
     <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
-
-
-    
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/botoes.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/grid.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/card.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/botoes_card.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/status.css">
-    
-    <link rel="stylesheet" href="../static/css/produtores/formulario/modal.css">
-    <link rel="stylesheet" href="../static/css/produtores/formulario/buttons_modal.css">
-    <link rel="stylesheet" href="../static/css/produtores/formulario/form.css">
-    <link rel="stylesheet" href="../static/css/produtores/formulario/upload_descricao.css">
-    <link rel="stylesheet" href="../static/css/produtores/exclusao.css">
-    <link rel="stylesheet" href="../static/css/produtores/planilha.css">
-
 </head>
 
 <body>
 
 <header class="header">
-    <div class="cabecalho-esquerda">
-        <button class="menu-hamburger" id="botaoAbrirMenu">
+    <button class="btn-menu-hamburger" id="botaoAbrirMenu">
             <span></span>
             <span></span>
             <span></span>
-        </button>
-        <div class="logo">🌱 AgroLink</div>
-    </div>
+    </button>
+    <div class="logo">🌱 AgroLink</div>
 </header>
 
+
+<!-- =========================
+     MENU LATERAL
+========================= -->
 <aside class="painel-lateral" id="painelLateral">
-    
     <div class="painel-cabecalho-verde">
         <h1 class="painel-logo-drawer">AgroLink</h1>
         <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
     </div>
 
     <div class="painel-conteudo">
-        
+        <!-- USUÁRIO -->
         <div class="cartao-usuario">
-            <img src=https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=150&h=150" alt="Foto de Perfil" class="usuario-foto">
+            <img src="../static/assets/login/minhoca_pequena.png" alt="Foto de Perfil" class="usuario-foto">
             <div class="usuario-dados">
                 <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
                 <span class="usuario-tipo" id="usuarioTipo">...</span>
             </div>
         </div>
 
+        <!-- NAVEGAÇÃO -->
         <nav class="painel-navegacao">
-        
-            <a href="{{ url_for('meus_produtos') }}"
-               class="item-navegacao {% if request.endpoint == 'meus_produtos' %}ativo{% endif %}">
-                <span class="icone-box">📦</span>
-                Meus Produtos (teste)
-            </a>
-        
-            <a href="{{ url_for('negociacao_produtor') }}"
-               class="item-navegacao {% if request.endpoint == 'negociacao_produtor' %}ativo{% endif %}">
-                <span class="icone-box">🛍️</span>
-                Negociações
-            </a>
-        
-            <a href="{{ url_for('perfil') }}"
-               class="item-navegacao {% if request.endpoint == 'perfil' %}ativo{% endif %}">
-                <span class="icone-box">👤</span>
-                Perfil
-            </a>
-        
+            <!-- O drawer.js coloca os links aqui -->
         </nav>
 
+        <!-- RODAPÉ -->
         <footer class="painel-rodape">
             <button class="botao-logout" onclick="Auth.logout()">
-                    <span class="icone-box">
-                        <i data-lucide="log-out"></i>
-                    </span> Sair da Conta
-                </button>
+                <span class="icone-box">
+                    <i data-lucide="log-out"></i>
+                </span>
+                Sair da Conta
+            </button>
         </footer>
     </div>
 </aside>
 
-<!-- máscara do fundo -->
-<div id="mascaraMenu" class="mascara-menu"></div>
+
+<!-- =========================
+     MÁSCARA
+========================= -->
+<div
+    id="mascaraMenu"
+    class="mascara-menu"
+></div>
+
 
 <main class="main">
     <section class="topo">
@@ -105,14 +101,13 @@
     </section>
 
     <section class="busca">
-        <div class="input-wrapper">
-            <img src="../static/assets/lupa.png" class="icone-busca" alt="Lupa">
+        <div class="barra-busca">
+            <i data-lucide="search" class="icone-busca"></i>
             <input id="searchInput" type="text" placeholder="Pesquisar Produtos...">
         </div>
     </section>
 
     <section class="acoes">
-
         <button class="acao-btn" onclick="abrirModalCriar()">
             <i data-lucide="plus"></i>            
             <span>Adicionar Produto</span>
@@ -126,19 +121,15 @@
         <button class="acao-btn" onclick="abrirModalPlanilha()">
             <i data-lucide="upload"></i>            
             <span>Enviar Planilha</span>
-        </button>
-
-        
+        </button>   
     </section>
 
-<section id="produtosContainer" class="produtores-container">
-
-    <p id="mensagemCarregando" class="mensagem-carregando">
-        Buscando produtos...
-    </p>
-
-</section></main>
-
+    <section id="produtosContainer" class="produtores-container">
+      <p id="mensagemCarregando" class="mensagem-carregando">
+            Buscando produtos...
+        </p>
+    </section>
+</main>
 
 
 
@@ -239,6 +230,20 @@
     </div>
 </div>
 
+<!-- Modal para confirmar exclusão de produto -->
+<div id="modalExcluir" class="modal">
+    <div class="modal-content modal-pequeno">
+        <div class="titulo-modal">
+            <h2>Confirmar Exclusão</h2>
+        </div>
+        <p id="mensagemExcluir" class="texto-modal"></p>
+        <div class="botoes-modal-excluir">
+            <button class="btn-cancelar-exclusao" onclick="fecharModalExcluir()">Cancelar</button>
+            <button id="btnConfirmarExclusao" class="btn-confirmar-exclusao">Excluir</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal para Envio de Planilha -->
 <div id="modalPlanilha" class="modal">
@@ -289,21 +294,6 @@
                     Adicionar Produtos
                 </button>
             </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Modal para confirmar exclusão de produto -->
-<div id="modalExcluir" class="modal">
-    <div class="modal-content modal-pequeno">
-        <div class="titulo-modal">
-            <h2>Confirmar Exclusão</h2>
-        </div>
-        <p id="mensagemExcluir" class="texto-modal"></p>
-        <div class="botoes-modal-excluir">
-            <button class="btn-cancelar-exclusao" onclick="fecharModalExcluir()">Cancelar</button>
-            <button id="btnConfirmarExclusao" class="btn-confirmar-exclusao">Excluir</button>
         </div>
     </div>
 </div>

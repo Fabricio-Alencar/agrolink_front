@@ -1,0 +1,87 @@
+/* =========================
+   RESET GLOBAL
+   Remove estilos padrão do navegador
+   e padroniza o box model
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* =========================
+   CONFIGURAÇÃO BASE
+========================= */
+
+html {
+    font-size: 100%; /* 1rem = 16px padrão */
+    scroll-behavior: smooth; /* rolagem suave */
+}
+
+/* =========================
+   BODY
+========================= */
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--cor-fundo); /* cor de fundo global */
+    color: var(--cor-texto-principal); /* cor padrão do texto */
+    line-height: var(--space-lg); /* altura entre linhas */
+}
+
+
+
+
+/* =========================
+   IMAGENS
+   Responsividade padrão
+========================= */
+
+img {
+    display: block; /* remove espaço abaixo da imagem */
+    max-width: 100%; /* nunca ultrapassa o container */
+}
+
+/* =========================
+   LINKS
+   Remove estilo padrão
+========================= */
+
+a {
+    text-decoration: none; /* remove sublinhado */
+    color: inherit; /* herda cor do elemento pai */
+}
+
+/* =========================
+   LISTAS
+   Remove marcadores padrão
+========================= */
+
+ul,
+ol {
+    list-style: none; /* remove bolinhas e números */
+}
+
+/* =========================
+   FORMULÁRIOS
+   Padroniza fontes
+========================= */
+
+button,
+input,
+textarea,
+select {
+    font: inherit; /* herda fonte do body */
+}
+
+/* =========================
+   BOTÕES
+   Remove estilos padrão
+========================= */
+
+button {
+    cursor: pointer; /* cursor de clique */
+    border: none; /* remove borda padrão */
+    background: none; /* remove fundo padrão */
+}

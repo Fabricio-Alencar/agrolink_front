@@ -160,16 +160,16 @@ body {
 .painel-navegacao {
     display: flex;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 1rem;
 }
 
 .item-navegacao {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 10rem;
     padding: 1rem 1.2rem;
     text-decoration: none;
-    color: var(--cinza-texto);
+    color: var(--verde-texto-ativo);
     font-weight: 500;
     font-size: 1.05rem;
     border-radius: 12px;

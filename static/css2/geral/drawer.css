@@ -1,0 +1,327 @@
+/* =========================
+   BOTÃO HAMBÚRGUER
+========================= */
+.menu-hamburger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    width: 2rem;
+    min-height: 2rem;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.menu-hamburger span {
+    width: 1.5rem;
+    height: 0.2rem;
+    background-color: var(--cor-branco);
+    border-radius: 0.2rem;
+    transition: all 0.2s ease;
+}
+
+/* =========================
+   DRAWER
+========================= */
+.painel-lateral {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    display: flex;
+    flex-direction: column;
+    width: min(20rem, 85vw);
+    height: 100vh;
+    background-color: var(--cor-branco);
+    line-height: 1.5;
+    z-index: 2000;
+    box-shadow: 0.6rem 0 1.2rem rgba(0, 0, 0, 0.05);
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+}
+
+/* =========================
+   DRAWER ATIVO
+========================= */
+.painel-lateral.ativo {
+    left: 0;
+}
+
+/* =========================
+   MÁSCARA
+========================= */
+.mascara-menu {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 1999;
+}
+
+.mascara-menu.ativo {
+    display: block;
+}
+
+/* =========================
+   CABEÇALHO DO DRAWER
+========================= */
+.painel-cabecalho-verde {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: clamp(1.5rem, 5vw, 2.5rem) var(--space-lg);
+    background-color: var(--verde-menta-claro);
+    box-sizing: border-box;
+}
+
+/* =========================
+   LOGO DO DRAWER
+========================= */
+.painel-logo-drawer {
+    margin: 0;
+    padding: 0;
+    color: var(--verde-oliva);
+    font-family: 'Comfortaa', sans-serif;
+    font-size: clamp(1.8rem, 6vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.08rem;
+}
+
+/* =========================
+   BOTÃO FECHAR
+========================= */
+.botao-fechar-drawer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    color: var(--verde-oliva);
+    font-family: inherit;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.botao-fechar-drawer:hover {
+    transform: scale(1.1);
+}
+
+/* =========================
+   CONTEÚDO DO DRAWER
+========================= */
+.painel-conteudo {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 0 var(--space-lg) var(--space-lg);
+}
+
+/* =========================
+   CARTÃO DO USUÁRIO
+========================= */
+.cartao-usuario {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-lg) 0;
+    margin-bottom: var(--space-lg);
+    border-bottom: 0.1rem solid var(--cor-borda-cards);
+}
+
+/* =========================
+   FOTO DO USUÁRIO
+========================= */
+.usuario-foto {
+    width: clamp(3rem, 12vw, 3.5rem);
+    height: clamp(3rem, 12vw, 3.5rem);
+    flex-shrink: 0;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #EEEEEE;
+}
+
+/* =========================
+   DADOS DO USUÁRIO
+========================= */
+.usuario-dados {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.usuario-nome {
+    color: var(--cor-texto-principal);
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    font-weight: 600;
+    overflow-wrap: break-word;
+}
+
+.usuario-tipo {
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+.painel-navegacao {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+}
+
+/* =========================
+   ITEM DE NAVEGAÇÃO
+========================= */
+.item-navegacao {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xl);
+    width: 100%;
+    padding: var(--space-lg) var(--space-md);
+    box-sizing: border-box;
+    color: var(--cinza-texto);
+    border-radius: clamp(0.6rem, 1vw, 0.75rem);
+    text-decoration: none;
+    font-family: inherit;
+    font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* =========================
+   ITEM ATIVO
+========================= */
+.item-navegacao.ativo {
+    background-color: var(--verde-menta-claro);
+    color: var(--verde-texto-ativo);
+    font-weight: 600;
+}
+
+/* =========================
+   ITEM HOVER
+========================= */
+.item-navegacao:hover:not(.ativo) {
+    background-color: #F5F7F5;
+}
+
+/* =========================
+   ÍCONE DA NAVEGAÇÃO
+========================= */
+.item-navegacao .icone-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    min-width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* =========================
+   ÍCONES LUCIDE
+========================= */
+.item-navegacao .icone-box svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* =========================
+   RODAPÉ
+========================= */
+.painel-rodape {
+    margin-top: auto;
+    padding-top: var(--space-lg);
+    border-top: 0.1rem solid var(--cor-borda-cards);
+}
+
+/* =========================
+   BOTÃO LOGOUT
+========================= */
+.botao-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    width: 100%;
+    padding: var(--space-sm);
+    background-color: var(--vermelho-suave);
+    color: var(--vermelho-texto);
+    border: none;
+    border-radius: clamp(0.6rem, 1vw, 0.75rem);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+    font-weight: 700;
+    transition: background-color 0.2s ease;
+}
+
+.botao-logout:hover {
+    background-color: #FFDCE0;
+}
+
+/* =========================
+   ÍCONE DO LOGOUT
+========================= */
+.botao-logout .icone-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.botao-logout .icone-box svg {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+    .cabecalho-principal {
+        padding: var(--space-md) var(--space-xl);
+    }
+
+    .cabecalho-esquerda {
+        gap: var(--space-lg);
+    }
+
+    .painel-lateral {
+        width: 20rem;
+    }
+
+    .painel-conteudo {
+        padding-left: var(--space-lg);
+        padding-right: var(--space-lg);
+    }
+
+    .cartao-usuario {
+        padding-top: var(--space-lg);
+        padding-bottom: var(--space-lg);
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+    .painel-lateral {
+        width: 21rem;
+    }
+
+    .painel-logo-drawer {
+        font-size: clamp(2rem, 2.5vw, 2.8rem);
+    }
+
+    .item-navegacao {
+        padding: var(--space-lg) var(--space-md);
+    }
+}

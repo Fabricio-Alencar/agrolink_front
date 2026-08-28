@@ -1,8 +1,14 @@
+console.log("🔥 DRAWER.JS FOI CARREGADO!");
+
 const btnAbrir = document.getElementById('botaoAbrirMenu');
 const btnFechar = document.getElementById('botaoFecharMenu');
 const menu = document.getElementById('painelLateral');
 const mascara = document.getElementById('mascaraMenu');
 
+console.log("btnAbrir:", btnAbrir);
+console.log("btnFechar:", btnFechar);
+console.log("menu:", menu);
+console.log("mascara:", mascara);
 const API_URL1 = "https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net/";
 
 // =========================

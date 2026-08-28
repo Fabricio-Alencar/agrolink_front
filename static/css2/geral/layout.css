@@ -1,0 +1,110 @@
+/* =========================
+   MAIN
+========================= */
+.main {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: var(--space-xl);
+}
+
+/* =========================
+   TOPO
+========================= */
+.topo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+/* =========================
+   TÍTULO
+========================= */
+.topo h1 {
+    margin: 0;
+    font-size: var(--fs-h2);
+    font-family: 'Comfortaa', sans-serif;
+    font-weight: bold;
+    color: var(--cor-texto);
+}
+
+/* =========================
+   ALTERNÂNCIA DE VISUALIZAÇÃO
+========================= */
+.view-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background-color: var(--cor-barra-pesquisa);
+    border: 0.125rem solid var(--cor-borda);
+    border-radius: clamp(0.8rem, 1.5vw, 1.2rem);
+}
+
+/* =========================
+   BOTÕES
+========================= */
+.toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    padding: 0.6rem 0.9rem;
+    border: none;
+    border-radius: 0.8rem;
+    background-color: transparent;
+    color: var(--cor-texto-secundario);
+    font-family: inherit;
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* =========================
+   ÍCONES
+========================= */
+.toggle-btn svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+}
+
+/* =========================
+   BOTÃO ATIVO
+========================= */
+.toggle-btn.active {
+    background-color: var(--cor-primaria);
+    color: white;
+    box-shadow: 0 0.15rem 0.4rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   HOVER
+========================= */
+.toggle-btn:not(.active):hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--cor-texto);
+}
+
+/* =========================
+   TABLET E DESKTOP
+========================= */
+@media (min-width: 768px) {
+    .main {
+        padding: var(--space-xll);
+    }
+
+    .topo {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-xl);
+    }
+
+    .topo h1 {
+        font-size: var(--fs-h1);
+    }
+}

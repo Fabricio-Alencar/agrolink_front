@@ -1,0 +1,337 @@
+/* =========================
+   PÁGINA DE DETALHES
+========================= */
+
+#view-detalhes {
+    width: 100%;
+    min-height: calc(100vh - 70px);
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1200px; /* Limita largura máxima */
+    margin: 0 auto;    /* Centraliza na tela */
+    padding: 24px;     /* Espaçamento interno */
+}
+
+/* =========================
+   BOTÃO VOLTAR
+========================= */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-lg);
+    padding: var(--space-sm) var(--space-md);
+    background-color: var(--cor-branco);
+    color: var(--cor-texto-principal);
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: clamp(0.5rem, 1vw, 0.7rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-back svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    stroke-width: 2.5;
+    flex-shrink: 0;
+}
+
+.btn-back:hover {
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    background-color: rgba(95, 174, 62, 0.05);
+    transform: translateX(-0.15rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.06);
+}
+
+/* =========================
+   CARD PRINCIPAL
+========================= */
+.details-card {
+    max-width: 100rem;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: clamp(1rem, 3vw, 2rem);
+    background-color: var(--cor-branco);
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: clamp(0.7rem, 1vw, 1rem);
+    box-shadow: 0 0.3rem 0.9rem rgba(0, 0, 0, 0.08);
+}
+
+/* =========================
+   CABEÇALHO DOS DETALHES
+========================= */
+.details-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-md);
+    border-bottom: 0.1rem solid var(--cor-borda-cards);
+}
+
+/* =========================
+   GRID DE CONTEÚDO
+========================= */
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+}
+
+/* =========================
+   GRUPO DE INFORMAÇÕES
+========================= */
+.info-group {
+    margin-bottom: var(--space-lg);
+}
+
+.info-label {
+    gap: var(--space-sm);
+    display: flex;
+    margin-bottom: var(--space-xs);
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.info-label svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+    stroke-width: 2.2;
+    /* pequeno ajuste vertical */
+    transform: translateY(0.05rem);
+}
+
+.info-value {
+    color: var(--cor-primaria);
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: 700;
+    overflow-wrap: break-word;
+}
+
+.info-text {
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    line-height: 1.5;
+    overflow-wrap: break-word;
+}
+
+/* =========================
+   CAIXA DE DESCRIÇÃO
+========================= */
+.desc-box {
+    width: 100%;
+    min-height: 7.5rem;
+    box-sizing: border-box;
+    padding: var(--space-md);
+    background-color: #fafafa;
+    color: var(--cor-texto-secundario);
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: clamp(0.5rem, 1vw, 0.7rem);
+    font-family: inherit;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.desc-box:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0 0.2rem rgba(95, 174, 62, 0.1);
+}
+
+/* =========================
+   IMAGEM DO PRODUTO
+========================= */
+.product-img {
+    width: 100%;
+    height: clamp(12rem, 30vw, 16rem);
+    object-fit: cover;
+    margin-bottom: var(--space-lg);
+    border-radius: clamp(0.6rem, 1vw, 0.9rem);
+    box-shadow: 0 0.25rem 0.7rem rgba(0, 0, 0, 0.1);
+}
+
+/* =========================
+   LISTA DE CONTATOS
+========================= */
+.contact-list {
+    list-style: none;
+    margin: var(--space-sm) 0 0;
+    padding: var(--space-sm);
+    background-color: var(--bg-color);
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: clamp(0.5rem, 1vw, 0.7rem);
+}
+
+.contact-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: var(--space-sm) 0;
+    color: var(--cor-texto-secundario);
+    border-bottom: 0.1rem dashed var(--cor-borda-cards);
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+}
+
+.contact-list li:first-child {
+    padding-top: 0;
+}
+
+.contact-list li:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* =========================
+   BOTÕES DE AÇÃO
+========================= */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 0.1rem solid var(--cor-borda-cards);
+}
+
+/* =========================
+   BOTÃO BASE
+========================= */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    width: 100%;
+    min-height: 2.8rem;
+    padding: var(--space-sm) var(--space-md);
+    box-sizing: border-box;
+    border: none;
+    border-radius: clamp(0.5rem, 1vw, 0.7rem);
+    color: var(--cor-branco);
+    font-family: inherit;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        opacity 0.2s ease;
+}
+
+/* =========================
+   ÍCONE DOS BOTÕES
+========================= */
+.btn-action svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    stroke-width: 2.2;
+}
+
+/* =========================
+   HOVER PADRONIZADO
+========================= */
+.btn-action:hover {
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   CLIQUE
+========================= */
+.btn-action:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+/* =========================
+   BOTÃO FINALIZAR
+========================= */
+.btn-finalize {
+    background-color: var(--cor-primaria);
+}
+
+.btn-finalize:hover {
+    background-color: #4f9835;
+}
+
+/* =========================
+   BOTÃO CANCELAR
+========================= */
+.btn-cancel {
+    background-color: var(--status-red);
+}
+
+.btn-cancel:hover {
+    background-color: #c03939;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+    .details-card {
+        padding: var(--space-lg);
+    }
+
+    .details-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .details-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-xl);
+    }
+
+    .action-buttons {
+        flex-direction: row;
+        gap: var(--space-md);
+    }
+
+    .btn-action {
+        width: auto;
+        min-width: 10rem;
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+    .details-card {
+        padding: 2rem;
+    }
+
+    .details-grid {
+        gap: 2.5rem;
+    }
+
+    .product-img {
+        height: 16rem;
+    }
+}

@@ -1,0 +1,28 @@
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+
+    /* Espaçamento no topo e no fundo */
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+/* =========================================================
+   TABLET/DESKTOP
+   ========================================================= */
+
+@media (min-width: 768px) {
+
+    .main-container {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+}

@@ -30,12 +30,12 @@ def meus_produtos():
 # 🔹 Página de Negociação (Produtor)
 @app.route('/negociacoes_produtor')
 def negociacao_produtor():
-    return render_template('negociacoes_produtor.html')
+    return render_template('pedidos.html')
 
 # 🔹 Página de Negociação (Estabelecimento)
 @app.route('/negociacoes_estabelecimento')
 def negociacao_estabelecimento():
-    return render_template('negociacoes_estabelecimento.html')
+    return render_template('pedidos.html')
 
 # 🔹 Página de Perfil
 @app.route('/perfil')

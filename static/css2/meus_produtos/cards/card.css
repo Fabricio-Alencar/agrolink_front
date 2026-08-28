@@ -1,0 +1,138 @@
+/* =========================
+   CARD PRINCIPAL
+========================= */
+.produtor-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    background-color: var(--cor-branco);
+
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: clamp(0.6rem, 1vw, 1rem);
+
+    overflow: hidden;
+
+    box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+
+    transition: transform 0.2s ease;
+}
+
+.produtor-card:hover {
+    transform: translateY(-0.3rem);
+}
+
+
+/* =========================
+   IMAGEM DO CARD
+========================= */
+.produtor-card img {
+    width: 100%;
+    height: clamp(9rem, 15vw, 11rem);
+
+    object-fit: cover;
+}
+
+
+/* =========================
+   CONTEÚDO DO CARD
+========================= */
+.produtor-info {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    padding: clamp(0.8rem, 1.5vw, 1.2rem);
+}
+
+
+/* =========================
+   TÍTULO
+========================= */
+.produtor-info h2 {
+    margin-bottom: var(--space-xs);
+
+    color: var(--cor-texto-principal);
+
+    font-size: clamp(1rem, 1.2vw, 1.4rem);
+}
+
+
+/* =========================
+   DESCRIÇÃO
+========================= */
+.descricao {
+    margin-bottom: var(--space-sm);
+
+    color: var(--cor-texto-secundario);
+
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+
+    overflow-wrap: break-word;
+    overflow: hidden;
+}
+
+
+/* =========================
+   PREÇO
+========================= */
+.preco {
+    margin-bottom: var(--space-xs);
+
+    color: var(--cor-primaria);
+
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 600;
+}
+
+
+/* =========================
+   QUANTIDADE
+========================= */
+.quantidade {
+    margin-bottom: var(--space-md);
+
+    color: var(--cor-texto-secundario);
+
+    font-size: clamp(0.8rem, 1vw, 1rem);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .produtor-card img {
+        height: clamp(9rem, 13vw, 10rem);
+    }
+
+    .produtor-info {
+        padding: var(--space-lg);
+    }
+
+    .produtor-info h2 {
+        margin-bottom: var(--space-sm);
+
+        font-size: clamp(1.1rem, 1.5vw, var(--fs-h3));
+    }
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .produtor-card img {
+        height: 11rem;
+    }
+
+    .produtor-info h2 {
+        margin-bottom: var(--space-md);
+
+        font-size: clamp(1.1rem, 1.2vw, var(--fs-h3));
+    }
+}

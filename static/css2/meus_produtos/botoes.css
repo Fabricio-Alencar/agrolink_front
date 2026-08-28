@@ -1,0 +1,122 @@
+/* =========================
+   AÇÕES
+========================= */
+.acoes {
+    display: flex;
+    flex-direction: column; /* Mobile: um botão embaixo do outro */
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+/* =========================
+   BOTÕES
+========================= */
+.acao-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-sm);
+    width: 100%;
+
+    padding: var(--space-sm) var(--space-md);
+
+    min-height: 3rem;
+
+    border: 0.0625rem solid var(--cor-borda);
+    border-radius: 0.75rem;
+
+    background: var(--cor-branco);
+    color: var(--cor-texto-principal);
+
+    font-size: var(--fs-body);
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+/* =========================
+   ÍCONES
+========================= */
+[data-lucide="plus"],
+[data-lucide="upload"],
+[data-lucide="download"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+[data-lucide="plus"] {
+    color: var(--cor-branco);
+    stroke-width: 2.5;
+}
+
+[data-lucide="upload"],
+[data-lucide="download"] {
+    color: var(--cor-texto-principal);
+    stroke-width: 2;
+}
+
+/* =========================
+   TEXTO
+========================= */
+.acao-btn span {
+    white-space: normal;
+    word-break: break-word;
+}
+
+/* =========================
+   HOVER
+========================= */
+.acao-btn:hover {
+    background: #ececec;
+    border-color: #999;
+}
+
+/* =========================
+   BOTÃO PRINCIPAL
+========================= */
+.acao-btn:first-child {
+    background: #000;
+    color: var(--cor-branco);
+    border-color: #000;
+}
+
+.acao-btn:first-child:hover {
+    background: #333;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .acoes {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--space-lg);
+    }
+
+    .acao-btn {
+        width: auto;
+        justify-content: flex-start;
+        padding: var(--space-sm) var(--space-lg);
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .acao-btn {
+        font-size: 1.05rem;
+        min-height: 3.25rem;
+    }
+
+    [data-lucide="plus"],
+    [data-lucide="upload"],
+    [data-lucide="download"] {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+}

@@ -1,0 +1,196 @@
+/* =========================
+   BADGES DE STATUS
+========================= */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: clamp(0.6rem, 1vw, 0.75rem);
+    color: var(--cor-branco);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    font-weight: 600;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.badge.pendente {
+    background-color: var(--status-orange);
+}
+
+.badge.aceito {
+    background-color: var(--status-blue);
+}
+
+.badge.recusado {
+    background-color: var(--status-red);
+}
+
+.badge.cancelado {
+    background-color: var(--status-black);
+}
+
+.badge.entregue {
+    background-color: var(--status-green);
+}
+
+.badge.finalizado {
+    background-color: var(--status-gray);
+}
+
+/* =========================
+   CORPO DO CARD
+========================= */
+.card-body {
+    flex-grow: 1;
+}
+
+/* =========================
+   LINHA DE PREÇO E QUANTIDADE
+========================= */
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: var(--space-md) 0;
+    padding: var(--space-sm);
+    background-color: var(--bg-color);
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+/* =========================
+   QUANTIDADE
+========================= */
+.qty {
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+}
+
+/* =========================
+   PREÇO
+========================= */
+.price {
+    color: var(--cor-primaria);
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* =========================
+   DESCRIÇÃO
+========================= */
+.desc {
+    display: -webkit-box;
+    margin-bottom: var(--space-md);
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    line-height: 1.4;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* =========================
+   LINHA DE INFORMAÇÕES
+========================= */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+}
+
+/* =========================
+   AÇÕES DO CARD
+========================= */
+.card-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+/* =========================
+   BOTÃO DETALHES
+========================= */
+.btn-details {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm);
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
+    border: none;
+    border-radius: clamp(0.8rem, 1vw, 1.25rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-details:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   BOTÃO DELETAR
+========================= */
+.btn-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2.5rem, 4vw, 2.75rem);
+    padding: var(--space-sm);
+    background-color: var(--status-red);
+    color: var(--cor-branco);
+    border: none;
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-delete:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+    .badge {
+        padding: var(--space-xs) var(--space-md);
+    }
+
+    .price-row {
+        padding: var(--space-md);
+    }
+
+    .card-actions {
+        gap: var(--space-md);
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+    .badge {
+        font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+    }
+
+    .price-row {
+        margin: var(--space-lg) 0;
+    }
+}

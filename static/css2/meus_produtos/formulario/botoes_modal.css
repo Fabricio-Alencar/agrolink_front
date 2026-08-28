@@ -1,0 +1,446 @@
+/* =========================
+   BOTÕES DO MODAL
+========================= */
+.botoes-modal {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-sm);
+
+    flex-wrap: nowrap;
+}
+
+
+/* =========================
+   BOTÃO BASE
+========================= */
+.btn-rascunho,
+.btn-publicar {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-xs);
+
+    max-height: 2.5rem;
+    min-width: 0;
+
+    padding: var(--space-sm) var(--space-md);
+
+    border: none;
+    border-radius: clamp(0.5rem, 1vw, 0.6rem);
+
+    cursor: pointer;
+
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 500;
+
+    transition: all 0.2s ease;
+}
+
+
+/* =========================
+   BOTÃO RASCUNHO
+========================= */
+.btn-rascunho {
+    background-color: #cccccc;
+    color: #000000;
+}
+
+.btn-rascunho:hover {
+    background-color: #bdbdbd;
+}
+
+
+/* =========================
+   BOTÃO PUBLICAR
+========================= */
+.btn-publicar {
+    background-color: #000000;
+    color: var(--cor-branco);
+}
+
+.btn-publicar:hover {
+    background-color: #222222;
+}
+
+
+/* =========================
+   ÍCONES DOS BOTÕES
+========================= */
+.btn-rascunho img {
+    width: clamp(1.8rem, 2.5vw, 2.3rem);
+    height: clamp(1.6rem, 2.2vw, 2rem);
+}
+
+.btn-publicar img {
+    width: clamp(1.6rem, 2.2vw, 2rem);
+    height: clamp(1.6rem, 2.2vw, 2rem);
+}
+
+
+/* =========================
+   INPUT DE PREÇO
+========================= */
+.input-preco-wrapper {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+
+    padding: 0.25rem 0.25rem 0.25rem var(--space-sm);
+
+    background-color: var(--cor-branco);
+
+    border: 0.1rem solid #D1D5DB;
+    border-radius: clamp(0.5rem, 1vw, 0.6rem);
+
+    transition: border-color 0.2s ease;
+}
+
+.input-preco-wrapper:focus-within {
+    border-color: var(--cor-primaria);
+}
+
+
+/* =========================
+   PREFIXO DA MOEDA
+========================= */
+.moeda-prefixo {
+    margin-right: var(--space-xs);
+
+    color: var(--cor-texto-secundario);
+
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    font-weight: 500;
+}
+
+
+/* =========================
+   INPUT DE PREÇO
+========================= */
+.input-preco-wrapper input[type="number"] {
+    flex: 1;
+
+    width: 100%;
+
+    padding: var(--space-xs) 0 !important;
+
+    background: transparent;
+
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+/* =========================
+   REMOVER SETAS DO INPUT
+========================= */
+.input-preco-wrapper input[type="number"]::-webkit-inner-spin-button,
+.input-preco-wrapper input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+
+    -webkit-appearance: none;
+}
+
+
+/* =========================
+   BOTÃO CEAGESP
+========================= */
+.btn-ceagesp {
+    display: flex;
+    align-items: center;
+
+    gap: var(--space-xs);
+
+    padding: var(--space-xs) var(--space-sm);
+
+    background-color: #F3F4F6;
+    color: #6B7280;
+
+    border: none;
+    border-radius: clamp(0.4rem, 1vw, 0.6rem);
+
+    cursor: pointer;
+
+    font-family: inherit;
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    font-weight: 600;
+
+    transition: all 0.2s ease;
+}
+
+.btn-ceagesp:hover {
+    background-color: #E5E7EB;
+    color: #374151;
+}
+
+
+/* =========================
+   DROPDOWN CEAGESP
+========================= */
+.ceagesp-dropdown {
+    position: absolute;
+
+    top: calc(100% + var(--space-xs));
+    left: 0;
+
+    width: 100%;
+    min-width: 18rem;
+
+    overflow: hidden;
+
+    background-color: var(--cor-branco);
+
+    border: 0.1rem solid #E5E7EB;
+    border-radius: clamp(0.6rem, 1vw, 0.8rem);
+
+    box-shadow: 0 0.6rem 1.5rem rgba(0, 0, 0, 0.1);
+
+    z-index: 1000;
+
+    animation: fadeIn 0.2s ease-out;
+}
+
+.ceagesp-dropdown.oculto {
+    display: none;
+}
+
+
+/* =========================
+   CABEÇALHO DO DROPDOWN
+========================= */
+.ceagesp-header {
+    padding: var(--space-sm) var(--space-md);
+
+    background-color: #F0F4E8;
+
+    border-bottom: 0.1rem solid #E5E7EB;
+}
+
+.ceagesp-header h3 {
+    margin: 0;
+
+    color: var(--cor-texto-principal);
+
+    font-size: clamp(0.9rem, 1vw, 1rem);
+    font-weight: 600;
+}
+
+.ceagesp-header p {
+    margin: var(--space-xs) 0 0;
+
+    color: var(--cor-texto-secundario);
+
+    font-size: clamp(0.75rem, 0.9vw, 0.8rem);
+}
+
+
+/* =========================
+   LISTA DE PREÇOS
+========================= */
+.ceagesp-lista {
+    max-height: 15.6rem;
+
+    overflow-y: auto;
+}
+
+
+/* =========================
+   ITEM DA LISTA
+========================= */
+.ceagesp-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: var(--space-sm);
+
+    padding: var(--space-sm) var(--space-md);
+
+    border-bottom: 0.1rem solid #F3F4F6;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease;
+}
+
+.ceagesp-item:hover {
+    background-color: #F9FAFB;
+}
+
+.ceagesp-item:last-child {
+    border-bottom: none;
+}
+
+
+/* =========================
+   CLASSIFICAÇÃO
+========================= */
+.ceagesp-classificacao {
+    color: var(--cor-texto-secundario);
+
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    font-weight: 500;
+}
+
+
+/* =========================
+   PREÇO CEAGESP
+========================= */
+.ceagesp-preco {
+    color: var(--cor-primaria);
+
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 700;
+}
+
+
+/* =========================
+   RODAPÉ DO DROPDOWN
+========================= */
+.ceagesp-footer {
+    display: flex;
+    align-items: center;
+
+    gap: var(--space-xs);
+
+    padding: var(--space-sm) var(--space-md);
+
+    background-color: #F9FAFB;
+
+    border-top: 0.1rem solid #E5E7EB;
+
+    color: #6B7280;
+
+    font-size: clamp(0.7rem, 0.9vw, 0.75rem);
+}
+
+
+/* =========================
+   AVISO DE ERRO
+========================= */
+.ceagesp-aviso {
+    margin: var(--space-sm);
+    padding: var(--space-md);
+
+    background-color: #FEF3C7;
+
+    border-left: 0.25rem solid #F59E0B;
+    border-radius: clamp(0.4rem, 1vw, 0.6rem);
+}
+
+.ceagesp-aviso strong {
+    display: block;
+
+    margin-bottom: var(--space-xs);
+
+    color: #92400E;
+
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+}
+
+.ceagesp-aviso p {
+    margin: 0;
+
+    color: #B45309;
+
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    line-height: 1.4;
+}
+
+
+/* =========================
+   ANIMAÇÃO
+========================= */
+@keyframes fadeIn {
+
+    from {
+        opacity: 0;
+        transform: translateY(-0.3rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* =========================
+   SCROLLBAR
+========================= */
+.ceagesp-lista::-webkit-scrollbar {
+    width: 0.4rem;
+}
+
+.ceagesp-lista::-webkit-scrollbar-track {
+    background: #F1F1F1;
+}
+
+.ceagesp-lista::-webkit-scrollbar-thumb {
+    background: var(--cor-primaria);
+    border-radius: 0.25rem;
+}
+
+.ceagesp-lista::-webkit-scrollbar-thumb:hover {
+    background: #388E3C;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .botoes-modal {
+        gap: var(--space-md);
+    }
+
+    .btn-rascunho,
+    .btn-publicar {
+        padding: var(--space-sm) var(--space-md);
+
+        font-size: clamp(0.9rem, 1vw, 1rem);
+    }
+
+    .input-preco-wrapper {
+        padding-left: var(--space-md);
+    }
+
+    .ceagesp-header {
+        padding: var(--space-md) var(--space-lg);
+    }
+
+    .ceagesp-item {
+        padding: var(--space-md) var(--space-lg);
+    }
+
+    .ceagesp-footer {
+        padding: var(--space-sm) var(--space-lg);
+    }
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .btn-rascunho,
+    .btn-publicar {
+        font-size: clamp(0.9rem, 1vw, 1rem);
+    }
+
+    .ceagesp-dropdown {
+        min-width: 20rem;
+    }
+
+    .ceagesp-header h3 {
+        font-size: clamp(1rem, 1.1vw, 1.1rem);
+    }
+}

@@ -1,0 +1,482 @@
+/* ============================================================
+   CALENDÁRIO
+============================================================ */
+.calendar-view {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: var(--space-md);
+    overflow: hidden;
+}
+
+/* ============================================================
+   CABEÇALHO E NAVEGAÇÃO
+============================================================ */
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
+}
+
+.calendar-header h2 {
+    margin: 0;
+    text-align: center;
+    font-family: 'Comfortaa', sans-serif;
+    font-size: var(--fs-h3);
+    color: var(--cor-texto);
+    flex: 1;
+}
+
+.calendar-nav {
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--cor-borda);
+    border-radius: 50%;
+    background-color: white;
+    color: var(--cor-texto);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-nav svg {
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.calendar-nav:hover {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: white;
+    transform: scale(1.05);
+}
+
+.calendar-today {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0 auto var(--space-md);
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--cor-borda);
+    border-radius: 0.7rem;
+    background-color: transparent;
+    color: var(--cor-texto);
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-today svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.calendar-today:hover {
+    background-color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+    color: white;
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   GRID E ESTRUTURA DOS DIAS
+============================================================ */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    border-bottom: 1px solid var(--cor-borda);
+    margin-bottom: 0.4rem;
+}
+
+.calendar-weekdays span {
+    min-width: 0;
+    padding: 0.5rem 0.2rem;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--cor-texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 0.35rem;
+    width: 100%;
+}
+
+.calendar-day {
+    min-width: 0;
+    min-height: 5rem;
+    padding: 0.45rem;
+    box-sizing: border-box;
+    background-color: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 0.65rem;
+    overflow: hidden;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: #ffffff;
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.06);
+}
+
+.calendar-day.today {
+    border: 2px solid var(--cor-primaria);
+    background-color: rgba(95, 174, 62, 0.04);
+}
+
+.day-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-bottom: 0.35rem;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--cor-texto);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.calendar-day.today .day-number {
+    background-color: var(--cor-primaria);
+    color: white;
+}
+
+.calendar-day.empty {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.calendar-day.empty:hover {
+    background-color: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    transform: none;
+}
+
+/* ============================================================
+   PEDIDOS E STATUS
+============================================================ */
+.calendar-orders {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 0;
+}
+
+.calendar-order {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.12rem;
+    padding: 0.4rem;
+    box-sizing: border-box;
+    border: 1px solid transparent;
+    border-radius: 0.45rem;
+    background-color: #f2f3f2;
+    color: var(--cor-texto);
+    text-align: left;
+    font-family: inherit;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.calendar-order:hover {
+    background-color: white;
+    border-color: #dedede;
+    transform: translateY(-1px);
+    box-shadow: 0 0.2rem 0.45rem rgba(0, 0, 0, 0.08);
+}
+
+.calendar-order-product {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--cor-texto);
+}
+
+.calendar-order-person {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--cor-texto-secundario);
+}
+
+.calendar-order-status {
+    margin-top: 0.1rem;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--cor-texto-secundario);
+    text-transform: capitalize;
+}
+
+/* MODIFICADORES DE STATUS */
+.calendar-order.status-pendente { border-left: 3px solid var(--status-orange); }
+.calendar-order.status-aceito { border-left: 3px solid var(--status-blue); }
+.calendar-order.status-entregue { border-left: 3px solid var(--status-green); }
+.calendar-order.status-finalizado { border-left: 3px solid var(--status-gray); }
+.calendar-order.status-recusado { border-left: 3px solid var(--status-red); }
+.calendar-order.status-cancelado { border-left: 3px solid var(--status-black); }
+
+/* ============================================================
+   RESPONSIVIDADE (MEDIA QUERIES)
+============================================================ */
+
+/* CELULAR */
+@media (max-width: 767px) {
+    .calendar-view {
+        padding: 0.5rem;
+        border-radius: 0.7rem;
+    }
+
+    .calendar-header {
+        gap: 0.4rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .calendar-header h2 {
+        font-size: 0.95rem;
+    }
+
+    .calendar-nav {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .calendar-nav svg {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+
+    .calendar-today {
+        gap: 0.3rem;
+        margin-bottom: 0.6rem;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.8rem;
+    }
+
+    .calendar-today svg {
+        width: 0.85rem;
+        height: 0.85rem;
+    }
+
+    .calendar-weekdays {
+        margin-bottom: 0.25rem;
+    }
+
+    .calendar-weekdays span {
+        padding: 0.35rem 0.05rem;
+        font-size: 0.58rem;
+        letter-spacing: 0;
+    }
+
+    .calendar-grid {
+        gap: 0.2rem;
+    }
+
+    .calendar-day {
+        min-height: 4.2rem;
+        padding: 0.25rem;
+        border-radius: 0.4rem;
+    }
+
+    .day-number {
+        width: 1.35rem;
+        height: 1.35rem;
+        margin-bottom: 0.2rem;
+        font-size: 0.65rem;
+    }
+
+    .calendar-orders {
+        gap: 0.15rem;
+    }
+
+    .calendar-order {
+        gap: 0.05rem;
+        padding: 0.25rem;
+        border-radius: 0.3rem;
+    }
+
+    .calendar-order-product {
+        font-size: 0.55rem;
+    }
+
+    .calendar-order-person {
+        font-size: 0.5rem;
+    }
+
+    .calendar-order-status {
+        margin-top: 0.05rem;
+        font-size: 0.45rem;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+    .calendar-view {
+        padding: 0.4rem;
+    }
+
+    .calendar-header h2 {
+        font-size: 0.85rem;
+    }
+
+    .calendar-grid {
+        gap: 0.15rem;
+    }
+
+    .calendar-day {
+        min-height: 3.6rem;
+        padding: 0.2rem;
+        border-radius: 0.3rem;
+    }
+
+    .calendar-weekdays span {
+        font-size: 0.52rem;
+    }
+
+    .day-number {
+        width: 1.2rem;
+        height: 1.2rem;
+        font-size: 0.6rem;
+    }
+
+    .calendar-order {
+        padding: 0.2rem;
+    }
+
+    .calendar-order-product {
+        font-size: 0.5rem;
+    }
+
+    .calendar-order-person {
+        font-size: 0.45rem;
+    }
+
+    .calendar-order-status {
+        font-size: 0.4rem;
+    }
+}
+
+/* TABLETS */
+@media (min-width: 768px) {
+    .calendar-view {
+        padding: var(--space-lg);
+    }
+
+    .calendar-header {
+        gap: var(--space-md);
+        margin-bottom: var(--space-md);
+    }
+
+    .calendar-header h2 {
+        font-size: var(--fs-h2);
+    }
+
+    .calendar-nav {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .calendar-nav svg {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .calendar-today {
+        gap: 0.4rem;
+        margin: 0 auto var(--space-md);
+        padding: 0.5rem 0.9rem;
+        font-size: inherit;
+    }
+
+    .calendar-today svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .calendar-weekdays {
+        margin-bottom: 0.4rem;
+    }
+
+    .calendar-weekdays span {
+        padding: 0.5rem 0.2rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.02em;
+    }
+
+    .calendar-grid {
+        gap: 0.5rem;
+    }
+
+    .calendar-day {
+        min-height: 8rem;
+        padding: 0.6rem;
+    }
+
+    .day-number {
+        width: 2rem;
+        height: 2rem;
+        margin-bottom: 0.35rem;
+        font-size: 0.85rem;
+    }
+
+    .calendar-orders {
+        gap: 0.3rem;
+    }
+
+    .calendar-order {
+        gap: 0.12rem;
+        padding: 0.45rem;
+    }
+
+    .calendar-order-product {
+        font-size: 0.75rem;
+    }
+
+    .calendar-order-person {
+        font-size: 0.7rem;
+    }
+
+    .calendar-order-status {
+        font-size: 0.65rem;
+    }
+}
+
+/* TELAS GRANDES */
+@media (min-width: 1200px) {
+    .calendar-day {
+        min-height: 9rem;
+    }
+}

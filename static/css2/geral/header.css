@@ -1,0 +1,58 @@
+/* =========================
+   HEADER 
+========================= */
+
+.header {
+    position: relative;                    /* Referência para o botão absoluto */
+    display: flex;                         
+    justify-content: center;               /* Centraliza a logo */
+    align-items: center;                   /* Centraliza verticalmente */
+    padding: var(--space-md) 5%;           /* Espaçamento interno */
+    background-color: var(--cor-primaria); /* Cor de fundo */
+    color: var(--cor-branco);              /* Cor do texto */
+}
+
+/* Logo */
+.logo {
+    font-size: var(--fs-h3);    /* Tamanho da fonte */
+    font-weight: bold;          /* Texto em negrito */
+}
+
+/* Botão hambúrguer */
+.btn-menu-hamburger {
+    position: absolute;
+    left: var(--space-xl);      /* Fica no canto esquerdo */
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    width: 25px;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    border: none;
+}
+
+/* Linhas do ícone */
+.btn-menu-hamburger span {
+    width: 100%;                /* Ocupa toda a largura do botão */
+    height: 3px;                /* Espessura da linha */
+    background: var(--cor-branco);
+    border-radius: 2px;         /* Arredonda as extremidades */
+}
+
+/* =========================
+   Tablet e Desktop
+========================= */
+@media (min-width: 768px) {
+    .header {
+        padding: var(--space-lg) 8%;
+    }
+
+    .logo {
+        font-size: var(--fs-h2);
+    }
+}
