@@ -4,7 +4,7 @@ import { API } from "./api.js";
 // ============================================================
 // CONFIGURAÇÃO
 // ============================================================
-const API_URL = "https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net";
+const API_URL = CONFIG.API_URL;
 
 // ============================================================
 // NORMALIZAR STATUS
@@ -21,22 +21,25 @@ function normalizarStatus(status) {
 // RESOLVER CAMINHO DA FOTO
 // ============================================================
 function resolverCaminhoFoto(order) {
-    console.log("🖼️ Foto original:", order.produto_foto);
-
     const fallback = `${API_URL}/static/uploads/produtos/foto_generica.png`;
-
     if (!order.produto_foto) {
         console.warn("⚠️ Sem foto, usando fallback");
         return fallback;
     }
-
-    let caminho = String(order.produto_foto).trim().replace(/^\/+/, "");
-
-    if (caminho.startsWith("static/")) {
-        return `${API_URL}/${caminho}`;
+    const caminho = String(order.produto_foto).trim();
+    // Azure Blob Storage / URL SAS
+    if (
+        caminho.startsWith("http://") ||
+        caminho.startsWith("https://")
+    ) {
+        return caminho;
     }
-
-    return `${API_URL}/static/${caminho}`;
+    // Compatibilidade com caminho antigo
+    const caminhoNormalizado = caminho.replace(/^\/+/, "");
+    if (caminhoNormalizado.startsWith("static/")) {
+        return `${API_URL}/${caminhoNormalizado}`;
+    }
+    return `${API_URL}/static/${caminhoNormalizado}`;
 }
 
 // ============================================================

@@ -1,4 +1,4 @@
-const API_URL = "https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net";
+const API_URL = CONFIG.API_URL;
 
 /**
  * LÓGICA DE LOGIN - AGROLINK
@@ -111,8 +111,10 @@ loginForm.addEventListener("submit", async (e) => {
         });
 
 
+
         const result = await res.json();
 
+        console.log("Resposta do login:", result);
 
         // =========================
         // VERIFICAR RESPOSTA

@@ -1,12 +1,17 @@
 /**
  * ARQUIVO: planilha.js
- * OBJETIVO: Processar arquivos Excel, validar dados locais adaptados às classes CSS fornecidas,
- * e enviar os produtos aprovados via API.
+ * OBJETIVO:
+ * - Processar arquivos Excel
+ * - Validar dados localmente
+ * - Permitir escolher entre publicado e rascunho
+ * - Enviar produtos aprovados via API
  */
 
 let listaProdutosValidos = [];
 
-// --- Controle do Modal ---
+// =====================================================
+// CONTROLE DO MODAL
+// =====================================================
 
 function abrirModalPlanilha() {
     document.getElementById("modalPlanilha").classList.add("active");
@@ -18,65 +23,108 @@ function fecharModalPlanilha() {
 }
 
 function resetarModalPlanilha() {
-    // Alterna os estados usando a classe comum .estado-planilha e gerenciando o .active do CSS
     document.getElementById("estadoUpload").classList.add("active");
     document.getElementById("estadoResultado").classList.remove("active");
-    
+
     const campoInput = document.getElementById("inputPlanilha");
-    if (campoInput) campoInput.value = "";
+    if (campoInput) {
+        campoInput.value = "";
+    }
+
     listaProdutosValidos = [];
 }
 
-// --- Processamento Excel ---
+// =====================================================
+// PROCESSAMENTO EXCEL
+// =====================================================
 
 const zonaDrop = document.getElementById("dropZonePlanilha");
 const seletorArquivo = document.getElementById("inputPlanilha");
 
+// =====================================================
+// DRAG & DROP
+// =====================================================
+
 if (zonaDrop) {
-    // Alinhado com a classe .upload-zone.drag-over do seu CSS
-    zonaDrop.addEventListener("dragover", (e) => { e.preventDefault(); zonaDrop.classList.add("drag-over"); });
-    zonaDrop.addEventListener("dragleave", () => zonaDrop.classList.remove("drag-over"));
+    zonaDrop.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        zonaDrop.classList.add("drag-over");
+    });
+
+    zonaDrop.addEventListener("dragleave", () => {
+        zonaDrop.classList.remove("drag-over");
+    });
+
     zonaDrop.addEventListener("drop", (e) => {
         e.preventDefault();
         zonaDrop.classList.remove("drag-over");
-        if (e.dataTransfer.files.length) processarArquivoExcel(e.dataTransfer.files[0]);
+
+        if (e.dataTransfer.files.length) {
+            processarArquivoExcel(e.dataTransfer.files[0]);
+        }
     });
 }
+
+// =====================================================
+// INPUT DE ARQUIVO
+// =====================================================
 
 if (seletorArquivo) {
     seletorArquivo.addEventListener("change", (e) => {
-        if (e.target.files.length) processarArquivoExcel(e.target.files[0]);
+        if (e.target.files.length) {
+            processarArquivoExcel(e.target.files[0]);
+        }
     });
 }
 
+// =====================================================
+// LER ARQUIVO EXCEL
+// =====================================================
+
 function processarArquivoExcel(arquivo) {
     const nomeMinusculo = arquivo.name.toLowerCase();
-    if (!nomeMinusculo.endsWith('.xlsx') && !nomeMinusculo.endsWith('.xls')) {
-        exibirNotificacao('exclusao', "Erro: Apenas arquivos Excel!");
+
+    if (!nomeMinusculo.endsWith(".xlsx") && !nomeMinusculo.endsWith(".xls")) {
+        exibirNotificacao("exclusao", "Erro: Apenas arquivos Excel!");
         return;
     }
 
-    // Se tiver um elemento para exibir o nome do arquivo atual
+    // ===============================
+    // NOME DO ARQUIVO
+    // ===============================
+
     const elNome = document.getElementById("nomeArquivo");
-    if (elNome) elNome.innerText = arquivo.name;
+    if (elNome) {
+        elNome.innerText = arquivo.name;
+    }
+
+    // ===============================
+    // FILE READER
+    // ===============================
 
     const leitor = new FileReader();
 
     leitor.onload = (e) => {
         try {
             const binario = e.target.result;
-            const livroExcel = XLSX.read(binario, { type: 'binary' });
+            const livroExcel = XLSX.read(binario, { type: "binary" });
             const nomePrimeiraAba = livroExcel.SheetNames[0];
             const aba = livroExcel.Sheets[nomePrimeiraAba];
-
             const linhasMatriz = XLSX.utils.sheet_to_json(aba, { header: 1 });
 
+            // ===============================
+            // LOCALIZAR CABEÇALHO
+            // ===============================
+
             let indiceCabecalho = -1;
+
             for (let i = 0; i < linhasMatriz.length; i++) {
                 const linha = linhasMatriz[i];
+
                 if (linha && linha.length > 0) {
                     const temNome = linha.some(c => c && c.toString().toLowerCase().includes("nome"));
                     const temCategoria = linha.some(c => c && c.toString().toLowerCase().includes("categoria"));
+
                     if (temNome && temCategoria) {
                         indiceCabecalho = i;
                         break;
@@ -85,27 +133,40 @@ function processarArquivoExcel(arquivo) {
             }
 
             if (indiceCabecalho === -1) {
-                exibirNotificacao('exclusao', "Não foi possível encontrar as colunas de produtos na planilha.");
+                exibirNotificacao("exclusao", "Não foi possível encontrar as colunas de produtos na planilha.");
                 return;
             }
+
+            // ===============================
+            // LIMPAR CABEÇALHOS
+            // ===============================
 
             const cabecalhosBrutos = linhasMatriz[indiceCabecalho];
             const cabecalhosLimpos = cabecalhosBrutos.map(coluna => {
                 if (!coluna) return "";
-                return coluna.toString().toLowerCase()
-                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") 
-                    .replace(/[^a-z0-9]/g, ""); // Limpeza total do '$' e caracteres especiais
+                return coluna
+                    .toString()
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9]/g, "");
             });
 
+            // ===============================
+            // NORMALIZAR DADOS
+            // ===============================
+
             let dadosNormalizados = [];
+
             for (let i = indiceCabecalho + 1; i < linhasMatriz.length; i++) {
                 const linhaDados = linhasMatriz[i];
-                
-                if (!linhaDados || linhaDados.length === 0 || linhaDados.every(c => c === null || c === undefined || c === '')) {
-                    continue; 
+
+                if (!linhaDados || linhaDados.length === 0 || linhaDados.every(c => c === null || c === undefined || c === "")) {
+                    continue;
                 }
 
                 const novaLinha = {};
+
                 cabecalhosLimpos.forEach((colunaLimpa, indexCol) => {
                     if (colunaLimpa) {
                         novaLinha[colunaLimpa] = linhaDados[indexCol] !== undefined ? linhaDados[indexCol] : "";
@@ -120,30 +181,71 @@ function processarArquivoExcel(arquivo) {
 
         } catch (erroParsing) {
             console.error("Erro ao processar a planilha:", erroParsing);
-            exibirNotificacao('exclusao', "Erro crítico ao ler a estrutura do arquivo.");
+            exibirNotificacao("exclusao", "Erro crítico ao ler a estrutura do arquivo.");
         }
     };
+
     leitor.readAsBinaryString(arquivo);
 }
 
-// --- Mapeamento e Validação Local ---
+// =====================================================
+// MAPEAMENTO E VALIDAÇÃO
+// =====================================================
 
 function validarDadosDaPlanilha(produtosRecebidos) {
     let listaDeErrosEncontrados = [];
     listaProdutosValidos = [];
 
-    const categoriasValidas = ["frutas", "legumes", "hortalicas", "graos", "oleaginosas", "ervas", "outros"];
-    const unidadesValidas = ["kg", "g", "arroba", "t", "unidade", "duzia", "cento", "milheiro", "caixa", "saca", "maco", "bandeja", "litro"];
+    const categoriasValidas = [
+        "frutas",
+        "legumes",
+        "hortalicas",
+        "graos",
+        "oleaginosas",
+        "ervas",
+        "outros"
+    ];
+
+    const unidadesValidas = [
+        "kg",
+        "g",
+        "arroba",
+        "t",
+        "unidade",
+        "duzia",
+        "cento",
+        "milheiro",
+        "caixa",
+        "saca",
+        "maco",
+        "bandeja",
+        "litro"
+    ];
 
     produtosRecebidos.forEach((item) => {
         let errosDesteProduto = [];
         const numeroLinhaReal = item._linhaExcelOriginal || 2;
 
+        // ===============================
+        // NOME
+        // ===============================
+
         const nome = item.nomedoproduto || item.nome;
-        if (!nome) errosDesteProduto.push("Nome do produto é obrigatório");
-        
+        if (!nome) {
+            errosDesteProduto.push("Nome do produto é obrigatório");
+        }
+
+        // ===============================
+        // CATEGORIA
+        // ===============================
+
         let categoriaRaw = item.categoria || "";
-        let catTratada = categoriaRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+        let catTratada = categoriaRaw
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+
         if (catTratada === "fruta") catTratada = "frutas";
         if (catTratada === "legume") catTratada = "legumes";
         if (catTratada === "hortalica") catTratada = "hortalicas";
@@ -152,89 +254,168 @@ function validarDadosDaPlanilha(produtosRecebidos) {
         if (catTratada.includes("erva") || catTratada.includes("tempero")) catTratada = "ervas";
 
         if (!catTratada || !categoriasValidas.includes(catTratada)) {
-            errosDesteProduto.push(`Categoria inválida ("${categoriaRaw || 'Vazia'}")`);
+            errosDesteProduto.push(`Categoria inválida ("${categoriaRaw || "Vazia"}")`);
         }
+
+        // ===============================
+        // UNIDADE
+        // ===============================
 
         let unidadeRaw = item.formadevendaunidadedemedida || item.unidade || item.unidadedemedida || "";
-        let unidadeTratada = unidadeRaw.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-        
-        if (unidadeTratada.includes("arroba")) unidadeTratada = "arroba";
-        else if (unidadeTratada.includes("quilograma") || unidadeTratada.includes("kg")) unidadeTratada = "kg";
-        else if (unidadeTratada.includes("grama") || unidadeTratada.includes("g")) unidadeTratada = "g";
-        else if (unidadeTratada.includes("unidade") || unidadeTratada.includes("un")) unidadeTratada = "unidade";
-        else if (unidadeTratada.includes("duzia")) unidadeTratada = "duzia";
-        else if (unidadeTratada.includes("cento")) unidadeTratada = "cento";
-        else if (unidadeTratada.includes("milheiro")) unidadeTratada = "milheiro";
-        else if (unidadeTratada.includes("saca")) unidadeTratada = "saca";
-        else if (unidadeTratada.includes("maco")) unidadeTratada = "maco";
-        else if (unidadeTratada.includes("litro")) unidadeTratada = "litro";
-        else if (unidadeTratada.includes("caixa")) unidadeTratada = "caixa";
-        else if (unidadeTratada.includes("bandeja")) unidadeTratada = "bandeja";
-        else if (unidadeTratada.includes("tonelada") || unidadeTratada === "t") unidadeTratada = "t";
+        let unidadeTratada = unidadeRaw
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+
+        if (unidadeTratada.includes("arroba")) {
+            unidadeTratada = "arroba";
+        } else if (unidadeTratada.includes("quilograma") || unidadeTratada.includes("kg")) {
+            unidadeTratada = "kg";
+        } else if (unidadeTratada.includes("grama") || unidadeTratada.includes("g")) {
+            unidadeTratada = "g";
+        } else if (unidadeTratada.includes("unidade") || unidadeTratada.includes("un")) {
+            unidadeTratada = "unidade";
+        } else if (unidadeTratada.includes("duzia")) {
+            unidadeTratada = "duzia";
+        } else if (unidadeTratada.includes("cento")) {
+            unidadeTratada = "cento";
+        } else if (unidadeTratada.includes("milheiro")) {
+            unidadeTratada = "milheiro";
+        } else if (unidadeTratada.includes("saca")) {
+            unidadeTratada = "saca";
+        } else if (unidadeTratada.includes("maco")) {
+            unidadeTratada = "maco";
+        } else if (unidadeTratada.includes("litro")) {
+            unidadeTratada = "litro";
+        } else if (unidadeTratada.includes("caixa")) {
+            unidadeTratada = "caixa";
+        } else if (unidadeTratada.includes("bandeja")) {
+            unidadeTratada = "bandeja";
+        } else if (unidadeTratada.includes("tonelada") || unidadeTratada === "t") {
+            unidadeTratada = "t";
+        }
 
         if (!unidadeTratada || !unidadesValidas.includes(unidadeTratada)) {
-            errosDesteProduto.push(`Forma de Venda inválida ("${unidadeRaw || 'Vazia'}")`);
+            errosDesteProduto.push(`Forma de Venda inválida ("${unidadeRaw || "Vazia"}")`);
         }
+
+        // ===============================
+        // PREÇO
+        // ===============================
 
         const precoRaw = item.precorporunidadeescolhida || item.precor || item.preco;
         const preco = parseFloat(precoRaw);
-        if (isNaN(preco) || preco <= 0) errosDesteProduto.push("Preço deve ser maior que zero");
-        
+
+        if (isNaN(preco) || preco <= 0) {
+            errosDesteProduto.push("Preço deve ser maior que zero");
+        }
+
+        // ===============================
+        // QUANTIDADE
+        // ===============================
+
         const qtdRaw = item.estoquedisponivelnaunidadeescolhida || item.quantidade || item.estoque;
         const qtd = parseFloat(qtdRaw);
-        if (isNaN(qtd) || qtd < 0) errosDesteProduto.push("Estoque inválido ou negativo");
+
+        if (isNaN(qtd) || qtd < 0) {
+            errosDesteProduto.push("Estoque inválido ou negativo");
+        }
+
+        // ===============================
+        // DESCRIÇÃO
+        // ===============================
 
         const descricao = item.descricaoopcional || item.descricao || "";
 
+        // ===============================
+        // RESULTADO
+        // ===============================
+
         if (errosDesteProduto.length > 0) {
-            listaDeErrosEncontrados.push({ linha: numeroLinhaReal, nome: nome || "Sem Nome", detalhes: errosDesteProduto });
+            listaDeErrosEncontrados.push({
+                linha: numeroLinhaReal,
+                nome: nome || "Sem Nome",
+                detalhes: errosDesteProduto
+            });
         } else {
             listaProdutosValidos.push({
                 identificadorTemporario: numeroLinhaReal,
                 nome: nome,
                 categoria: catTratada,
                 unidade: unidadeTratada,
-                precoOriginal: preco, 
+                precoOriginal: preco,
                 quantidadeOriginal: qtd,
                 descricao: descricao,
-                status: "publicado", 
-                exibicaoPreco: `R$ ${preco.toFixed(2).replace('.', ',')} / ${unidadeTratada}`,
+                status: "publicado",
+                exibicaoPreco: `R$ ${preco.toFixed(2).replace(".", ",")} / ${unidadeTratada}`,
                 exibicaoQuantidade: `${qtd} (${unidadeTratada}) em estoque`
             });
         }
     });
 
-    apresentarResultadosNoModal(listaProdutosValidos.length, listaDeErrosEncontrados);
+    apresentarResultadosNoModal(
+        listaProdutosValidos.length,
+        listaDeErrosEncontrados
+    );
 }
 
-// --- Renderização baseada no seu novo CSS ---
+// =====================================================
+// ALTERAR STATUS DA IMPORTAÇÃO
+// =====================================================
 
 function mudarStatusImportacao(id, novoStatus) {
-    const produto = listaProdutosValidos.find(p => p.identificadorTemporario === id);
-    if (produto) produto.status = novoStatus;
+    const produto = listaProdutosValidos.find(
+        p => p.identificadorTemporario === id
+    );
+
+    if (produto) {
+        produto.status = novoStatus;
+        console.log(`📌 Produto "${produto.nome}" alterado para: ${novoStatus}`);
+    }
 }
 
+// =====================================================
+// APRESENTAR RESULTADOS
+// =====================================================
+
 function apresentarResultadosNoModal(totalValidos, listaErros) {
-    // Altera visibilidade das telas .estado-planilha
+
+    // ===============================
+    // ESTADOS DO MODAL
+    // ===============================
+
     document.getElementById("estadoUpload").classList.remove("active");
     document.getElementById("estadoResultado").classList.add("active");
 
-    // Alimenta os valores numéricos das Badges (.badge-sucesso e .badge-erro)
+    // ===============================
+    // QUANTIDADES
+    // ===============================
+
     document.getElementById("qtdValidos").innerText = totalValidos;
     document.getElementById("qtdErros").innerText = listaErros.length;
 
-    // Seleciona os containers de renderização (Devem conter a classe .lista-erros-container para o scroll funcionar)
+    // ===============================
+    // CONTAINERS
+    // ===============================
+
     const divErros = document.getElementById("listaErros");
-    const divValidos = document.getElementById("listaValidos"); 
-    
+    const divValidos = document.getElementById("listaValidos");
+
     divErros.innerHTML = "";
     divValidos.innerHTML = "";
 
-    // Exibe ou oculta as seções com base na existência de itens
+    // ===============================
+    // SEÇÕES
+    // ===============================
+
     document.getElementById("secaoErros").style.display = listaErros.length > 0 ? "block" : "none";
     document.getElementById("secaoValidos").style.display = totalValidos > 0 ? "block" : "none";
 
-    // 1. Renderiza os Cards de Erro respeitando rigorosamente a árvore do seu CSS
+    // =================================================
+    // CARDS DE ERRO
+    // =================================================
+
     listaErros.forEach(erro => {
         divErros.innerHTML += `
             <div class="card-erro-planilha">
@@ -250,37 +431,49 @@ function apresentarResultadosNoModal(totalValidos, listaErros) {
                         ${erro.detalhes.map(d => `<li>${d}</li>`).join("")}
                     </ul>
                 </div>
-            </div>`;
+            </div>
+        `;
     });
 
-    // 2. Renderiza os Cards Válidos adaptando a mesma estrutura, mas aplicando tons verdes elegantes inline
+    // =================================================
+    // CARDS VÁLIDOS
+    // =================================================
+
     listaProdutosValidos.forEach(p => {
-    divValidos.innerHTML += `
-        <div class="card-erro-planilha card-valido-planilha">
-            <div class="card-erro-header">
-                <h4>${p.nome}</h4>
-                <select class="select-status-importacao" onchange="mudarStatusImportacao(${p.identificadorTemporario}, this.value)">
-                    <option value="publicado" ${p.status === 'publicado' ? 'selected' : ''}>Publicar</option>
-                    <option value="rascunho" ${p.status === 'rascunho' ? 'selected' : ''}>Salvar Rascunho</option>
-                </select>
+        divValidos.innerHTML += `
+            <div class="card-erro-planilha card-valido-planilha">
+                <div class="card-erro-header">
+                    <h4>${p.nome}</h4>
+                    <select class="select-status-importacao" onchange="mudarStatusImportacao(${p.identificadorTemporario}, this.value)">
+                        <option value="publicado" ${p.status === "publicado" ? "selected" : ""}>Publicar</option>
+                        <option value="rascunho" ${p.status === "rascunho" ? "selected" : ""}>Salvar Rascunho</option>
+                    </select>
+                </div>
+                <div class="card-erro-info">
+                    <p><strong>Estoque mapeado:</strong> ${p.exibicaoQuantidade}</p>
+                    <p><strong>Preço unitário:</strong> ${p.exibicaoPreco}</p>
+                </div>
             </div>
-            <div class="card-erro-info">
-                <p><strong>Estoque mapeado:</strong> ${p.exibicaoQuantidade}</p>
-                <p><strong>Preço unitário:</strong> ${p.exibicaoPreco}</p>
-            </div>
-        </div>`;
+        `;
     });
 
-    // Atualiza o botão de finalização
+    // =================================================
+    // BOTÃO
+    // =================================================
+
     const btn = document.getElementById("btnConfirmarPlanilha");
     btn.disabled = totalValidos === 0;
     btn.innerText = `Importar ${totalValidos} Produtos`;
 }
 
-// --- Importação Final via API ---
+// =====================================================
+// IMPORTAÇÃO FINAL VIA API
+// =====================================================
 
 document.getElementById("btnConfirmarPlanilha").onclick = async () => {
-    if (listaProdutosValidos.length === 0) return;
+    if (listaProdutosValidos.length === 0) {
+        return;
+    }
 
     const btn = document.getElementById("btnConfirmarPlanilha");
     btn.disabled = true;
@@ -290,18 +483,42 @@ document.getElementById("btnConfirmarPlanilha").onclick = async () => {
     let listaErrosServidor = [];
     let produtosQueFalharam = [];
 
+    // =================================================
+    // ENVIAR CADA PRODUTO
+    // =================================================
+
     for (const produto of listaProdutosValidos) {
         try {
             const formData = new FormData();
+
             formData.append("nome", produto.nome);
             formData.append("categoria", produto.categoria);
             formData.append("preco", produto.precoOriginal);
             formData.append("unidade", produto.unidade);
             formData.append("quantidade", produto.quantidadeOriginal);
             formData.append("descricao", produto.descricao);
-            formData.append("status", produto.status); 
+            formData.append("status_produto", produto.status);
+
+            // ===============================
+            // DEBUG
+            // ===============================
+
+            console.log("📦 Importando produto:", produto.nome);
+            console.log("📌 Status:", produto.status);
+
+            for (const [chave, valor] of formData.entries()) {
+                console.log(`${chave}:`, valor);
+            }
+
+            // ===============================
+            // API
+            // ===============================
 
             const resposta = await API.criarProduto(formData);
+
+            // ===============================
+            // SUCESSO
+            // ===============================
 
             if (resposta && !resposta.erro) {
                 totalSucessos++;
@@ -313,7 +530,10 @@ document.getElementById("btnConfirmarPlanilha").onclick = async () => {
                 });
                 produtosQueFalharam.push(produto);
             }
+
         } catch (error) {
+            console.error("❌ Erro ao importar produto:", produto.nome, error);
+
             listaErrosServidor.push({
                 linha: "Rede",
                 nome: produto.nome,
@@ -323,16 +543,27 @@ document.getElementById("btnConfirmarPlanilha").onclick = async () => {
         }
     }
 
+    // =================================================
+    // ATUALIZAR MARKETPLACE
+    // =================================================
+
     if (totalSucessos > 0) {
         await renderProdutos();
         const plural = totalSucessos > 1 ? "s" : "";
-        exibirNotificacao('cadastro', `${totalSucessos} produto${plural} adicionado${plural}!`);
+        exibirNotificacao("cadastro", `${totalSucessos} produto${plural} adicionado${plural}!`);
     }
+
+    // =================================================
+    // PRODUTOS QUE FALHARAM
+    // =================================================
 
     if (listaErrosServidor.length > 0) {
         listaProdutosValidos = produtosQueFalharam;
-        apresentarResultadosNoModal(listaProdutosValidos.length, listaErrosServidor);
-        exibirNotificacao('erro', `${listaErrosServidor.length} produto(s) falharam no processamento externo.`);
+        apresentarResultadosNoModal(
+            listaProdutosValidos.length,
+            listaErrosServidor
+        );
+        exibirNotificacao("erro", `${listaErrosServidor.length} produto(s) falharam no processamento externo.`);
     } else {
         fecharModalPlanilha();
     }
