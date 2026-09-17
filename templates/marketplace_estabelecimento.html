@@ -18,6 +18,8 @@
     <link rel="stylesheet" href="../static/css2/geral/categorias.css">
     <link rel="stylesheet" href="../static/css2/geral/drawer.css">
     <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+    <link rel="stylesheet" href="../static/css2/geral/sem_produto.css">
+
 
 
 
@@ -26,7 +28,6 @@
     <link rel="stylesheet" href="../static/css2/marketplace/modal_pedidos.css">
     <link rel="stylesheet" href="../static/css2/marketplace/card_produtos.css">
 
-    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/sem_produto.css">
 
 
 
@@ -162,9 +163,11 @@
         <!-- GRID DE PRODUTOS -->
         <main class="grade-produtos" id="productsGrid">
 
-            <p id="mensagemCarregandoMarketplace" class="mensagem-carregando">
-                Buscando produtos disponíveis...
-            </p>
+            <div id="mensagemCarregandoMarketplace" class="carregando-produtos">
+                <div class="spinner-produtos"></div>
+
+                <p>Buscando produtos disponíveis...</p>
+            </div>
 
         </main>
 

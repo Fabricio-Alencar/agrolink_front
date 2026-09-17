@@ -209,6 +209,22 @@ function atualizarIcones() {
 // ESTADOS DA UI
 // ============================================================
 
+function renderizarCarregando() {
+
+    DOM.grid.innerHTML = `
+        <div class="carregando-produtos">
+
+            <div class="spinner-produtos"></div>
+
+            <p>
+                Carregando produtos...
+            </p>
+
+        </div>
+    `;
+}
+
+
 function renderizarSemProdutos() {
 
     DOM.grid.innerHTML = `
@@ -481,6 +497,10 @@ export async function renderizarProdutos(
             && listaExterna === null
         ) {
 
+            // Mostra o loading enquanto a API responde
+            renderizarCarregando();
+
+
             console.log(
                 "🔄 Buscando API..."
             );
@@ -574,6 +594,10 @@ export async function renderizarProdutos(
         // ====================================================
         // RENDERIZAR PRODUTOS
         // ====================================================
+
+        // Remove o loading antes de adicionar os produtos
+        limparGrid();
+
 
         lista.forEach(produto => {
 

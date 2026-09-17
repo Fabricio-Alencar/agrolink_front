@@ -1,0 +1,78 @@
+/* ==========================================
+   LOADING DOS PRODUTOS
+========================================== */
+
+.carregando-produtos {
+    grid-column: 1 / -1;
+
+    width: 100%;
+    min-height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-md);
+
+    text-align: center;
+
+    color: var(--cor-texto-secundario);
+}
+
+
+/* Spinner */
+
+.spinner-produtos {
+    width: 2.75rem;
+    height: 2.75rem;
+
+    border: 0.25rem solid rgba(122, 149, 68, 0.18);
+    border-top-color: var(--cor-primaria);
+
+    border-radius: 50%;
+
+    animation: girar-produtos 0.9s ease-in-out infinite;
+}
+
+
+/* Texto */
+
+.carregando-produtos p {
+    margin: 0;
+
+    font-size: var(--fs-body);
+    font-weight: 500;
+
+    color: var(--cor-texto-secundario);
+
+    animation: aparecer-carregando 0.4s ease;
+}
+
+
+/* Animação do spinner */
+
+@keyframes girar-produtos {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Entrada suave do texto */
+
+@keyframes aparecer-carregando {
+    from {
+        opacity: 0;
+        transform: translateY(0.25rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

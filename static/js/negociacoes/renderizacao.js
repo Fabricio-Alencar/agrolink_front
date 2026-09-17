@@ -18,6 +18,24 @@ function limparGrid() {
 }
 
 // ==========================================
+// LOADING
+// ==========================================
+
+function renderizarCarregando(container) {
+    container.innerHTML = `
+        <div class="carregando-produtos">
+
+            <div class="spinner-produtos"></div>
+
+            <p>
+                Carregando pedidos...
+            </p>
+
+        </div>
+    `;
+}
+
+// ==========================================
 // CARDS DE ESTADO
 // ==========================================
 
@@ -448,6 +466,7 @@ export async function renderOrders(
     tipoUsuarioParam = null
 ) {
     const grid = document.getElementById('orders-grid');
+
     if (!grid) {
         return;
     }
@@ -468,23 +487,36 @@ export async function renderOrders(
         // ==========================================
 
         if (!cacheNegociacoes && !listaExterna) {
-            cacheNegociacoes = await API.listarNegociacoes(tipo_de_usuario);
+
+            // Mostra o loading enquanto a API responde
+            renderizarCarregando(grid);
+
+            cacheNegociacoes =
+                await API.listarNegociacoes(tipo_de_usuario);
         }
 
-        let lista = listaExterna || cacheNegociacoes || [];
+        let lista =
+            listaExterna ||
+            cacheNegociacoes ||
+            [];
 
         // ==========================================
         // NENHUM PEDIDO / NENHUM RESULTADO
         // ==========================================
 
         if (lista.length === 0) {
+
             if (listaExterna) {
+
                 // Existe uma lista externa, portanto provavelmente houve filtro/busca.
                 renderizarSemResultados(grid);
+
             } else {
+
                 // Não existe lista externa. A API retornou zero pedidos.
                 renderizarSemPedidos(grid);
             }
+
             return;
         }
 
@@ -516,7 +548,11 @@ export async function renderOrders(
         // RENDERIZA CARDS
         // ==========================================
 
+        // Remove o loading antes de renderizar os pedidos
+        limparGrid();
+
         listaOrdenada.forEach(order => {
+
             grid.appendChild(
                 criarCardNegociacao(
                     order,
@@ -526,7 +562,12 @@ export async function renderOrders(
         });
 
     } catch (error) {
-        console.error("Erro ao carregar negociações:", error);
+
+        console.error(
+            "Erro ao carregar negociações:",
+            error
+        );
+
         renderizarErro(grid);
     }
 }
