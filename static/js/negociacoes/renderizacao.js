@@ -1,6 +1,7 @@
 import { showDetails } from "./navegacao.js";
 import { deleteOrder } from "./filtros_botao_excluir.js";
 import { API } from './api.js';
+import { prepararConfirmacaoNegociacao } from "./confirmacao.js";
 
 let cacheNegociacoes = null;
 
@@ -12,6 +13,7 @@ export const getCacheNegociacoes = () => cacheNegociacoes;
 
 function limparGrid() {
     const grid = document.getElementById('orders-grid');
+
     if (grid) {
         grid.innerHTML = '';
     }
@@ -53,13 +55,18 @@ function renderizarSemPedidos(container) {
     container.innerHTML = `
         <div class="sem-produtos">
             <i data-lucide="inbox"></i>
-            <h2>Nenhum pedido cadastrado</h2>
+
+            <h2>
+                Nenhum pedido cadastrado
+            </h2>
+
             <p>
                 Você ainda não possui pedidos ou negociações
                 para visualizar neste momento.
             </p>
         </div>
     `;
+
     atualizarIcones();
 }
 
@@ -71,7 +78,11 @@ function renderizarSemResultados(container) {
     container.innerHTML = `
         <div class="sem-produtos">
             <i data-lucide="search-x"></i>
-            <h2>Nenhum resultado encontrado</h2>
+
+            <h2>
+                Nenhum resultado encontrado
+            </h2>
+
             <p>
                 Não encontramos nenhum pedido com os filtros
                 selecionados. Tente alterar os filtros para
@@ -79,6 +90,7 @@ function renderizarSemResultados(container) {
             </p>
         </div>
     `;
+
     atualizarIcones();
 }
 
@@ -90,13 +102,18 @@ function renderizarErro(container) {
     container.innerHTML = `
         <div class="sem-produtos">
             <i data-lucide="triangle-alert"></i>
-            <h2>Não foi possível carregar os pedidos</h2>
+
+            <h2>
+                Não foi possível carregar os pedidos
+            </h2>
+
             <p>
                 Ocorreu um problema ao carregar suas negociações.
                 Tente novamente em alguns instantes.
             </p>
         </div>
     `;
+
     atualizarIcones();
 }
 
@@ -105,21 +122,32 @@ function renderizarErro(container) {
 // ==========================================
 
 export function criarCardNegociacao(order, tipo_de_usuario) {
-    const statusClass = order.status ? order.status.toLowerCase() : 'pendente';
-    const card = document.createElement('div');
+
+    const statusClass =
+        order.status
+            ? order.status.toLowerCase()
+            : 'pendente';
+
+    const card =
+        document.createElement('div');
+
     card.className = 'card';
 
     let botaoSecundario = '';
     let acaoSecundaria = null;
     let novoStatus = '';
 
+
     // ==========================================
     // STATUS PENDENTE
     // ==========================================
 
     if (statusClass === 'pendente') {
+
         if (tipo_de_usuario === 'produtor') {
+
             // Produtor recusa proposta pendente
+
             botaoSecundario = `
                 <button
                     class="btn-acao-secundaria"
@@ -136,10 +164,14 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     Recusar
                 </button>
             `;
+
             novoStatus = 'Recusado';
             acaoSecundaria = 'recusar';
+
         } else {
+
             // Estabelecimento cancela proposta pendente
+
             botaoSecundario = `
                 <button
                     class="btn-acao-secundaria"
@@ -156,16 +188,20 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     Cancelar
                 </button>
             `;
+
             novoStatus = 'Cancelado';
             acaoSecundaria = 'cancelar';
         }
+
 
     // ==========================================
     // STATUS ACEITO
     // ==========================================
 
     } else if (statusClass === 'aceito') {
+
         // Se foi apenas aceito, ainda pode cancelar
+
         botaoSecundario = `
             <button
                 class="btn-acao-secundaria"
@@ -182,8 +218,10 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                 Cancelar
             </button>
         `;
+
         novoStatus = 'Cancelado';
         acaoSecundaria = 'cancelar';
+
 
     // ==========================================
     // STATUS FINAIS
@@ -194,8 +232,10 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         statusClass === 'cancelado' ||
         statusClass === 'finalizado'
     ) {
+
         // CICLO MORTO:
         // Mostra a lixeira apenas para limpar a tela
+
         botaoSecundario = `
             <button
                 class="btn-delete"
@@ -221,11 +261,13 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
     // Se o status for 'entregue', botaoSecundario continua vazio.
     // Nenhuma ação de exclusão ou cancelamento é mostrada.
 
+
     // ==========================================
     // HTML DO CARD
     // ==========================================
 
     card.innerHTML = `
+
         <div
             class="card-header"
             style="
@@ -235,7 +277,9 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                 margin-bottom: 12px;
             "
         >
+
             <div>
+
                 <div
                     style="
                         font-weight: 700;
@@ -245,6 +289,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                 >
                     ${order.negociante_nome}
                 </div>
+
 
                 <div
                     style="
@@ -256,6 +301,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         color: #555;
                     "
                 >
+
                     <svg
                         viewBox="0 0 24 24"
                         width="16"
@@ -275,18 +321,27 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                             v-6.72l-6 3.39v6.71l6-3.38z
                         "/>
                     </svg>
+
                     ${order.produto_nome}
+
                 </div>
+
             </div>
+
 
             <span class="badge ${statusClass}">
                 ${order.status}
             </span>
+
         </div>
 
+
         <div class="card-body">
+
             <div class="price-row">
+
                 <div class="qty">
+
                     <span
                         style="
                             display: block;
@@ -297,6 +352,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         Quantidade
                     </span>
 
+
                     <span
                         style="
                             font-size: 16px;
@@ -304,7 +360,9 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                             color: #333;
                         "
                     >
+
                         ${order.quantidade}
+
                         <span
                             style="
                                 font-size: 14px;
@@ -313,10 +371,14 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         >
                             ${order.produto_unidade}
                         </span>
+
                     </span>
+
                 </div>
 
+
                 <div class="price">
+
                     <span
                         style="
                             display: block;
@@ -327,7 +389,9 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     >
                         Preço
                     </span>
+
                     R$ ${order.produto_preco}
+
                     <small
                         style="
                             font-weight: 400;
@@ -337,10 +401,14 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     >
                         /${order.produto_unidade}
                     </small>
+
                 </div>
+
             </div>
 
+
             <div style="margin-bottom: 16px;">
+
                 <span
                     style="
                         font-size: 12px;
@@ -352,13 +420,18 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     Proposta/Descrição do Pedido
                 </span>
 
+
                 <p class="desc">
                     ${order.descricao || 'Sem descrição'}
                 </p>
+
             </div>
 
+
             <div>
+
                 <div class="info-row">
+
                     <svg
                         viewBox="0 0 24 24"
                         width="16"
@@ -375,13 +448,17 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         "/>
                     </svg>
 
+
                     <span>
                         Entrega:
                         ${order.data_entrega || 'A combinar'}
                     </span>
+
                 </div>
 
+
                 <div class="info-row">
+
                     <svg
                         viewBox="0 0 24 24"
                         width="16"
@@ -398,64 +475,85 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         "/>
                     </svg>
 
+
                     <span>
                         ${order.negociante_cidade},
                         ${order.negociante_estado}
                     </span>
+
                 </div>
+
             </div>
+
         </div>
 
+
         <div class="card-actions">
+
             <button class="btn-details">
                 Detalhes
             </button>
+
             ${botaoSecundario}
+
         </div>
     `;
+
 
     // ==========================================
     // BOTÃO DETALHES
     // ==========================================
 
     card.querySelector('.btn-details').onclick = () => {
+
         showDetails(
             order.id,
             tipo_de_usuario
         );
+
     };
+
 
     // ==========================================
     // AÇÃO SECUNDÁRIA
     // ==========================================
 
     if (acaoSecundaria) {
-        card.querySelector('.btn-acao-secundaria').onclick = async () => {
-            if (confirm(`Deseja realmente ${acaoSecundaria} este pedido?`)) {
-                try {
-                    await API.atualizarStatus(order.id, novoStatus);
-                    alert(`Pedido ${novoStatus.toLowerCase()}!`);
-                    location.reload();
-                } catch (e) {
-                    alert("Erro ao tentar atualizar o status do pedido.");
-                }
-            }
+
+        card.querySelector(
+            '.btn-acao-secundaria'
+        ).onclick = () => {
+
+            prepararConfirmacaoNegociacao(
+                acaoSecundaria,
+                order,
+                novoStatus
+            );
+
         };
+
+
     } else if (
         statusClass === 'recusado' ||
         statusClass === 'cancelado' ||
         statusClass === 'finalizado'
     ) {
+
         // ==========================================
         // BOTÃO EXCLUIR HISTÓRICO
         // ==========================================
+
         card.querySelector('.btn-delete').onclick = () => {
+
             deleteOrder(order.id);
+
         };
     }
 
+
     return card;
 }
+
 
 // ==========================================
 // RENDERIZA PEDIDOS
@@ -465,13 +563,17 @@ export async function renderOrders(
     listaExterna = null,
     tipoUsuarioParam = null
 ) {
-    const grid = document.getElementById('orders-grid');
+
+    const grid =
+        document.getElementById('orders-grid');
 
     if (!grid) {
         return;
     }
 
+
     limparGrid();
+
 
     const tipo_de_usuario =
         tipoUsuarioParam ||
@@ -481,7 +583,9 @@ export async function renderOrders(
                 : 'produtor'
         );
 
+
     try {
+
         // ==========================================
         // BUSCA API / CACHE
         // ==========================================
@@ -489,16 +593,22 @@ export async function renderOrders(
         if (!cacheNegociacoes && !listaExterna) {
 
             // Mostra o loading enquanto a API responde
+
             renderizarCarregando(grid);
 
+
             cacheNegociacoes =
-                await API.listarNegociacoes(tipo_de_usuario);
+                await API.listarNegociacoes(
+                    tipo_de_usuario
+                );
         }
+
 
         let lista =
             listaExterna ||
             cacheNegociacoes ||
             [];
+
 
         // ==========================================
         // NENHUM PEDIDO / NENHUM RESULTADO
@@ -508,48 +618,72 @@ export async function renderOrders(
 
             if (listaExterna) {
 
-                // Existe uma lista externa, portanto provavelmente houve filtro/busca.
+                // Existe uma lista externa, portanto
+                // provavelmente houve filtro/busca.
+
                 renderizarSemResultados(grid);
 
             } else {
 
-                // Não existe lista externa. A API retornou zero pedidos.
+                // Não existe lista externa.
+                // A API retornou zero pedidos.
+
                 renderizarSemPedidos(grid);
             }
 
             return;
         }
 
+
         // ==========================================
         // LÓGICA DE AGRUPAMENTO / ORDENAÇÃO
         // ==========================================
 
         const ordemPrioridade = {
+
             'pendente': 1,
             'aceito': 2,
             'entregue': 3,
             'finalizado': 4,
             'cancelado': 5,
             'recusado': 6
+
         };
 
-        const listaOrdenada = [...lista].sort((a, b) => {
-            const statusA = (a.status || "").toLowerCase();
-            const statusB = (b.status || "").toLowerCase();
 
-            // Atribui peso alto (99) se o status não estiver no mapeamento
-            const pesoA = ordemPrioridade[statusA] || 99;
-            const pesoB = ordemPrioridade[statusB] || 99;
+        const listaOrdenada =
+            [...lista].sort((a, b) => {
 
-            return pesoA - pesoB;
-        });
+                const statusA =
+                    (a.status || "").toLowerCase();
+
+                const statusB =
+                    (b.status || "").toLowerCase();
+
+
+                // Atribui peso alto (99) se o status
+                // não estiver no mapeamento
+
+                const pesoA =
+                    ordemPrioridade[statusA] || 99;
+
+                const pesoB =
+                    ordemPrioridade[statusB] || 99;
+
+
+                return pesoA - pesoB;
+
+            });
+
 
         // ==========================================
         // RENDERIZA CARDS
         // ==========================================
 
         // Remove o loading antes de renderizar os pedidos
+
         limparGrid();
+
 
         listaOrdenada.forEach(order => {
 
@@ -559,7 +693,9 @@ export async function renderOrders(
                     tipo_de_usuario
                 )
             );
+
         });
+
 
     } catch (error) {
 

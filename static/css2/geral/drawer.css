@@ -221,7 +221,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
+    width: 1rem;
     min-width: 1.5rem;
     height: 1.5rem;
 }
@@ -230,8 +230,8 @@
    ÍCONES LUCIDE
 ========================= */
 .item-navegacao .icone-box svg {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 3.5rem;
+    height: 3.5rem;
 }
 
 /* =========================

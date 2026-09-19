@@ -1,0 +1,144 @@
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 3000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--space-md);
+
+    background: rgba(0, 0, 0, 0.6);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+
+/* =========================================================
+   MODAL ATIVO
+   ========================================================= */
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   CONTEÚDO
+   ========================================================= */
+
+.modal-content {
+    width: 90%;
+    max-width: 400px;
+
+    padding: 30px;
+
+    border-radius: 8px;
+
+    background: var(--cor-branco);
+
+    font-family: 'Inter', sans-serif;
+
+    text-align: center;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+.modal-content h2 {
+    margin-bottom: 15px;
+
+    color: var(--cor-texto-escuro);
+
+    font-size: 1.4rem;
+}
+
+
+.modal-content p {
+    margin-bottom: 25px;
+
+    color: var(--cor-texto-secundario);
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.modal-actions {
+    display: flex;
+
+    gap: 15px;
+}
+
+
+.modal-actions button {
+    flex: 1;
+
+    padding: 12px;
+
+    border: none;
+    border-radius: 4px;
+
+    font-size: 1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: filter 0.2s ease;
+}
+
+
+.modal-actions button:hover {
+    filter: brightness(0.95);
+}
+
+
+/* =========================================================
+   CANCELAR
+   ========================================================= */
+
+.btn-cancel {
+    background: #e0e0e0;
+
+    color: var(--cor-texto-escuro);
+}
+
+
+/* =========================================================
+   CONFIRMAR
+   ========================================================= */
+
+.btn-confirm-delete {
+    background: var(--vermelho-texto);
+
+    color: var(--cor-branco);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .modal-actions {
+        flex-direction: column;
+    }
+
+}

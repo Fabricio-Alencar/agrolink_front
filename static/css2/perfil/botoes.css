@@ -1,0 +1,161 @@
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.user-info-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 30px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.form-group label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--cor-texto-principal);
+
+    font-family: 'Inter', sans-serif;
+
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CONTAINER DO INPUT
+   ========================================================= */
+
+.input-wrapper {
+    width: 100%;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+
+/* =========================================================
+   ÍCONE DO CAMPO
+   ========================================================= */
+
+.field-icon {
+    position: absolute;
+
+    left: 15px;
+
+    color: var(--cor-texto-secundario);
+
+    font-size: 1.1rem;
+
+    pointer-events: none;
+
+    z-index: 1;
+}
+
+
+/* =========================================================
+   ÍCONE DE EDIÇÃO
+   ========================================================= */
+
+.edit-icon {
+    position: absolute;
+
+    right: 15px;
+
+    color: var(--cor-texto-secundario);
+
+    font-size: 0.95rem;
+
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+
+.edit-icon:hover {
+    color: var(--cor-texto-principal);
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.form-control {
+    width: 100%;
+
+    padding: 16px 45px;
+
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+
+    background: var(--cor-branco);
+
+    color: var(--cor-texto-secundario);
+
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   INPUT EM EDIÇÃO
+   ========================================================= */
+
+.form-control:not([readonly]) {
+    color: var(--cor-texto-principal);
+
+    border-color: var(--verde-oliva);
+}
+
+
+/* =========================================================
+   FOCO
+   ========================================================= */
+
+.form-control:focus {
+    border-color: var(--verde-oliva);
+
+    box-shadow: 0 0 0 3px rgba(85, 139, 47, 0.15);
+}
+
+
+/* =========================================================
+   INPUT SOMENTE LEITURA
+   ========================================================= */
+
+.form-control[readonly] {
+    cursor: default;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .user-info-form {
+        gap: 22px;
+    }
+
+
+    .form-control {
+        padding: 14px 42px;
+    }
+
+}

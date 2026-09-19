@@ -1,13 +1,15 @@
 import { getCacheNegociacoes } from "./renderizacao.js";
 import { API } from "./api.js";
+import { prepararConfirmacaoNegociacao } from "./confirmacao.js";
 
 // ============================================================
-// CONFIGURAÇÃO
+// CONFIGURAÇÃO E ESTADO GLOBAL
 // ============================================================
 const API_URL = CONFIG.API_URL;
+const FOTO_GENERICA = "../static/assets/produto_generico.png";
 
 // ============================================================
-// NORMALIZAR STATUS
+// AUXILIARES: NORMALIZAR STATUS E FOTO
 // ============================================================
 function normalizarStatus(status) {
     return String(status || "pendente")
@@ -17,394 +19,712 @@ function normalizarStatus(status) {
         .replace(/[\u0300-\u036f]/g, "");
 }
 
-// ============================================================
-// RESOLVER CAMINHO DA FOTO
-// ============================================================
 function resolverCaminhoFoto(order) {
-    const fallback = `${API_URL}/static/uploads/produtos/foto_generica.png`;
-    if (!order.produto_foto) {
-        console.warn("⚠️ Sem foto, usando fallback");
-        return fallback;
+    if (!order || !order.produto_foto) {
+        return FOTO_GENERICA;
     }
-    const caminho = String(order.produto_foto).trim();
-    // Azure Blob Storage / URL SAS
+
+    let foto = String(order.produto_foto).trim();
+
     if (
-        caminho.startsWith("http://") ||
-        caminho.startsWith("https://")
+        foto.startsWith("http://") ||
+        foto.startsWith("https://")
     ) {
-        return caminho;
+        return foto;
     }
-    // Compatibilidade com caminho antigo
-    const caminhoNormalizado = caminho.replace(/^\/+/, "");
-    if (caminhoNormalizado.startsWith("static/")) {
-        return `${API_URL}/${caminhoNormalizado}`;
+
+    foto = foto
+        .replace(/^\/+/, "")
+        .replace(/^static\//, "")
+        .replace(/^uploads\/produtos\//, "");
+
+    if (
+        foto === "foto_generica.png" ||
+        foto === "produto_generico.png"
+    ) {
+        return FOTO_GENERICA;
     }
-    return `${API_URL}/static/${caminhoNormalizado}`;
+
+    const baseApi = (
+        typeof API_URL !== "undefined"
+            ? API_URL
+            : ""
+    ).replace(/\/$/, "");
+
+    return `${baseApi}/static/uploads/produtos/${foto}`;
 }
 
+
 // ============================================================
-// MOSTRAR DETALHES
+// EXIBIÇÃO DOS DETALHES
 // ============================================================
 export function showDetails(id, tipoUsuario) {
-    console.log("🔎 Abrindo negociação:", id);
-    console.log("👤 Tipo de usuário:", tipoUsuario);
 
-    // BUSCAR PEDIDO NO CACHE
+    console.log(
+        "🔎 Abrindo negociação:",
+        id,
+        "| Tipo:",
+        tipoUsuario
+    );
+
     const data = getCacheNegociacoes() || [];
-    const order = data.find(o => Number(o.id) === Number(id));
+
+    const order = data.find(
+        o => Number(o.id) === Number(id)
+    );
 
     if (!order) {
-        console.error("❌ Negociação não encontrada no cache.", id);
+        console.error(
+            "❌ Negociação não encontrada no cache.",
+            id
+        );
+
         return;
     }
 
-    console.log("📋 Abrindo detalhes do pedido:", order);
 
-    // ELEMENTOS DAS VIEWS
-    const viewLista = document.getElementById("view-lista");
-    const viewCalendario = document.getElementById("view-calendario");
-    const viewDetalhes = document.getElementById("view-detalhes");
-    const container = document.getElementById("details-content");
+    const viewLista =
+        document.getElementById("view-lista");
 
-    // VERIFICAR ELEMENTOS
-    if (!container) {
-        console.error("❌ Elemento #details-content não encontrado.");
+    const viewCalendario =
+        document.getElementById("view-calendario");
+
+    const viewDetalhes =
+        document.getElementById("view-detalhes");
+
+    const container =
+        document.getElementById("details-content");
+
+
+    if (!container || !viewDetalhes) {
+
+        console.error(
+            "❌ Elementos de view não encontrados."
+        );
+
         return;
     }
 
-    if (!viewDetalhes) {
-        console.error("❌ Elemento #view-detalhes não encontrado.");
-        return;
-    }
 
-    // STATUS
-    const statusOriginal = order.status || "Pendente";
-    const statusClass = normalizarStatus(statusOriginal);
+    const statusOriginal =
+        order.status || "Pendente";
 
-    // BOTÕES DE AÇÃO
+    const statusClass =
+        normalizarStatus(statusOriginal);
+
     let botoesHTML = "";
 
-    // PEDIDO PENDENTE
+
+    // ========================================================
+    // CONSTRUÇÃO DOS BOTÕES
+    // ========================================================
+
     if (statusClass === "pendente") {
+
+        // ----------------------------------------------------
+        // PRODUTOR
+        // ----------------------------------------------------
+
         if (tipoUsuario === "produtor") {
+
             botoesHTML = `
-                <button class="btn-action btn-finalize" id="btnAceitar">
+                <button
+                    class="btn-action btn-finalize"
+                    id="btnAceitar"
+                >
                     Aceitar Pedido
                 </button>
-                <button class="btn-action btn-cancel" id="btnRecusar">
+
+                <button
+                    class="btn-action btn-cancel"
+                    id="btnRecusar"
+                >
                     Recusar Pedido
                 </button>
             `;
-        } else {
+
+        }
+
+        // ----------------------------------------------------
+        // ESTABELECIMENTO
+        // ----------------------------------------------------
+
+        else {
+
             botoesHTML = `
-                <p style="text-align: center; color: #888; width: 100%; margin-bottom: 10px;">
+                <p
+                    style="
+                        text-align: center;
+                        color: #888;
+                        width: 100%;
+                        margin-bottom: 10px;
+                    "
+                >
                     Aguardando resposta do produtor...
                 </p>
-                <button class="btn-action btn-cancel" id="btnCancelar">
+
+                <button
+                    class="btn-action btn-cancel"
+                    id="btnCancelar"
+                >
                     Cancelar Pedido
                 </button>
             `;
         }
+
     }
-    // PEDIDO ACEITO / ENTREGUE
-    else if (statusClass === "aceito" || statusClass === "entregue") {
+
+    // ========================================================
+    // ACEITO / ENTREGUE
+    // ========================================================
+
+    else if (
+        statusClass === "aceito" ||
+        statusClass === "entregue"
+    ) {
+
+        // ----------------------------------------------------
+        // PRODUTOR
+        // ----------------------------------------------------
+
         if (tipoUsuario === "produtor") {
-            const desabilitado = order.entrega_confirmada
-                ? 'disabled style="background-color:#ccc;cursor:not-allowed;"'
-                : "";
-            const texto = order.entrega_confirmada
-                ? "Entrega Confirmada"
-                : "Confirmar Entrega";
+
+            const desabilitado =
+                order.entrega_confirmada
+                    ? 'disabled style="background-color:#ccc;cursor:not-allowed;"'
+                    : "";
+
+            const texto =
+                order.entrega_confirmada
+                    ? "Entrega Confirmada"
+                    : "Confirmar Entrega";
 
             botoesHTML = `
-                <button class="btn-action btn-finalize" id="btnConfirmarAcao" ${desabilitado}>
-                    ${texto}
-                </button>
-            `;
-        } else if (tipoUsuario === "estabelecimento") {
-            const desabilitado = order.recebimento_confirmado
-                ? 'disabled style="background-color:#ccc;cursor:not-allowed;"'
-                : "";
-            const texto = order.recebimento_confirmado
-                ? "Recebimento Confirmado"
-                : "Confirmar Recebimento";
-
-            botoesHTML = `
-                <button class="btn-action btn-finalize" id="btnConfirmarAcao" ${desabilitado}>
+                <button
+                    class="btn-action btn-finalize"
+                    id="btnConfirmarAcao"
+                    ${desabilitado}
+                >
                     ${texto}
                 </button>
             `;
         }
+
+        // ----------------------------------------------------
+        // ESTABELECIMENTO
+        // ----------------------------------------------------
+
+        else if (tipoUsuario === "estabelecimento") {
+
+            const desabilitado =
+                order.recebimento_confirmado
+                    ? 'disabled style="background-color:#ccc;cursor:not-allowed;"'
+                    : "";
+
+            const texto =
+                order.recebimento_confirmado
+                    ? "Recebimento Confirmado"
+                    : "Confirmar Recebimento";
+
+            botoesHTML = `
+                <button
+                    class="btn-action btn-finalize"
+                    id="btnConfirmarAcao"
+                    ${desabilitado}
+                >
+                    ${texto}
+                </button>
+            `;
+        }
+
     }
+
+    // ========================================================
     // OUTROS STATUS
+    // ========================================================
+
     else {
+
         botoesHTML = `
-            <p style="text-align:center; font-weight:bold; width:100%;">
+            <p
+                style="
+                    text-align:center;
+                    font-weight:bold;
+                    width:100%;
+                "
+            >
                 Este pedido está ${statusOriginal}.
             </p>
         `;
     }
 
-    // FOTO
-    const urlImagem = resolverCaminhoFoto(order);
-    const fallbackImagem = `${API_URL}/static/uploads/produtos/foto_generica.png`;
 
-    // HTML DOS DETALHES
+    // ========================================================
+    // FOTO DO PRODUTO
+    // ========================================================
+
+    const urlImagem =
+        resolverCaminhoFoto(order);
+
+
+    // ========================================================
+    // RENDERIZAÇÃO DO HTML
+    // ========================================================
+
     container.innerHTML = `
+
         <div class="details-header">
-            <h2>Detalhes do Pedido</h2>
-            <span class="badge ${statusClass}" style="font-size:14px; padding:6px 16px;">
+
+            <h2>
+                Detalhes do Pedido
+            </h2>
+
+            <span
+                class="badge ${statusClass}"
+                style="
+                    font-size:14px;
+                    padding:6px 16px;
+                "
+            >
                 ${statusOriginal}
             </span>
+
         </div>
 
+
         <div class="details-grid">
-            <!-- COLUNA ESQUERDA -->
+
+            <!-- =================================================
+                 COLUNA ESQUERDA
+            ================================================== -->
+
             <div class="col-left">
+
                 <div class="info-group">
+
                     <span class="info-label">
                         <i data-lucide="package"></i>
                         Produto:
                     </span>
+
                     <span class="info-value">
                         ${order.produto_nome || "Produto"}
                     </span>
+
                 </div>
 
-                <div style="display:flex; gap:40px; margin-bottom:24px;">
+
+                <div
+                    style="
+                        display:flex;
+                        gap:40px;
+                        margin-bottom:24px;
+                    "
+                >
+
                     <div>
+
                         <span class="info-label">
                             <i data-lucide="boxes"></i>
                             Quantidade:
                         </span>
+
                         <span class="info-text">
                             ${order.quantidade ?? "-"}
                         </span>
+
                     </div>
 
+
                     <div>
+
                         <span class="info-label">
                             <i data-lucide="badge-dollar-sign"></i>
                             Preço Unitário:
                         </span>
+
                         <span class="info-text">
                             R$ ${order.produto_preco ?? "0,00"}
                         </span>
+
                     </div>
+
                 </div>
 
+
                 <div class="info-group">
+
                     <span class="info-label">
                         <i data-lucide="calendar-days"></i>
                         Data de entrega:
                     </span>
+
                     <span class="info-text">
                         ${order.data_entrega || "A combinar"}
                     </span>
+
                 </div>
 
+
                 <div class="info-group">
+
                     <span class="info-label">
                         <i data-lucide="file-text"></i>
                         Descrição do Pedido:
                     </span>
-                    <textarea class="desc-box" readonly>${order.descricao || "Descrição adicional."}</textarea>
+
+                    <textarea
+                        class="desc-box"
+                        readonly
+                    >${order.descricao || "Descrição adicional."}</textarea>
+
                 </div>
+
             </div>
 
-            <!-- COLUNA DIREITA -->
+
+            <!-- =================================================
+                 COLUNA DIREITA
+            ================================================== -->
+
             <div class="col-right">
+
                 <img
                     src="${urlImagem}"
                     alt="${order.produto_nome || "Produto"}"
                     class="product-img"
                     onerror="
-                        if (!this.dataset.fallback) {
-                            this.dataset.fallback = 'true';
-                            this.src='${fallbackImagem}';
-                        }
+                        if (this.dataset.fallback === 'true') return;
+                        this.dataset.fallback = 'true';
+                        this.src='${FOTO_GENERICA}';
                     "
                 >
 
+
                 <div class="info-group">
+
                     <span class="info-label">
                         <i data-lucide="handshake"></i>
                         Negociante:
                     </span>
-                    <span class="info-value" style="font-size:18px;">
+
+                    <span
+                        class="info-value"
+                        style="font-size:18px;"
+                    >
                         ${order.negociante_nome || "Não informado"}
                     </span>
+
                 </div>
 
+
                 <div class="info-group">
+
                     <span class="info-label">
                         <i data-lucide="phone"></i>
                         Telefone:
                     </span>
+
                     <span class="info-text">
                         ${order.negociante_telefone || "Não informado"}
                     </span>
+
                 </div>
 
+
                 <div class="info-group">
+
                     <span class="info-label">
                         <i data-lucide="mail"></i>
                         Email:
                     </span>
+
                     <span class="info-text">
                         ${order.negociante_email || "Não informado"}
                     </span>
+
                 </div>
+
             </div>
+
         </div>
 
-        <!-- BOTÕES -->
-        <div class="action-buttons" style="display:flex; justify-content:center; gap:15px; margin-top:20px;">
+
+        <!-- =====================================================
+             BOTÕES DE AÇÃO
+        ====================================================== -->
+
+        <div
+            class="action-buttons"
+            style="
+                display:flex;
+                justify-content:center;
+                gap:15px;
+                margin-top:20px;
+            "
+        >
             ${botoesHTML}
         </div>
     `;
 
-    // LUCIDE
+
+    // ============================================================
+    // RENDERIZAÇÃO DOS ÍCONES LUCIDE
+    // ============================================================
+
     if (window.lucide) {
+
         try {
+
             window.lucide.createIcons();
-        } catch (erro) {
-            console.error("❌ Erro ao criar ícones:", erro);
+
+        } catch (e) {
+
+            console.error(
+                "❌ Erro ao criar ícones:",
+                e
+            );
         }
     }
 
-    // MOSTRAR DETALHES E OCULTAR DEMAIS VIEWS
+
+    // ============================================================
+    // ALTERNAR VISIBILIDADE DAS VIEWS
+    // ============================================================
+
     if (viewLista) {
         viewLista.style.display = "none";
     }
+
     if (viewCalendario) {
         viewCalendario.style.display = "none";
     }
+
     if (viewDetalhes) {
         viewDetalhes.style.display = "block";
     }
 
-    // HANDLERS DOS BOTÕES
-    const btnAceitar = document.getElementById("btnAceitar");
-    const btnRecusar = document.getElementById("btnRecusar");
-    const btnConfirmarAcao = document.getElementById("btnConfirmarAcao");
-    const btnCancelar = document.getElementById("btnCancelar");
 
-    // ACEITAR
+    // ============================================================
+    // EVENT LISTENERS DOS BOTÕES
+    // ============================================================
+
+    const btnAceitar =
+        document.getElementById("btnAceitar");
+
+    const btnRecusar =
+        document.getElementById("btnRecusar");
+
+    const btnCancelar =
+        document.getElementById("btnCancelar");
+
+    const btnConfirmarAcao =
+        document.getElementById("btnConfirmarAcao");
+
+
+    // ========================================================
+    // ACEITAR PEDIDO
+    // ========================================================
+
     if (btnAceitar) {
+
         btnAceitar.onclick = async () => {
+
             try {
-                await API.atualizarStatus(order.id, "Aceito");
-                alert("Pedido aceito!");
+
+                await API.atualizarStatus(
+                    order.id,
+                    "Aceito"
+                );
+
+                agendarNotificacao(
+                    "cadastro",
+                    "Pedido aceito!"
+                );
+
                 location.reload();
+
             } catch (error) {
-                console.error("❌ Erro ao aceitar pedido:", error);
-                alert("Erro ao aceitar o pedido.");
+
+                console.error(
+                    "❌ Erro ao aceitar pedido:",
+                    error
+                );
+
+                exibirNotificacao(
+                    "erro",
+                    "Erro ao aceitar o pedido."
+                );
             }
         };
     }
 
-    // RECUSAR
+
+    // ========================================================
+    // RECUSAR PEDIDO
+    // ========================================================
+
     if (btnRecusar) {
-        btnRecusar.onclick = async () => {
-            if (!confirm("Deseja realmente recusar este pedido?")) {
-                return;
-            }
 
-            try {
-                await API.atualizarStatus(order.id, "Recusado");
-                alert("Pedido recusado.");
-                location.reload();
-            } catch (error) {
-                console.error("❌ Erro ao recusar pedido:", error);
-                alert("Erro ao recusar o pedido.");
-            }
+        btnRecusar.onclick = () => {
+
+            prepararConfirmacaoNegociacao(
+                "recusar",
+                order,
+                "Recusado"
+            );
+
         };
     }
 
-    // CANCELAR
+
+    // ========================================================
+    // CANCELAR PEDIDO
+    // ========================================================
+
     if (btnCancelar) {
-        btnCancelar.onclick = async () => {
-            if (!confirm("Deseja realmente cancelar este pedido?")) {
-                return;
-            }
 
-            try {
-                await API.atualizarStatus(order.id, "Cancelado");
-                alert("Pedido cancelado.");
-                location.reload();
-            } catch (error) {
-                console.error("❌ Erro ao cancelar pedido:", error);
-                alert("Erro ao cancelar o pedido.");
-            }
+        btnCancelar.onclick = () => {
+
+            prepararConfirmacaoNegociacao(
+                "cancelar",
+                order,
+                "Cancelado"
+            );
+
         };
     }
 
+
+    // ========================================================
     // CONFIRMAR ENTREGA / RECEBIMENTO
-    if (btnConfirmarAcao && !btnConfirmarAcao.disabled) {
-        btnConfirmarAcao.onclick = async () => {
-            try {
-                const acao = tipoUsuario === "produtor"
-                    ? "confirmar_entrega"
-                    : "confirmar_recebimento";
+    // ========================================================
 
-                await API.registrarConfirmacao(order.id, acao);
-                alert("Confirmação registrada com sucesso!");
+    if (
+        btnConfirmarAcao &&
+        !btnConfirmarAcao.disabled
+    ) {
+
+        btnConfirmarAcao.onclick = async () => {
+
+            try {
+
+                const acao =
+                    tipoUsuario === "produtor"
+                        ? "confirmar_entrega"
+                        : "confirmar_recebimento";
+
+
+                await API.registrarConfirmacao(
+                    order.id,
+                    acao
+                );
+
+
+                agendarNotificacao(
+                    "cadastro",
+                    "Confirmação registrada com sucesso!"
+                );
+
                 location.reload();
+
             } catch (error) {
-                console.error("❌ Erro ao registrar confirmação:", error);
-                alert("Erro ao registrar confirmação.");
+
+                console.error(
+                    "❌ Erro ao registrar confirmação:",
+                    error
+                );
+
+                exibirNotificacao(
+                    "erro",
+                    "Erro ao registrar confirmação."
+                );
             }
         };
     }
 
-    // VOLTAR PARA O TOPO
+
+    // ============================================================
+    // VOLTA PARA O TOPO
+    // ============================================================
+
     window.scrollTo(0, 0);
 }
 
+
 // ============================================================
-// ESCONDER DETALHES
+// OCULTAR DETALHES
 // ============================================================
 export function hideDetails() {
-    const viewDetalhes = document.getElementById("view-detalhes");
-    const viewLista = document.getElementById("view-lista");
-    const viewCalendario = document.getElementById("view-calendario");
+
+    const viewDetalhes =
+        document.getElementById("view-detalhes");
+
+    const viewLista =
+        document.getElementById("view-lista");
+
+    const viewCalendario =
+        document.getElementById("view-calendario");
+
 
     if (viewDetalhes) {
         viewDetalhes.style.display = "none";
     }
 
-    // VOLTAR PARA O CALENDÁRIO SE VEIO DELE
+
+    // ========================================================
+    // VOLTANDO DO CALENDÁRIO
+    // ========================================================
+
     if (window.veioDoCalendario === true) {
-        console.log("📅 Voltando para o calendário...");
+
+        console.log(
+            "📅 Voltando para o calendário..."
+        );
 
         if (viewCalendario) {
             viewCalendario.style.display = "block";
         }
+
         if (viewLista) {
             viewLista.style.display = "none";
         }
 
-        if (typeof window.renderizarCalendario === "function") {
+
+        if (
+            typeof window.renderizarCalendario ===
+            "function"
+        ) {
+
             window.renderizarCalendario();
         }
 
+
         window.veioDoCalendario = false;
+
         return;
     }
 
-    // VOLTAR PARA A LISTA
-    console.log("📋 Voltando para a lista...");
+
+    // ========================================================
+    // VOLTANDO PARA A LISTA
+    // ========================================================
+
+    console.log(
+        "📋 Voltando para a lista..."
+    );
 
     if (viewLista) {
         viewLista.style.display = "block";
     }
+
     if (viewCalendario) {
         viewCalendario.style.display = "none";
     }
 }
 
+
 // ============================================================
-// ESCOPO GLOBAL
+// ESCopo GLOBAL
 // ============================================================
 window.hideDetails = hideDetails;

@@ -1,121 +1,213 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil do Produtor</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="../static/css/base.css">
-    <link rel="stylesheet" href="../static/css/drawer.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_layout.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_foto.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_formulario.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_botoes.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_modal.css">
+
+    <title>Perfil | AgroLink</title>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Ícones -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS geral -->
+    <link rel="stylesheet" href="../static/css2/geral/global.css">
+    <link rel="stylesheet" href="../static/css2/geral/base.css">
+    <link rel="stylesheet" href="../static/css2/geral/header.css">
+    <link rel="stylesheet" href="../static/css2/geral/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+
+    <!-- CSS específico do perfil -->
+    <link rel="stylesheet" href="../static/css2/perfil/layout.css">
+    <link rel="stylesheet" href="../static/css2/perfil/foto.css">
+    <link rel="stylesheet" href="../static/css2/perfil/formulario.css">
+    <link rel="stylesheet" href="../static/css2/perfil/botoes.css">
+    <link rel="stylesheet" href="../static/css2/perfil/modal.css">
+   
+    <!-- Favicon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="../static/assets/login/minhoca_pequena.png">
 </head>
+
+
 <body>
 
-    <header class="header">
-        <div class="cabecalho-esquerda">
-            <button class="menu-hamburger" id="botaoAbrirMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+    <!-- ==================== HEADER ==================== -->
 
-            <div class="logo">🌱 AgroLink</div>
+    <header class="header">
+
+        <button
+            class="btn-menu-hamburger"
+            id="botaoAbrirMenu">
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+        <div class="logo">
+            🌱 AgroLink
         </div>
+
     </header>
-    
-    <div class="camada-overlay" id="mascaraMenu"></div>
+
+
+    <!-- ==================== DRAWER ==================== -->
 
     <aside class="painel-lateral" id="painelLateral">
-        
-        <div class="painel-cabecalho-verde">
-            <h1 class="painel-logo-drawer">AgroLink</h1>
 
-            <button class="botao-fechar-drawer" id="botaoFecharMenu">
+        <div class="painel-cabecalho-verde">
+
+            <h1 class="painel-logo-drawer">
+                AgroLink
+            </h1>
+
+            <button
+                class="botao-fechar-drawer"
+                id="botaoFecharMenu">
+
                 &times;
+
             </button>
+
         </div>
-    
+
+
         <div class="painel-conteudo">
-            
+
             <div class="cartao-usuario">
-                <img 
-                    src="../static/uploads/perfis/user.webp" 
-                    alt="Foto de Perfil" 
-                    class="usuario-foto"
-                >
+
+                <img
+                    src="../static/assets/login/minhoca_pequena.png"
+                    alt="Foto de Perfil"
+                    class="usuario-foto">
 
                 <div class="usuario-dados">
-                    <strong class="usuario-nome" id="usuarioNome">
+
+                    <strong
+                        class="usuario-nome"
+                        id="usuarioNome">
                         Carregando...
                     </strong>
 
-                    <span class="usuario-tipo" id="usuarioTipo">
-                        Buscando informações...
+                    <span
+                        class="usuario-tipo"
+                        id="usuarioTipo">
+                        ...
                     </span>
+
                 </div>
+
             </div>
-    
+
+
             <nav class="painel-navegacao">
             </nav>
-    
+
+
             <footer class="painel-rodape">
-                <button class="botao-logout" onclick="Auth.logout()">
+
+                <button
+                    class="botao-logout"
+                    onclick="Auth.logout()">
 
                     <span class="icone-box">
+
                         <i data-lucide="log-out"></i>
+
                     </span>
 
                     Sair da Conta
+
                 </button>
+
             </footer>
+
         </div>
+
     </aside>
 
+
+    <!-- ==================== MÁSCARA DO MENU ==================== -->
+
+    <div
+        id="mascaraMenu"
+        class="mascara-menu">
+    </div>
+
+
+    <!-- ==================== CONTEÚDO ==================== -->
+
     <main class="profile-container">
-        
-        <aside class="profile-sidebar">
 
-            <img 
-                src="../static/assets/login/minhoca_grande.png" 
-                alt="Mascote" 
+        <!-- ==================== LATERAL ==================== -->
+
+        <section class="profile-sidebar">
+
+            <img
                 class="mascot-img"
-                onerror="this.style.display='none'"
-            >
-            
-            <div class="profile-upload-zone" id="profile-upload-zone">
+                src="../static/assets/login/minhoca_grande.png"
+                alt="Mascote AgroLink"
+                onerror="this.style.display='none'">
 
-                <img 
-                    src="../static/assets/user.webp" 
-                    alt="Foto de Perfil" 
-                    class="profile-img" 
+
+            <div
+                class="profile-upload-zone"
+                id="profile-upload-zone">
+
+                <img
+                    class="profile-img"
                     id="profile-img"
-                >
+                    src="../static/assets/user.webp"
+                    alt="Foto de perfil">
 
                 <div class="upload-overlay">
+
                     <i class="fa-solid fa-camera"></i>
-                    <span>Alterar Foto</span>
+
+                    <span>
+                        Alterar Foto
+                    </span>
+
                 </div>
 
-                <input 
-                    type="file" 
-                    id="file-input" 
-                    accept="image/*" 
-                    hidden
-                >
             </div>
 
-            <button class="btn-delete" id="btn-delete-account">
-                Excluir Conta
+
+            <input
+                type="file"
+                id="file-input"
+                accept="image/*"
+                hidden>
+
+
+            <button
+                class="btn-delete"
+                id="btn-delete-account">
+
+                <i class="fa-solid fa-trash"></i>
+
+                Excluir conta
+
             </button>
 
-        </aside>
+        </section>
+
+
+        <!-- ==================== INFORMAÇÕES ==================== -->
 
         <section class="profile-content">
 
@@ -130,113 +222,162 @@
                 </h2>
 
             </div>
-            
+
+
             <hr class="divider">
 
-            <form 
-                class="user-info-form" 
-                id="user-form" 
-                onsubmit="event.preventDefault();"
-            >
-                
+
+            <!-- ==================== FORMULÁRIO ==================== -->
+
+            <form
+                class="user-info-form"
+                id="user-form"
+                onsubmit="event.preventDefault();">
+
+
+                <!-- Nome -->
+
                 <div class="form-group">
 
-                    <label>Nome completo</label>
+                    <label for="profile-name">
+                        Nome completo
+                    </label>
 
                     <div class="input-wrapper">
 
                         <i class="fa-solid fa-user field-icon"></i>
 
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
+                        <input
+                            id="profile-name"
+                            class="form-control"
+                            type="text"
+                            readonly>
 
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                        <i
+                            class="fa-solid fa-pen edit-icon"
+                            data-target="profile-name"
+                            title="Editar">
+                        </i>
 
                     </div>
+
                 </div>
+
+
+                <!-- E-mail -->
 
                 <div class="form-group">
 
-                    <label>E-mail</label>
+                    <label for="profile-email">
+                        E-mail
+                    </label>
 
                     <div class="input-wrapper">
 
                         <i class="fa-solid fa-envelope field-icon"></i>
 
-                        <input 
-                            type="email" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
+                        <input
+                            id="profile-email"
+                            class="form-control"
+                            type="email"
+                            readonly>
 
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                        <i
+                            class="fa-solid fa-pen edit-icon"
+                            data-target="profile-email"
+                            title="Editar">
+                        </i>
 
                     </div>
+
                 </div>
+
+
+                <!-- Telefone -->
 
                 <div class="form-group">
 
-                    <label>Telefone</label>
+                    <label for="profile-phone">
+                        Telefone
+                    </label>
 
                     <div class="input-wrapper">
 
                         <i class="fa-solid fa-phone field-icon"></i>
 
-                        <input 
-                            type="tel" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
+                        <input
+                            id="profile-phone"
+                            class="form-control"
+                            type="tel"
+                            readonly>
 
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                        <i
+                            class="fa-solid fa-pen edit-icon"
+                            data-target="profile-phone"
+                            title="Editar">
+                        </i>
 
                     </div>
+
                 </div>
+
+
+                <!-- Localização -->
 
                 <div class="form-group">
 
-                    <label>Localização</label>
+                    <label for="profile-location">
+                        Localização
+                    </label>
 
                     <div class="input-wrapper">
 
                         <i class="fa-solid fa-location-dot field-icon"></i>
 
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
+                        <input
+                            id="profile-location"
+                            class="form-control"
+                            type="text"
+                            readonly>
 
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                        <i
+                            class="fa-solid fa-pen edit-icon"
+                            data-target="profile-location"
+                            title="Editar">
+                        </i>
 
                     </div>
+
                 </div>
+
+
+                <!-- Senha -->
 
                 <div class="form-group">
 
-                    <label>Senha</label>
+                    <label for="profile-password">
+                        Senha
+                    </label>
 
                     <div class="input-wrapper">
 
                         <i class="fa-solid fa-lock field-icon"></i>
 
-                        <input 
-                            type="password" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
+                        <input
+                            id="profile-password"
+                            class="form-control"
+                            type="password"
+                            value="••••••••"
+                            readonly>
 
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                        <i
+                            class="fa-solid fa-pen edit-icon"
+                            data-target="profile-password"
+                            title="Editar">
+                        </i>
 
                     </div>
+
                 </div>
 
             </form>
@@ -245,38 +386,70 @@
 
     </main>
 
-    <div class="modal-overlay" id="delete-modal">
+
+    <!-- ==================== MODAL DE EXCLUSÃO ==================== -->
+
+    <div
+        class="modal-overlay"
+        id="delete-modal">
 
         <div class="modal-content">
 
-            <h2>Excluir Conta</h2>
+            <h2>
+                Excluir conta?
+            </h2>
 
             <p>
                 Tem certeza de que deseja excluir sua conta?
-                Esta ação não pode ser desfeita e todos os seus
-                dados serão apagados.
+                Esta ação não poderá ser desfeita.
             </p>
 
             <div class="modal-actions">
 
-                <button class="btn-cancel" id="btn-cancel-delete">
+                <button
+                    class="btn-cancel"
+                    id="btn-cancel-delete"
+                    type="button">
+
                     Cancelar
+
                 </button>
 
-                <button class="btn-confirm-delete" id="btn-confirm-delete">
-                    Sim, Excluir
+                <button
+                    class="btn-confirm-delete"
+                    id="btn-confirm-delete"
+                    type="button">
+
+                    Excluir conta
+
                 </button>
 
             </div>
+
         </div>
+
     </div>
 
+
+    <!-- ==================== SCRIPTS ==================== -->
+
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        lucide.createIcons();
+    </script>
+
     <script src="../static/js/config.js"></script>
     <script src="../static/js/auth.js"></script>
     <script src="../static/js/drawer.js"></script>
-    <script type="module" src="../static/js/perfil/main.js"></script>
+
+    <script
+        type="module"
+        src="../static/js/perfil/main.js">
+    </script>
+
     <script src="../static/js/notificacao.js"></script>
-    
+
 </body>
+
 </html>

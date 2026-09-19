@@ -1,8 +1,9 @@
-/* ==========================================
-   LOADING DOS PRODUTOS
-========================================== */
 
-.carregando-produtos {
+/* =========================
+   ESTADO SEM PRODUTOS
+========================= */
+
+.sem-produtos {
     grid-column: 1 / -1;
 
     width: 100%;
@@ -15,64 +16,85 @@
 
     gap: var(--space-md);
 
+    padding: var(--space-xl);
+
     text-align: center;
 
+    background: #dddddd86;
+    border: 0.0625rem solid #e1e5d8;
+    border-radius: 1rem;
+
     color: var(--cor-texto-secundario);
 }
 
 
-/* Spinner */
+/* =========================
+   ÍCONE
+========================= */
 
-.spinner-produtos {
-    width: 2.75rem;
-    height: 2.75rem;
+.sem-produtos svg {
+    width: 4rem;
+    height: 4rem;
 
-    border: 0.25rem solid rgba(122, 149, 68, 0.18);
-    border-top-color: var(--cor-primaria);
+    color: var(--cor-primaria);
 
-    border-radius: 50%;
-
-    animation: girar-produtos 0.9s ease-in-out infinite;
+    margin-bottom: var(--space-sm);
 }
 
 
-/* Texto */
+/* =========================
+   TÍTULO
+========================= */
 
-.carregando-produtos p {
+.sem-produtos h2 {
     margin: 0;
 
-    font-size: var(--fs-body);
-    font-weight: 500;
+    color: var(--cor-texto-principal);
+
+    font-size: var(--fs-h3);
+    font-weight: 600;
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+.sem-produtos p {
+    max-width: 35rem;
+
+    margin: 0;
 
     color: var(--cor-texto-secundario);
 
-    animation: aparecer-carregando 0.4s ease;
+    font-size: var(--fs-body);
+    line-height: 1.5;
 }
 
 
-/* Animação do spinner */
+/* =========================
+   MOBILE
+========================= */
 
-@keyframes girar-produtos {
-    from {
-        transform: rotate(0deg);
+@media (max-width: 767px) {
+
+    .sem-produtos {
+        min-height: 250px;
+
+        padding: var(--space-lg);
     }
 
-    to {
-        transform: rotate(360deg);
+    .sem-produtos svg {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .sem-produtos h2 {
+        font-size: var(--fs-h4);
+    }
+
+    .sem-produtos p {
+        font-size: var(--fs-small);
     }
 }
 
-
-/* Entrada suave do texto */
-
-@keyframes aparecer-carregando {
-    from {
-        opacity: 0;
-        transform: translateY(0.25rem);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
