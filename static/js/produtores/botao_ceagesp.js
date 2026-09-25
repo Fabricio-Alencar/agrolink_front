@@ -12,11 +12,10 @@ document.addEventListener("DOMContentLoaded", function() {
         const nomeDigitado = inputNomeProduto ? inputNomeProduto.value.trim().toLowerCase() : '';
         const categoriaDigitada = inputCategoriaProduto ? inputCategoriaProduto.value.trim().toLowerCase() : '';
         
-        dropdownCeagesp.innerHTML = ''; 
+        mostrarDropdown(); // Garante exibição antes da requisição
 
         if (!nomeDigitado) {
             renderizarAviso("Digite um produto primeiro", "Você precisa digitar o nome do produto no campo acima para buscar sugestões.");
-            mostrarDropdown();
             return;
         }
 
@@ -27,11 +26,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 <p>Consultando cotações da CEAGESP em tempo real.</p>
             </div>
         `;
-        mostrarDropdown();
 
         try {
             // Monta os parâmetros de consulta (Query String)
-            let params = new URLSearchParams({ produto: nomeDigitado });
+            const params = new URLSearchParams({ produto: nomeDigitado });
             if (categoriaDigitada) {
                 params.append('categoria', categoriaDigitada);
             }
@@ -112,9 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         if (listaEl && hintEl) {
             function checarScroll() {
-                // Checa se a altura total do conteúdo ultrapassa a altura visível do container
                 const temScroll = listaEl.scrollHeight > listaEl.clientHeight;
-                // Checa se o usuário rolou até o final da lista (tolerância de 3px)
                 const chegouNoFim = Math.ceil(listaEl.scrollTop + listaEl.clientHeight) >= listaEl.scrollHeight - 3;
 
                 if (temScroll && !chegouNoFim) {
@@ -124,7 +120,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
 
-            // Executa após a renderização dos elementos no DOM e ao rolar a lista
             setTimeout(checarScroll, 100);
             listaEl.addEventListener('scroll', checarScroll);
         }
@@ -147,6 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
         btnCeagesp.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
+
             if (dropdownCeagesp.classList.contains('oculto')) {
                 abrirDropdownCeagesp();
             } else {
@@ -155,8 +151,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // Fecha o dropdown apenas se o clique for fora do botão E fora do dropdown
     document.addEventListener('click', function(e) {
-        if (btnCeagesp && !btnCeagesp.contains(e.target) && dropdownCeagesp && !dropdownCeagesp.contains(e.target)) {
+        if (!btnCeagesp || !dropdownCeagesp) return;
+
+        const clicouNoBotao = btnCeagesp.contains(e.target) || e.target.closest('#btnCeagesp');
+        const clicouNoDropdown = dropdownCeagesp.contains(e.target) || e.target.closest('#dropdownCeagesp');
+
+        if (!clicouNoBotao && !clicouNoDropdown) {
             dropdownCeagesp.classList.add('oculto');
         }
     });
