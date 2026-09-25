@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const inputCategoriaProduto = document.getElementById('categoriaProduto'); 
 
     // URL base da API no Azure
-    const API_URL = 'https://cotacoes-heamdfd4byhpehf6.eastus2-01.azurewebsites.net/api/cotacoes-ceagesp';
+    const API_URL = 'https://cotacoes-heamdfd4byhpehf6.eastus2-01.azurewebsites.net/cotacoes';
 
     // Função que realiza a busca real no backend no Azure
     async function abrirDropdownCeagesp() {
