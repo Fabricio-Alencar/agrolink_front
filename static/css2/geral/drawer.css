@@ -1,4 +1,25 @@
 /* =========================
+   VARIÁVEIS DE COR & ESPAÇAMENTO (REFERÊNCIA)
+========================= */
+:root {
+    --cor-branco: #ffffff;
+    --verde-menta-claro: #e8f5e9;
+    --verde-oliva: #2e7d32;
+    --verde-texto-ativo: #1b5e20;
+    --cinza-texto: #555555;
+    --cor-texto-principal: #333333;
+    --cor-texto-secundario: #777777;
+    --cor-borda-cards: #e0e0e0;
+    --vermelho-suave: #ffebee;
+    --vermelho-texto: #c62828;
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+}
+
+/* =========================
    BOTÃO HAMBÚRGUER
 ========================= */
 .menu-hamburger {
@@ -34,12 +55,13 @@
     flex-direction: column;
     width: min(20rem, 85vw);
     height: 100vh;
+    height: 100dvh; /* Garante altura exata em navegadores mobile/tablets */
     background-color: var(--cor-branco);
     line-height: 1.5;
     z-index: 2000;
     box-shadow: 0.6rem 0 1.2rem rgba(0, 0, 0, 0.05);
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-y: auto;
+    overflow: hidden; /* O conteúdo interno lidará com a rolagem */
 }
 
 /* =========================
@@ -75,6 +97,7 @@
     padding: clamp(1.5rem, 5vw, 2.5rem) var(--space-lg);
     background-color: var(--verde-menta-claro);
     box-sizing: border-box;
+    flex-shrink: 0; /* Mantém o cabeçalho fixo no topo */
 }
 
 /* =========================
@@ -123,6 +146,8 @@
     flex-direction: column;
     flex: 1;
     padding: 0 var(--space-lg) var(--space-lg);
+    overflow-y: auto; /* Permite rolagem se o conteúdo vertical for maior que a tela */
+    min-height: 0; /* Evita que o flexbox estoure a altura do container */
 }
 
 /* =========================
@@ -135,6 +160,7 @@
     padding: var(--space-lg) 0;
     margin-bottom: var(--space-lg);
     border-bottom: 0.1rem solid var(--cor-borda-cards);
+    flex-shrink: 0;
 }
 
 /* =========================
@@ -240,7 +266,9 @@
 .painel-rodape {
     margin-top: auto;
     padding-top: var(--space-lg);
+    padding-bottom: var(--space-sm);
     border-top: 0.1rem solid var(--cor-borda-cards);
+    flex-shrink: 0; /* Impede que o botão de logout seja compactado ou ocultado */
 }
 
 /* =========================
