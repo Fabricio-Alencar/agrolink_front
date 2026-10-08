@@ -322,33 +322,78 @@
                 </div>
 
 
-                <!-- Localização -->
 
-                <div class="form-group">
 
-                    <label for="profile-location">
-                        Localização
-                    </label>
+<!-- ==================== ESTADO ==================== -->
 
-                    <div class="input-wrapper">
+<div class="form-group">
 
-                        <i class="fa-solid fa-location-dot field-icon"></i>
+    <label for="profile-state">
+        Estado
+    </label>
 
-                        <input
-                            id="profile-location"
-                            class="form-control"
-                            type="text"
-                            readonly>
+    <div class="input-wrapper">
 
-                        <i
-                            class="fa-solid fa-pen edit-icon"
-                            data-target="profile-location"
-                            title="Editar">
-                        </i>
+        <i class="fa-solid fa-map field-icon"></i>
 
-                    </div>
+        <select
+            id="profile-state"
+            class="form-control"
+            disabled>
 
-                </div>
+            <option value="">
+                Selecione o estado
+            </option>
+
+        </select>
+
+        <i
+            class="fa-solid fa-pen edit-icon"
+            data-target="profile-state"
+            title="Editar">
+        </i>
+
+    </div>
+
+</div>
+
+
+
+<!-- ==================== CIDADE ==================== -->
+
+<div class="form-group">
+
+    <label for="profile-city">
+        Cidade
+    </label>
+
+    <div class="input-wrapper">
+
+        <i class="fa-solid fa-city field-icon"></i>
+
+        <select
+            id="profile-city"
+            class="form-control"
+            disabled>
+
+            <option value="">
+                Selecione o estado primeiro
+            </option>
+
+        </select>
+
+        <i
+            class="fa-solid fa-pen edit-icon"
+            data-target="profile-city"
+            title="Editar">
+        </i>
+
+    </div>
+
+</div>
+
+
+
 
 
                 <!-- Senha -->

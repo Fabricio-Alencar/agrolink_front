@@ -42,6 +42,11 @@ def negociacao_estabelecimento():
 def perfil():
     return render_template('perfil.html')
 
+# 🔹 Página de Chat
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
 if __name__ == "__main__":
    print("🚀 Servidor Flask rodando em modo DEBUG...")
    app.run(debug=True, port=8000)

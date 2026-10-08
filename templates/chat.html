@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>AgroLink - Conversas</title>
+
+
+    <!-- =====================================================
+         FONTES
+    ====================================================== -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         CSS GERAL
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../static/css2/geral/global.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../static/css2/geral/base.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../static/css2/geral/header.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../static/css2/geral/layout.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="../static/css2/geral/drawer.css"
+    >
+
+
+    <!-- =====================================================
+         CSS DO CHAT
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="../static/css2/chat/chat.css"
+    >
+
+
+    <!-- =====================================================
+         FAVICON
+    ====================================================== -->
+
+    <link
+        rel="icon"
+        type="image/png"
+        href="../static/assets/login/minhoca_pequena.png"
+    >
+
+
+    <!-- =====================================================
+         LUCIDE
+    ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <header class="header">
+
+        <button
+            class="btn-menu-hamburger"
+            id="botaoAbrirMenu"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+
+        <div class="logo">
+            🌱 AgroLink
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENU LATERAL
+    ====================================================== -->
+
+    <aside
+        class="painel-lateral"
+        id="painelLateral"
+    >
+
+        <div class="painel-cabecalho-verde">
+
+            <h1 class="painel-logo-drawer">
+                AgroLink
+            </h1>
+
+
+            <button
+                class="botao-fechar-drawer"
+                id="botaoFecharMenu"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <div class="painel-conteudo">
+
+
+            <!-- Informações do usuário -->
+
+            <div class="cartao-usuario">
+
+                <img
+                    src="../static/assets/login/minhoca_pequena.png"
+                    alt="Foto de Perfil"
+                    class="usuario-foto"
+                >
+
+
+                <div class="usuario-dados">
+
+                    <strong
+                        class="usuario-nome"
+                        id="usuarioNome"
+                    >
+                        Carregando...
+                    </strong>
+
+
+                    <span
+                        class="usuario-tipo"
+                        id="usuarioTipo"
+                    >
+                        ...
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 NAVEGAÇÃO
+            ================================================== -->
+
+            <nav class="painel-navegacao">
+
+                <!--
+                    O drawer.js irá preencher
+                    essa área de acordo com o
+                    tipo do usuário.
+                -->
+
+            </nav>
+
+
+            <!-- =================================================
+                 RODAPÉ
+            ================================================== -->
+
+            <footer class="painel-rodape">
+
+                <button
+                    class="botao-logout"
+                    onclick="Auth.logout()"
+                >
+
+                    <span class="icone-box">
+
+                        <i data-lucide="log-out"></i>
+
+                    </span>
+
+                    Sair da Conta
+
+                </button>
+
+            </footer>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Máscara do menu -->
+
+    <div
+        id="mascaraMenu"
+        class="mascara-menu"
+    ></div>
+
+
+    <!-- =====================================================
+         CONTEÚDO PRINCIPAL
+    ====================================================== -->
+
+    <main class="chat-container">
+
+
+        <!-- =================================================
+             LISTA DE CONVERSAS
+        ================================================== -->
+
+        <section class="conversas">
+
+
+            <!-- Cabeçalho -->
+
+            <div class="conversas-header">
+
+                <h1>
+                    Conversas
+                </h1>
+
+            </div>
+
+
+            <!-- =================================================
+                 PESQUISA
+            ================================================== -->
+
+            <div class="chat-pesquisa">
+
+                <i data-lucide="search"></i>
+
+
+                <input
+                    type="text"
+                    id="chatSearch"
+                    placeholder="Pesquisar conversa..."
+                >
+
+            </div>
+
+
+            <!-- =================================================
+                 LISTA
+            ================================================== -->
+
+            <div
+                class="lista-conversas"
+                id="listaConversas"
+            >
+
+                <!--
+                    As conversas reais serão
+                    carregadas pelo main.js.
+                -->
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ÁREA DA CONVERSA
+        ================================================== -->
+
+        <section
+            class="chat-area"
+            id="chatArea"
+        >
+
+
+            <!-- =================================================
+                 CABEÇALHO DA CONVERSA
+            ================================================== -->
+
+            <header class="chat-header">
+
+                <div class="chat-usuario">
+
+
+                    <!-- Avatar -->
+
+                    <div class="chat-avatar">
+
+                        <img
+                            id="chatFoto"
+                            src="../static/assets/login/user.png"
+                            alt="Foto do usuário"
+                        >
+
+                    </div>
+
+
+                    <!-- Informações -->
+
+                    <div class="chat-usuario-info">
+
+                        <h2 id="chatNome">
+                            Conversa
+                        </h2>
+
+
+                        <span id="chatProduto">
+                            Selecione uma conversa
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     INFORMAÇÕES DA NEGOCIAÇÃO
+                ================================================== -->
+
+                <button
+                    class="btn-info-chat"
+                    id="btnInfoChat"
+                    title="Ver negociação"
+                >
+
+                    <i data-lucide="info"></i>
+
+                </button>
+
+            </header>
+
+
+            <!-- =================================================
+                 MENSAGENS
+            ================================================== -->
+
+            <div
+                class="mensagens"
+                id="mensagens"
+            >
+
+                <!--
+                    As mensagens serão carregadas
+                    pelo main.js.
+                -->
+
+            </div>
+
+
+            <!-- =================================================
+                 CAMPO DE ENVIO
+            ================================================== -->
+
+            <form
+                class="chat-form"
+                id="chatForm"
+            >
+
+                <div class="chat-input-container">
+
+
+                    <input
+                        type="text"
+                        id="mensagemInput"
+                        placeholder="Digite uma mensagem..."
+                        autocomplete="off"
+                    >
+
+
+                    <button
+                        type="submit"
+                        class="btn-enviar-mensagem"
+                        id="btnEnviarMensagem"
+                        title="Enviar mensagem"
+                    >
+
+                        <i data-lucide="send"></i>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             MODAL DE INFORMAÇÕES DA NEGOCIAÇÃO
+        ================================================== -->
+
+        <div
+            class="modal-info-negociacao"
+            id="modalInfoNegociacao"
+            style="display: none;"
+        >
+
+            <div class="modal-info-conteudo">
+
+
+                <!-- =================================================
+                     CABEÇALHO DO MODAL
+                ================================================== -->
+
+                <div class="modal-info-header">
+
+                    <h2>
+                        Informações da negociação
+                    </h2>
+
+
+                    <button
+                        type="button"
+                        class="btn-fechar-info"
+                        id="btnFecharInfo"
+                        title="Fechar"
+                    >
+
+                        <i data-lucide="x"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     INFORMAÇÕES
+                ================================================== -->
+
+                <div class="modal-info-corpo">
+
+
+                    <!-- Produto -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Produto
+                        </span>
+
+                        <strong id="infoProduto">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Quantidade -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Quantidade
+                        </span>
+
+                        <strong id="infoQuantidade">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Preço -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Preço
+                        </span>
+
+                        <strong id="infoPreco">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Unidade -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Unidade
+                        </span>
+
+                        <strong id="infoUnidade">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Data de entrega -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Data de entrega
+                        </span>
+
+                        <strong id="infoDataEntrega">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Status -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong id="infoStatus">
+                            -
+                        </strong>
+
+                    </div>
+
+
+                    <!-- Descrição -->
+
+                    <div class="info-item info-descricao">
+
+                        <span>
+                            Descrição
+                        </span>
+
+                        <p id="infoDescricao">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <!-- Outro participante -->
+
+                    <div class="info-item">
+
+                        <span>
+                            Negociando com
+                        </span>
+
+                        <strong id="infoNegociante">
+                            -
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ESTADO SEM CONVERSA
+        ================================================== -->
+
+        <section
+            class="chat-sem-selecao"
+            id="chatSemSelecao"
+        >
+
+            <div class="chat-sem-selecao-conteudo">
+
+                <i data-lucide="message-circle"></i>
+
+
+                <h2>
+                    Suas conversas
+                </h2>
+
+
+                <p>
+                    Selecione uma conversa para começar.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         SCRIPTS
+    ====================================================== -->
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+
+    <script>
+
+        lucide.createIcons();
+
+    </script>
+
+
+    <!-- Configuração da API -->
+
+    <script src="../static/js/config.js"></script>
+
+
+    <!-- Autenticação -->
+
+    <script src="../static/js/auth.js"></script>
+
+
+    <!-- Drawer -->
+
+    <script
+        type="module"
+        src="../static/js/drawer.js"
+    ></script>
+
+
+    <!-- Notificações -->
+
+    <script src="../static/js/notificacao.js"></script>
+
+
+    <!-- Chat -->
+
+    <script
+        type="module"
+        src="../static/js/chat/main.js"
+    ></script>
+
+
+</body>
+
+</html>
