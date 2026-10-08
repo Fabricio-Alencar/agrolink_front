@@ -21,11 +21,7 @@ import {
 */
 
 const WEBSOCKET_URL =
-    window.location.hostname === "127.0.0.1" ||
-    window.location.hostname === "localhost"
-        ? "ws://127.0.0.1:5500"
-        : "wss://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net";
-
+    "wss://backagrolinkbr-hfb4cpdvctheeycm.brazilsouth-01.azurewebsites.net";
 
 /* =========================================================
    WEBSOCKET GERAL DO USUÁRIO
