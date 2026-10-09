@@ -1,0 +1,204 @@
+/* =========================================================
+   ÁREA DAS MENSAGENS
+========================================================= */
+
+.mensagens {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 25px;
+    overflow-y: auto;
+    background: #fafbfa;
+}
+
+.mensagem-status svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* =========================================================
+   MENSAGEM
+========================================================= */
+
+.mensagem {
+    display: flex;
+    width: 100%;
+}
+
+.mensagem-conteudo {
+    max-width: 65%;
+    padding: 10px 13px 7px;
+    border-radius: 12px;
+    font-family: "Inter", sans-serif;
+    overflow-wrap: anywhere;
+}
+
+.mensagem-conteudo p {
+    margin: 0 0 5px;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.mensagem-hora {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    font-size: 10px;
+    color: #999;
+}
+
+
+/* =========================================================
+   STATUS DA MENSAGEM - ÍCONES SVG
+========================================================= */
+
+.mensagem-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 16px;
+    height: 14px;
+
+    margin-left: 2px;
+
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+/* Ícone SVG */
+
+.mensagem-status svg {
+    display: block;
+    width: 15px;
+    height: 15px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Mensagem enviada */
+
+.mensagem-status.enviada {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+/* Mensagem visualizada */
+
+.mensagem-status.visualizado {
+    color: #8be9fd;
+}
+
+/* Dois tiques ficam ligeiramente mais largos */
+
+.mensagem-status.visualizado {
+    width: 19px;
+}
+
+
+/* =========================================================
+   MENSAGEM RECEBIDA
+========================================================= */
+
+.mensagem-recebida {
+    justify-content: flex-start;
+}
+
+.mensagem-recebida .mensagem-conteudo {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-bottom-left-radius: 4px;
+}
+
+.mensagem-recebida .mensagem-conteudo p {
+    color: #333;
+}
+
+
+/* =========================================================
+   MENSAGEM ENVIADA
+========================================================= */
+
+.mensagem-enviada {
+    justify-content: flex-end;
+}
+
+.mensagem-enviada .mensagem-conteudo {
+    background: #2e7d32;
+    border-bottom-right-radius: 4px;
+}
+
+.mensagem-enviada .mensagem-conteudo p {
+    color: #ffffff;
+}
+
+.mensagem-enviada .mensagem-hora {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TELAS MÉDIAS
+========================================================= */
+
+@media (max-width: 900px) {
+    .mensagem-conteudo {
+        max-width: 75%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLETS E CELULARES
+========================================================= */
+
+@media (max-width: 768px) {
+    .mensagens {
+        padding: 18px 12px;
+    }
+
+    .mensagem-conteudo {
+        max-width: 82%;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 450px) {
+    .mensagem-conteudo {
+        max-width: 88%;
+        padding: 9px 11px 6px;
+    }
+
+    .mensagem-conteudo p {
+        font-size: 12px;
+    }
+
+    .mensagem-status {
+        width: 15px;
+        height: 13px;
+    }
+
+    .mensagem-status svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .mensagem-status.visualizado {
+        width: 18px;
+    }
+}

@@ -1,0 +1,96 @@
+/* =========================================================
+   CHAT - LAYOUT PRINCIPAL
+========================================================= */
+
+.chat-container {
+    width: 100%;
+    height: calc(100vh - 70px);
+
+    display: flex;
+
+    padding: 25px;
+    gap: 20px;
+
+    background: #f5f7f5;
+}
+
+
+/* =========================================================
+   LISTA DE CONVERSAS - ESTRUTURA
+========================================================= */
+
+.conversas {
+    width: 400px;
+    min-width: 350px;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    border: 1px solid #e5e5e5;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TELAS MÉDIAS
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .chat-container {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .conversas {
+        width: 300px;
+        min-width: 300px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLETS E CELULARES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .chat-container {
+        height: calc(100vh - 60px);
+        height: calc(100dvh - 60px);
+
+        padding: 10px;
+
+        display: block;
+    }
+
+    .conversas {
+        width: 100%;
+        min-width: 0;
+
+        height: 100%;
+
+        border-radius: 12px;
+    }
+
+    .chat-container.chat-aberto .conversas {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .chat-container {
+        padding: 5px;
+    }
+}

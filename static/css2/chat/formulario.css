@@ -1,0 +1,104 @@
+/* =========================================================
+   CAMPO DE ENVIO
+========================================================= */
+
+.chat-form {
+    padding: 15px 18px;
+
+    border-top: 1px solid #e5e5e5;
+
+    background: #ffffff;
+}
+
+.chat-input-container {
+    width: 100%;
+
+    min-height: 45px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 5px 6px 5px 15px;
+
+    background: #f4f5f4;
+
+    border: 1px solid #e2e5e2;
+
+    border-radius: 12px;
+
+    transition: border-color 0.2s ease;
+}
+
+.chat-input-container:focus-within {
+    border-color: #2e7d32;
+}
+
+.chat-input-container input {
+    flex: 1;
+
+    min-width: 0;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+
+    color: #333;
+}
+
+.chat-input-container input::placeholder {
+    color: #999;
+}
+
+
+/* =========================================================
+   BOTÃO ENVIAR
+========================================================= */
+
+.btn-enviar-mensagem {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #2e7d32;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease;
+}
+
+.btn-enviar-mensagem:hover {
+    background: #256628;
+}
+
+.btn-enviar-mensagem svg {
+    width: 17px;
+    height: 17px;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLETS E CELULARES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .chat-form {
+        padding: 10px;
+    }
+}

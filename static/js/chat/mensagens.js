@@ -27,6 +27,77 @@ const usuarioLogadoId =
 
 
 /* =========================================================
+   CRIAR ÍCONE LUCIDE DO STATUS
+========================================================= */
+
+function criarIconeStatus(lida = false) {
+
+    const status = document.createElement("span");
+
+    status.classList.add(
+        "mensagem-status",
+        lida ? "visualizado" : "enviada"
+    );
+
+    status.setAttribute(
+        "aria-label",
+        lida
+            ? "Mensagem visualizada"
+            : "Mensagem enviada"
+    );
+
+    status.title = lida
+        ? "Visualizada"
+        : "Enviada";
+
+    const icone = document.createElement("i");
+
+    icone.setAttribute(
+        "data-lucide",
+        lida ? "check-check" : "check"
+    );
+
+    icone.setAttribute("aria-hidden", "true");
+
+    status.appendChild(icone);
+
+    /*
+     * Converte o ícone Lucide dentro do elemento.
+     * O SVG gerado herda a cor definida no CSS.
+     */
+
+    if (window.lucide) {
+
+        window.lucide.createIcons({
+            root: status
+        });
+
+    }
+
+    return status;
+}
+
+
+/* =========================================================
+   ATUALIZAR ÍCONE DO STATUS
+========================================================= */
+
+function atualizarStatusMensagem(
+    elementoStatus,
+    lida = false
+) {
+
+    if (!elementoStatus) {
+        return;
+    }
+
+    const novoStatus = criarIconeStatus(lida);
+
+    elementoStatus.replaceWith(novoStatus);
+}
+
+
+/* =========================================================
    ADICIONAR MENSAGEM NA TELA
 ========================================================= */
 
@@ -42,38 +113,29 @@ export function adicionarMensagemNaTela(
 
 
     /*
-       Remove o estado de conversa vazia
-       quando uma mensagem é adicionada.
-    */
+     * Remove o estado de conversa vazia
+     * quando uma mensagem é adicionada.
+     */
 
     const mensagemVazia =
         mensagensContainer.querySelector(
             ".chat-vazio"
         );
 
-
     if (mensagemVazia) {
-
         mensagemVazia.remove();
-
     }
 
 
     const elementoMensagem =
         document.createElement("div");
 
-
-    elementoMensagem.classList.add(
-        "mensagem"
-    );
+    elementoMensagem.classList.add("mensagem");
 
 
     /*
-       Guarda o ID da mensagem no elemento.
-
-       Isso permite encontrar posteriormente
-       exatamente qual mensagem foi lida.
-    */
+     * Guarda o ID da mensagem no elemento.
+     */
 
     if (
         typeof mensagem === "object" &&
@@ -104,19 +166,16 @@ export function adicionarMensagemNaTela(
     const hora =
         typeof mensagem === "object" &&
         mensagem.data_envio
-            ? formatarHora(
-                mensagem.data_envio
-            )
+            ? formatarHora(mensagem.data_envio)
             : obterHoraAtual();
 
 
     /* ---------------------------------------------
-       Cria o conteúdo da mensagem
+       CONTEÚDO DA MENSAGEM
     --------------------------------------------- */
 
     const elementoConteudo =
         document.createElement("div");
-
 
     elementoConteudo.classList.add(
         "mensagem-conteudo"
@@ -124,62 +183,43 @@ export function adicionarMensagemNaTela(
 
 
     /* ---------------------------------------------
-       Texto da mensagem
+       TEXTO DA MENSAGEM
     --------------------------------------------- */
 
     const elementoTexto =
         document.createElement("p");
 
-
     /*
-       textContent trata o conteúdo como texto.
+     * O conteúdo é tratado como texto para impedir
+     * que HTML ou JavaScript enviados pelo usuário
+     * sejam executados.
+     */
 
-       Dessa forma, caso o usuário envie HTML
-       ou JavaScript, ele não será executado.
-    */
-
-    elementoTexto.textContent =
-        texto;
+    elementoTexto.textContent = texto;
 
 
     /* ---------------------------------------------
-       Horário da mensagem
+       HORÁRIO DA MENSAGEM
     --------------------------------------------- */
 
     const elementoHora =
         document.createElement("span");
 
-
-    elementoHora.classList.add(
-        "mensagem-hora"
-    );
-
+    elementoHora.classList.add("mensagem-hora");
 
     elementoHora.appendChild(
-        document.createTextNode(
-            hora
-        )
+        document.createTextNode(hora)
     );
 
 
     /* ---------------------------------------------
-       Indicador da mensagem enviada
+       INDICADOR DA MENSAGEM ENVIADA
     --------------------------------------------- */
 
     if (enviada) {
 
         const elementoStatus =
-            document.createElement("span");
-
-
-        elementoStatus.classList.add(
-            "mensagem-status"
-        );
-
-
-        elementoStatus.textContent =
-            "✓";
-
+            criarIconeStatus(false);
 
         elementoHora.appendChild(
             elementoStatus
@@ -189,28 +229,24 @@ export function adicionarMensagemNaTela(
 
 
     /* ---------------------------------------------
-       Monta a mensagem
+       MONTAR A MENSAGEM
     --------------------------------------------- */
 
     elementoConteudo.appendChild(
         elementoTexto
     );
 
-
     elementoConteudo.appendChild(
         elementoHora
     );
-
 
     elementoMensagem.appendChild(
         elementoConteudo
     );
 
-
     mensagensContainer.appendChild(
         elementoMensagem
     );
-
 
     mensagensContainer.scrollTop =
         mensagensContainer.scrollHeight;
@@ -227,10 +263,10 @@ export function renderizarMensagens(
 ) {
 
     /*
-       Limpa completamente o conteúdo anterior.
-    */
+     * Limpa completamente o conteúdo anterior.
+     */
 
-    mensagensContainer.innerHTML = "";
+    mensagensContainer.replaceChildren();
 
 
     /* ---------------------------------------------
@@ -267,18 +303,15 @@ export function renderizarMensagens(
 
         `;
 
-
         /*
-           Atualiza os ícones Lucide,
-           caso estejam disponíveis.
-        */
+         * Atualiza o ícone da conversa vazia.
+         */
 
         if (window.lucide) {
 
-            lucide.createIcons();
+            window.lucide.createIcons();
 
         }
-
 
         return;
 
@@ -289,175 +322,129 @@ export function renderizarMensagens(
        EXISTEM MENSAGENS
     --------------------------------------------- */
 
-    listaMensagens.forEach(
-        mensagem => {
+    listaMensagens.forEach(mensagem => {
 
-            const elementoMensagem =
-                document.createElement("div");
+        const elementoMensagem =
+            document.createElement("div");
 
+        elementoMensagem.classList.add("mensagem");
+
+
+        /*
+         * Guarda o ID da mensagem.
+         */
+
+        elementoMensagem.dataset.mensagemId =
+            mensagem.id;
+
+
+        const enviada =
+            Number(mensagem.remetente_id) ===
+            usuarioLogadoId;
+
+
+        if (enviada) {
 
             elementoMensagem.classList.add(
-                "mensagem"
+                "mensagem-enviada"
             );
 
+        } else {
 
-            /*
-               Guarda o ID da mensagem no elemento.
-
-               Isso permite encontrar posteriormente
-               exatamente quais mensagens foram lidas.
-            */
-
-            elementoMensagem.dataset.mensagemId =
-                mensagem.id;
-
-
-            if (
-                mensagem.remetente_id ===
-                usuarioLogadoId
-            ) {
-
-                elementoMensagem.classList.add(
-                    "mensagem-enviada"
-                );
-
-            } else {
-
-                elementoMensagem.classList.add(
-                    "mensagem-recebida"
-                );
-
-            }
-
-
-            const hora =
-                formatarHora(
-                    mensagem.data_envio
-                );
-
-
-            let indicadorLeitura = "";
-
-
-            if (
-                mensagem.remetente_id ===
-                usuarioLogadoId
-            ) {
-
-                indicadorLeitura =
-                    mensagem.lida
-                        ? "✓✓"
-                        : "✓";
-
-            }
-
-
-            /* ---------------------------------------------
-               Cria conteúdo da mensagem
-            --------------------------------------------- */
-
-            const elementoConteudo =
-                document.createElement("div");
-
-
-            elementoConteudo.classList.add(
-                "mensagem-conteudo"
-            );
-
-
-            /* ---------------------------------------------
-               Texto da mensagem
-            --------------------------------------------- */
-
-            const elementoTexto =
-                document.createElement("p");
-
-
-            /*
-               textContent impede que o conteúdo
-               da mensagem seja interpretado como HTML.
-            */
-
-            elementoTexto.textContent =
-                mensagem.texto;
-
-
-            /* ---------------------------------------------
-               Horário da mensagem
-            --------------------------------------------- */
-
-            const elementoHora =
-                document.createElement("span");
-
-
-            elementoHora.classList.add(
-                "mensagem-hora"
-            );
-
-
-            elementoHora.appendChild(
-                document.createTextNode(
-                    hora
-                )
-            );
-
-
-            /* ---------------------------------------------
-               Indicador de leitura
-            --------------------------------------------- */
-
-            if (indicadorLeitura) {
-
-                const elementoStatus =
-                    document.createElement("span");
-
-
-                elementoStatus.classList.add(
-                    "mensagem-status"
-                );
-
-
-                elementoStatus.textContent =
-                    indicadorLeitura;
-
-
-                elementoHora.appendChild(
-                    elementoStatus
-                );
-
-            }
-
-
-            /* ---------------------------------------------
-               Monta a mensagem
-            --------------------------------------------- */
-
-            elementoConteudo.appendChild(
-                elementoTexto
-            );
-
-
-            elementoConteudo.appendChild(
-                elementoHora
-            );
-
-
-            elementoMensagem.appendChild(
-                elementoConteudo
-            );
-
-
-            mensagensContainer.appendChild(
-                elementoMensagem
+            elementoMensagem.classList.add(
+                "mensagem-recebida"
             );
 
         }
-    );
+
+
+        const hora =
+            formatarHora(mensagem.data_envio);
+
+
+        /* ---------------------------------------------
+           CRIAR CONTEÚDO
+        --------------------------------------------- */
+
+        const elementoConteudo =
+            document.createElement("div");
+
+        elementoConteudo.classList.add(
+            "mensagem-conteudo"
+        );
+
+
+        /* ---------------------------------------------
+           TEXTO
+        --------------------------------------------- */
+
+        const elementoTexto =
+            document.createElement("p");
+
+        elementoTexto.textContent =
+            mensagem.texto;
+
+
+        /* ---------------------------------------------
+           HORÁRIO
+        --------------------------------------------- */
+
+        const elementoHora =
+            document.createElement("span");
+
+        elementoHora.classList.add(
+            "mensagem-hora"
+        );
+
+        elementoHora.appendChild(
+            document.createTextNode(hora)
+        );
+
+
+        /* ---------------------------------------------
+           INDICADOR DE LEITURA
+        --------------------------------------------- */
+
+        if (enviada) {
+
+            const elementoStatus =
+                criarIconeStatus(
+                    Boolean(mensagem.lida)
+                );
+
+            elementoHora.appendChild(
+                elementoStatus
+            );
+
+        }
+
+
+        /* ---------------------------------------------
+           MONTAR MENSAGEM
+        --------------------------------------------- */
+
+        elementoConteudo.appendChild(
+            elementoTexto
+        );
+
+        elementoConteudo.appendChild(
+            elementoHora
+        );
+
+        elementoMensagem.appendChild(
+            elementoConteudo
+        );
+
+        mensagensContainer.appendChild(
+            elementoMensagem
+        );
+
+    });
 
 
     /*
-       Mantém a rolagem no final da conversa.
-    */
+     * Mantém a rolagem no final da conversa.
+     */
 
     mensagensContainer.scrollTop =
         mensagensContainer.scrollHeight;
@@ -473,27 +460,20 @@ window.addEventListener(
     "mensagemConfirmadaChat",
     event => {
 
-        const mensagem =
-            event.detail;
-
+        const mensagem = event.detail;
 
         console.log(
             "🔄 ATUALIZANDO MENSAGEM PROVISÓRIA:"
         );
 
-
-        console.log(
-            mensagem
-        );
+        console.log(mensagem);
 
 
         /*
-           Busca as mensagens enviadas.
-
-           Como a mensagem provisória ainda não possui
-           o ID do banco, pegamos a última mensagem
-           enviada pelo usuário.
-        */
+         * Busca as mensagens enviadas.
+         * A mensagem provisória ainda não possui
+         * o ID retornado pelo banco.
+         */
 
         const mensagensEnviadas =
             mensagensContainer.querySelectorAll(
@@ -501,9 +481,7 @@ window.addEventListener(
             );
 
 
-        if (
-            mensagensEnviadas.length === 0
-        ) {
+        if (mensagensEnviadas.length === 0) {
 
             console.warn(
                 "⚠️ Nenhuma mensagem provisória encontrada."
@@ -521,7 +499,7 @@ window.addEventListener(
 
 
         /* ---------------------------------------------
-           Adiciona o ID real do banco
+           ADICIONAR ID REAL DO BANCO
         --------------------------------------------- */
 
         mensagemProvisoria.dataset.mensagemId =
@@ -529,7 +507,7 @@ window.addEventListener(
 
 
         /* ---------------------------------------------
-           Atualiza o horário
+           ATUALIZAR HORÁRIO E STATUS
         --------------------------------------------- */
 
         const elementoHora =
@@ -537,40 +515,20 @@ window.addEventListener(
                 ".mensagem-hora"
             );
 
-
         if (elementoHora) {
 
-            /*
-               Remove o conteúdo atual do horário.
-            */
-
-            elementoHora.textContent =
-                formatarHora(
-                    mensagem.data_envio
-                );
-
-
-            /* ---------------------------------------------
-               Recria o indicador de leitura
-            --------------------------------------------- */
-
-            const elementoStatus =
-                document.createElement("span");
-
-
-            elementoStatus.classList.add(
-                "mensagem-status"
-            );
-
-
-            elementoStatus.textContent =
-                mensagem.lida
-                    ? "✓✓"
-                    : "✓";
-
+            elementoHora.replaceChildren();
 
             elementoHora.appendChild(
-                elementoStatus
+                document.createTextNode(
+                    formatarHora(mensagem.data_envio)
+                )
+            );
+
+            elementoHora.appendChild(
+                criarIconeStatus(
+                    Boolean(mensagem.lida)
+                )
             );
 
         }
@@ -593,16 +551,14 @@ window.addEventListener(
     "mensagensLidasChat",
     event => {
 
-        const notificacao =
-            event.detail;
-
+        const notificacao = event.detail;
 
         const negociacaoAtual =
             getNegociacaoAtual();
 
 
         /* ---------------------------------------------
-           Verifica se é a conversa atualmente aberta
+           VERIFICAR CONVERSA ATUAL
         --------------------------------------------- */
 
         if (
@@ -616,7 +572,7 @@ window.addEventListener(
 
 
         /* ---------------------------------------------
-           Busca os IDs das mensagens que foram lidas
+           IDs DAS MENSAGENS LIDAS
         --------------------------------------------- */
 
         const mensagensLidas =
@@ -624,40 +580,54 @@ window.addEventListener(
 
 
         /* ---------------------------------------------
-           Atualiza somente as mensagens lidas
+           ATUALIZAR SOMENTE AS MENSAGENS LIDAS
         --------------------------------------------- */
 
-        mensagensLidas.forEach(
-            mensagemId => {
+        mensagensLidas.forEach(mensagemId => {
 
-                const mensagem =
-                    mensagensContainer.querySelector(
-                        `[data-mensagem-id="${mensagemId}"]`
-                    );
-
-
-                if (!mensagem) {
-
-                    return;
-
-                }
+            const mensagem =
+                mensagensContainer.querySelector(
+                    `[data-mensagem-id="${mensagemId}"]`
+                );
 
 
-                const status =
-                    mensagem.querySelector(
-                        ".mensagem-status"
-                    );
+            if (!mensagem) {
+                return;
+            }
 
 
-                if (status) {
+            /*
+             * Atualiza somente mensagens enviadas
+             * pelo usuário atual.
+             */
 
-                    status.textContent =
-                        "✓✓";
+            if (
+                !mensagem.classList.contains(
+                    "mensagem-enviada"
+                )
+            ) {
 
-                }
+                return;
 
             }
-        );
+
+
+            const status =
+                mensagem.querySelector(
+                    ".mensagem-status"
+                );
+
+
+            if (status) {
+
+                atualizarStatusMensagem(
+                    status,
+                    true
+                );
+
+            }
+
+        });
 
 
         console.log(
@@ -685,9 +655,7 @@ chatForm.addEventListener(
 
 
         if (!texto) {
-
             return;
-
         }
 
 
@@ -714,24 +682,20 @@ chatForm.addEventListener(
             "🟣 Tentando enviar mensagem..."
         );
 
-
         console.log(
             "🟣 Mensagem:",
             texto
         );
-
 
         console.log(
             "🟣 Negociação:",
             negociacaoAtual
         );
 
-
         console.log(
             "🟣 Socket:",
             socket
         );
-
 
         console.log(
             "🟣 Estado do socket:",
@@ -760,9 +724,7 @@ chatForm.addEventListener(
         );
 
 
-        socket.send(
-            texto
-        );
+        socket.send(texto);
 
 
         console.log(
@@ -771,7 +733,7 @@ chatForm.addEventListener(
 
 
         /* ---------------------------------------------
-           Adiciona a mensagem enviada ao chat
+           ADICIONAR MENSAGEM ENVIADA AO CHAT
         --------------------------------------------- */
 
         adicionarMensagemNaTela(
@@ -781,7 +743,7 @@ chatForm.addEventListener(
 
 
         /* ---------------------------------------------
-           Atualiza a última mensagem na lista
+           ATUALIZAR ÚLTIMA MENSAGEM NA LISTA
         --------------------------------------------- */
 
         window.dispatchEvent(

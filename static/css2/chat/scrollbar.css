@@ -1,0 +1,29 @@
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+.lista-conversas::-webkit-scrollbar,
+.mensagens::-webkit-scrollbar,
+.modal-info-corpo::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lista-conversas::-webkit-scrollbar-track,
+.mensagens::-webkit-scrollbar-track,
+.modal-info-corpo::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.lista-conversas::-webkit-scrollbar-thumb,
+.mensagens::-webkit-scrollbar-thumb,
+.modal-info-corpo::-webkit-scrollbar-thumb {
+    background: #d0d5d0;
+
+    border-radius: 10px;
+}
+
+.lista-conversas::-webkit-scrollbar-thumb:hover,
+.mensagens::-webkit-scrollbar-thumb:hover,
+.modal-info-corpo::-webkit-scrollbar-thumb:hover {
+    background: #b8beb8;
+}

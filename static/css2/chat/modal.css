@@ -1,0 +1,264 @@
+/* =========================================================
+   MODAL DE INFORMAÇÕES DA NEGOCIAÇÃO
+========================================================= */
+
+.modal-info-negociacao {
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    z-index: 1000;
+}
+
+
+/* =========================================================
+   CONTEÚDO DO MODAL
+========================================================= */
+
+.modal-info-conteudo {
+    width: 100%;
+    max-width: 500px;
+
+    max-height: 85vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border-radius: 16px;
+
+    border: 1px solid #e5e5e5;
+
+    overflow: hidden;
+
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   CABEÇALHO DO MODAL
+========================================================= */
+
+.modal-info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 18px 20px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    background: #ffffff;
+}
+
+.modal-info-header h2 {
+    margin: 0;
+
+    font-family: "Fredoka", sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+
+    color: #2e7d32;
+}
+
+
+/* =========================================================
+   BOTÃO FECHAR MODAL
+========================================================= */
+
+.btn-fechar-info {
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #777;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.btn-fechar-info:hover {
+    background: #f1f4f1;
+
+    color: #2e7d32;
+}
+
+.btn-fechar-info svg {
+    width: 19px;
+    height: 19px;
+}
+
+
+/* =========================================================
+   CORPO DO MODAL
+========================================================= */
+
+.modal-info-corpo {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+
+/* =========================================================
+   ITEM DE INFORMAÇÃO
+========================================================= */
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+
+    padding: 12px;
+
+    background: #f7f9f7;
+
+    border-radius: 10px;
+}
+
+.info-item span {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+
+    color: #888;
+}
+
+.info-item strong {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    color: #333;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   DESCRIÇÃO
+========================================================= */
+
+.info-item.info-descricao {
+    grid-column: 1 / -1;
+}
+
+.info-item.info-descricao p {
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    color: #555;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLETS E CELULARES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .modal-info-negociacao {
+        padding: 12px;
+    }
+
+    .modal-info-conteudo {
+        max-width: 100%;
+        max-height: 90vh;
+
+        border-radius: 14px;
+    }
+
+    .modal-info-header {
+        padding: 16px;
+    }
+
+    .modal-info-header h2 {
+        font-size: 18px;
+    }
+
+    .modal-info-corpo {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+        padding: 15px;
+    }
+
+    .info-item.info-descricao {
+        grid-column: auto;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .modal-info-negociacao {
+        padding: 8px;
+    }
+
+    .modal-info-conteudo {
+        max-height: 92vh;
+
+        border-radius: 12px;
+    }
+
+    .modal-info-header {
+        padding: 14px;
+    }
+
+    .modal-info-header h2 {
+        font-size: 17px;
+    }
+
+    .modal-info-corpo {
+        padding: 12px;
+    }
+
+    .info-item {
+        padding: 10px;
+    }
+}

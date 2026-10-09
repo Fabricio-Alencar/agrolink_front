@@ -17,7 +17,7 @@ import {
    ws://127.0.0.1:5500
 
    Produção:
-   wss://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net
+    "wss://backagrolinkbr-hfb4cpdvctheeycm.brazilsouth-01.azurewebsites.net";
 */
 
 const WEBSOCKET_URL =

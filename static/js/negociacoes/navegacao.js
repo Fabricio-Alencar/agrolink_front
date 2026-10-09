@@ -1,3 +1,4 @@
+
 import { getCacheNegociacoes } from "./renderizacao.js";
 import { API } from "./api.js";
 import { prepararConfirmacaoNegociacao } from "./confirmacao.js";
@@ -12,7 +13,11 @@ const FOTO_GENERICA = "../static/assets/produto_generico.png";
 // AUXILIARES: NORMALIZAR STATUS E FOTO
 // ============================================================
 function normalizarStatus(status) {
-    return String(status || "pendente").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    return String(status || "pendente")
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
 }
 
 function resolverCaminhoFoto(order) {
@@ -26,13 +31,17 @@ function resolverCaminhoFoto(order) {
         return foto;
     }
 
-    foto = foto.replace(/^\/+/, "").replace(/^static\//, "").replace(/^uploads\/produtos\//, "");
+    foto = foto
+        .replace(/^\/+/, "")
+        .replace(/^static\//, "")
+        .replace(/^uploads\/produtos\//, "");
 
     if (foto === "foto_generica.png" || foto === "produto_generico.png") {
         return FOTO_GENERICA;
     }
 
-    const baseApi = (typeof API_URL !== "undefined" ? API_URL : "").replace(/\/$/, "");
+    const baseApi = (typeof API_URL !== "undefined" ? API_URL : "")
+        .replace(/\/$/, "");
 
     return `${baseApi}/static/uploads/produtos/${foto}`;
 }
@@ -66,43 +75,53 @@ export function showDetails(id, tipoUsuario) {
     let botoesHTML = "";
 
     // ========================================================
-    // CONSTRUÇÃO DOS BOTÕES
+    // CONSTRUÇÃO DOS BOTÕES DE AÇÃO
     // ========================================================
     if (statusClass === "pendente") {
-        // PRODUTOR
         if (tipoUsuario === "produtor") {
             botoesHTML = `
                 <button class="btn-action btn-finalize" id="btnAceitar">
                     Aceitar Pedido
                 </button>
+
                 <button class="btn-action btn-cancel" id="btnRecusar">
                     Recusar Pedido
                 </button>
             `;
-        } else { // ESTABELECIMENTO
+        } else {
             botoesHTML = `
                 <p style="text-align: center; color: #888; width: 100%; margin-bottom: 10px;">
                     Aguardando resposta do produtor...
                 </p>
+
                 <button class="btn-action btn-cancel" id="btnCancelar">
                     Cancelar Pedido
                 </button>
             `;
         }
     } else if (statusClass === "aceito" || statusClass === "entregue") {
-        // ACEITO / ENTREGUE - PRODUTOR
         if (tipoUsuario === "produtor") {
-            const desabilitado = order.entrega_confirmada ? 'disabled style="background-color:#ccc;cursor:not-allowed;"' : "";
-            const texto = order.entrega_confirmada ? "Entrega Confirmada" : "Confirmar Entrega";
+            const desabilitado = order.entrega_confirmada
+                ? 'disabled style="background-color:#ccc;cursor:not-allowed;"'
+                : "";
+
+            const texto = order.entrega_confirmada
+                ? "Entrega Confirmada"
+                : "Confirmar Entrega";
 
             botoesHTML = `
                 <button class="btn-action btn-finalize" id="btnConfirmarAcao" ${desabilitado}>
                     ${texto}
                 </button>
             `;
-        } else if (tipoUsuario === "estabelecimento") { // ESTABELECIMENTO
-            const desabilitado = order.recebimento_confirmado ? 'disabled style="background-color:#ccc;cursor:not-allowed;"' : "";
-            const texto = order.recebimento_confirmado ? "Recebimento Confirmado" : "Confirmar Recebimento";
+        } else if (tipoUsuario === "estabelecimento") {
+            const desabilitado = order.recebimento_confirmado
+                ? 'disabled style="background-color:#ccc;cursor:not-allowed;"'
+                : "";
+
+            const texto = order.recebimento_confirmado
+                ? "Recebimento Confirmado"
+                : "Confirmar Recebimento";
 
             botoesHTML = `
                 <button class="btn-action btn-finalize" id="btnConfirmarAcao" ${desabilitado}>
@@ -111,7 +130,6 @@ export function showDetails(id, tipoUsuario) {
             `;
         }
     } else {
-        // OUTROS STATUS
         botoesHTML = `
             <p style="text-align:center; font-weight:bold; width:100%;">
                 Este pedido está ${statusOriginal}.
@@ -119,19 +137,25 @@ export function showDetails(id, tipoUsuario) {
         `;
     }
 
+    // ========================================================
     // FOTO DO PRODUTO
+    // ========================================================
     const urlImagem = resolverCaminhoFoto(order);
 
+    // ========================================================
     // RENDERIZAÇÃO DO HTML
+    // ========================================================
     container.innerHTML = `
         <div class="details-header">
             <h2>Detalhes do Pedido</h2>
+
             <span class="badge ${statusClass}" style="font-size:14px; padding:6px 16px;">
                 ${statusOriginal}
             </span>
         </div>
 
         <div class="details-grid">
+
             <!-- COLUNA ESQUERDA -->
             <div class="col-left">
                 <div class="info-group">
@@ -139,6 +163,7 @@ export function showDetails(id, tipoUsuario) {
                         <i data-lucide="package"></i>
                         Produto:
                     </span>
+
                     <span class="info-value">
                         ${order.produto_nome || "Produto"}
                     </span>
@@ -150,6 +175,7 @@ export function showDetails(id, tipoUsuario) {
                             <i data-lucide="boxes"></i>
                             Quantidade:
                         </span>
+
                         <span class="info-text">
                             ${order.quantidade ?? "-"}
                         </span>
@@ -160,6 +186,7 @@ export function showDetails(id, tipoUsuario) {
                             <i data-lucide="badge-dollar-sign"></i>
                             Preço Unitário:
                         </span>
+
                         <span class="info-text">
                             R$ ${order.produto_preco ?? "0,00"}
                         </span>
@@ -171,6 +198,7 @@ export function showDetails(id, tipoUsuario) {
                         <i data-lucide="calendar-days"></i>
                         Data de entrega:
                     </span>
+
                     <span class="info-text">
                         ${order.data_entrega || "A combinar"}
                     </span>
@@ -181,19 +209,26 @@ export function showDetails(id, tipoUsuario) {
                         <i data-lucide="file-text"></i>
                         Descrição do Pedido:
                     </span>
+
                     <textarea class="desc-box" readonly>${order.descricao || "Descrição adicional."}</textarea>
                 </div>
             </div>
 
             <!-- COLUNA DIREITA -->
             <div class="col-right">
-                <img src="${urlImagem}" alt="${order.produto_nome || "Produto"}" class="product-img" onerror="if (this.dataset.fallback === 'true') return; this.dataset.fallback = 'true'; this.src='${FOTO_GENERICA}';">
+                <img
+                    src="${urlImagem}"
+                    alt="${order.produto_nome || "Produto"}"
+                    class="product-img"
+                    onerror="if (this.dataset.fallback === 'true') return; this.dataset.fallback = 'true'; this.src='${FOTO_GENERICA}';"
+                >
 
                 <div class="info-group">
                     <span class="info-label">
                         <i data-lucide="handshake"></i>
                         Negociante:
                     </span>
+
                     <span class="info-value" style="font-size:18px;">
                         ${order.negociante_nome || "Não informado"}
                     </span>
@@ -204,6 +239,7 @@ export function showDetails(id, tipoUsuario) {
                         <i data-lucide="phone"></i>
                         Telefone:
                     </span>
+
                     <span class="info-text">
                         ${order.negociante_telefone || "Não informado"}
                     </span>
@@ -214,24 +250,39 @@ export function showDetails(id, tipoUsuario) {
                         <i data-lucide="mail"></i>
                         Email:
                     </span>
+
                     <span class="info-text">
                         ${order.negociante_email || "Não informado"}
                     </span>
                 </div>
+
+                <!-- ÁREA COMPARTILHADA DOS BOTÕES DE CONTATO -->
+                <div
+                    class="botoes-contato"
+                    style="display:flex; flex-direction:row; align-items:center; justify-content:center; gap:10px; margin-top:15px; flex-wrap:wrap;"
+                >
+                    <button class="btn-action btn-finalize" id="btnConversar">
+                        <i data-lucide="message-circle"></i>
+                        Conversar
+                    </button>
+
+                    <!-- O whatsapp.js deve inserir o botão WhatsApp aqui -->
+                </div>
             </div>
         </div>
 
-        <!-- BOTÕES DE AÇÃO -->
-        <div class="action-buttons" style="display:flex; justify-content:center; gap:15px; margin-top:20px;">
+        <!-- BOTÕES DE AÇÃO DA NEGOCIAÇÃO -->
+        <div
+            class="action-buttons"
+            style="display:flex; justify-content:center; gap:15px; margin-top:20px;"
+        >
             ${botoesHTML}
-            <button class="btn-action btn-finalize" id="btnConversar">
-                <i data-lucide="message-circle"></i>
-                Conversar
-            </button>
         </div>
     `;
 
+    // ========================================================
     // RENDERIZAÇÃO DOS ÍCONES LUCIDE
+    // ========================================================
     if (window.lucide) {
         try {
             window.lucide.createIcons();
@@ -240,19 +291,25 @@ export function showDetails(id, tipoUsuario) {
         }
     }
 
+    // ========================================================
     // ALTERNAR VISIBILIDADE DAS VIEWS
+    // ========================================================
     if (viewLista) viewLista.style.display = "none";
     if (viewCalendario) viewCalendario.style.display = "none";
     if (viewDetalhes) viewDetalhes.style.display = "block";
 
+    // ========================================================
     // EVENT LISTENERS DOS BOTÕES
+    // ========================================================
     const btnAceitar = document.getElementById("btnAceitar");
     const btnRecusar = document.getElementById("btnRecusar");
     const btnCancelar = document.getElementById("btnCancelar");
     const btnConfirmarAcao = document.getElementById("btnConfirmarAcao");
     const btnConversar = document.getElementById("btnConversar");
 
+    // ========================================================
     // ACEITAR PEDIDO
+    // ========================================================
     if (btnAceitar) {
         btnAceitar.onclick = async () => {
             try {
@@ -266,43 +323,109 @@ export function showDetails(id, tipoUsuario) {
         };
     }
 
+    // ========================================================
     // RECUSAR PEDIDO
+    // ========================================================
     if (btnRecusar) {
         btnRecusar.onclick = () => {
             prepararConfirmacaoNegociacao("recusar", order, "Recusado");
         };
     }
 
+    // ========================================================
     // CANCELAR PEDIDO
+    // ========================================================
     if (btnCancelar) {
         btnCancelar.onclick = () => {
             prepararConfirmacaoNegociacao("cancelar", order, "Cancelado");
         };
     }
 
+    // ========================================================
     // CONFIRMAR ENTREGA / RECEBIMENTO
+    // ========================================================
     if (btnConfirmarAcao && !btnConfirmarAcao.disabled) {
         btnConfirmarAcao.onclick = async () => {
             try {
-                const acao = tipoUsuario === "produtor" ? "confirmar_entrega" : "confirmar_recebimento";
+                const acao = tipoUsuario === "produtor"
+                    ? "confirmar_entrega"
+                    : "confirmar_recebimento";
+
                 await API.registrarConfirmacao(order.id, acao);
-                agendarNotificacao("cadastro", "Confirmação registrada com sucesso!");
+
+                agendarNotificacao(
+                    "cadastro",
+                    "Confirmação registrada com sucesso!"
+                );
+
                 location.reload();
             } catch (error) {
                 console.error("❌ Erro ao registrar confirmação:", error);
-                exibirNotificacao("erro", "Erro ao registrar confirmação.");
+                exibirNotificacao(
+                    "erro",
+                    "Erro ao registrar confirmação."
+                );
             }
         };
     }
 
+    // ========================================================
     // ABRIR CHAT
+    // ========================================================
     if (btnConversar) {
-        btnConversar.onclick = () => {
-            window.location.href = `/chat?negociacao=${order.id}`;
+        btnConversar.onclick = async () => {
+            const negociacaoId = Number(order.id);
+
+            if (!Number.isInteger(negociacaoId) || negociacaoId <= 0) {
+                exibirNotificacao(
+                    "erro",
+                    "Não foi possível identificar a negociação."
+                );
+                return;
+            }
+
+            // Evita cliques repetidos enquanto a solicitação está em andamento.
+            btnConversar.disabled = true;
+            btnConversar.style.opacity = "0.7";
+
+            try {
+                const resposta = await fetch(
+                    `${API_URL}/chat/conversas/${negociacaoId}/iniciar`,
+                    {
+                        method: "POST",
+                        credentials: "include"
+                    }
+                );
+
+                const dados = await resposta.json().catch(() => ({}));
+
+                if (!resposta.ok) {
+                    throw new Error(
+                        dados.detail ||
+                        "Não foi possível iniciar a conversa."
+                    );
+                }
+
+                // Só redireciona depois que o servidor confirmar a operação.
+                window.location.href = `/chat?negociacao=${negociacaoId}`;
+
+            } catch (error) {
+                console.error("Erro ao iniciar conversa:", error);
+
+                exibirNotificacao(
+                    "erro",
+                    error.message || "Não foi possível abrir o chat."
+                );
+
+                btnConversar.disabled = false;
+                btnConversar.style.opacity = "";
+            }
         };
     }
 
+    // ========================================================
     // VOLTA PARA O TOPO
+    // ========================================================
     window.scrollTo(0, 0);
 }
 

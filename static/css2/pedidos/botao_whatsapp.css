@@ -1,3 +1,4 @@
+
 /* =========================
    BOTÃO DO WHATSAPP
 ========================= */
@@ -5,22 +6,34 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: var(--space-md);
-    width: fit-content;
-    margin-top: var(--space-md);
-    padding: var(--space-sm) var(--space-lg);
+    gap: var(--space-xs);
+
+    width: 100%;
+    min-height: 2.8rem;
+    padding: var(--space-sm) var(--space-md);
+    box-sizing: border-box;
+
     background-color: #25D366;
     color: var(--cor-branco);
+
+    border: none;
     border-radius: clamp(0.5rem, 1vw, 0.7rem);
-    font-family: 'Inter', sans-serif;
+
+    font-family: inherit;
     font-size: clamp(0.85rem, 1vw, 0.95rem);
     font-weight: 600;
+
     text-decoration: none;
-    box-shadow: 0 0.25rem 0.6rem rgba(37, 211, 102, 0.25);
+    white-space: nowrap;
+    cursor: pointer;
+
+    box-shadow: none;
+
     transition:
         background-color 0.2s ease,
+        transform 0.2s ease,
         box-shadow 0.2s ease,
-        transform 0.2s ease;
+        opacity 0.2s ease;
 }
 
 /* =========================
@@ -29,18 +42,21 @@
 .btn-whatsapp svg {
     width: 1.1rem;
     height: 1.1rem;
+
     fill: currentColor;
     flex-shrink: 0;
+    stroke-width: 2.2;
 }
 
 /* =========================
-   HOVER
+   HOVER PADRONIZADO
 ========================= */
 .btn-whatsapp:hover {
     background-color: #1ea952;
     color: var(--cor-branco);
-    transform: translateY(-0.15rem);
-    box-shadow: 0 0.4rem 0.8rem rgba(37, 211, 102, 0.3);
+
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.25rem 0.6rem rgba(0, 0, 0, 0.12);
 }
 
 /* =========================
@@ -48,7 +64,55 @@
 ========================= */
 .btn-whatsapp:active {
     transform: translateY(0);
-    box-shadow: 0 0.15rem 0.4rem rgba(37, 211, 102, 0.2);
+    box-shadow: none;
+}
+
+/* =========================
+   BOTÕES DE CONTATO LADO A LADO
+========================= */
+.col-right .botoes-contato {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+    flex-wrap: wrap;
+
+    width: 100%;
+    margin-top: var(--space-md);
+}
+
+/* Botão Conversar e botão WhatsApp */
+.col-right .botoes-contato #btnConversar,
+.col-right .botoes-contato .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+
+    width: auto;
+    min-width: 0;
+    min-height: 2.8rem;
+
+    padding: var(--space-sm) var(--space-md);
+    margin: 0;
+
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+
+    border-radius: clamp(0.5rem, 1vw, 0.7rem);
+    white-space: nowrap;
+}
+
+/* Ícone do botão Conversar */
+.col-right .botoes-contato #btnConversar svg {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    stroke-width: 2.2;
 }
 
 /* =========================
@@ -56,8 +120,8 @@
 ========================= */
 @media (min-width: 768px) {
     .btn-whatsapp {
-        padding: var(--space-sm) var(--space-lg);
-        font-size: clamp(0.85rem, 1vw, 1rem);
+        padding: var(--space-sm) var(--space-md);
+        font-size: clamp(0.85rem, 1vw, 0.95rem);
     }
 }
 
@@ -66,6 +130,22 @@
 ========================= */
 @media (min-width: 1024px) {
     .btn-whatsapp {
-        padding: var(--space-sm) var(--space-lg);
+        padding: var(--space-sm) var(--space-md);
+    }
+}
+
+/* =========================
+   TELAS PEQUENAS
+========================= */
+@media (max-width: 480px) {
+    .col-right .botoes-contato {
+        gap: 8px;
+    }
+
+    .col-right .botoes-contato #btnConversar,
+    .col-right .botoes-contato .btn-whatsapp {
+        gap: 6px;
+        padding: 8px 10px;
+        font-size: 0.8rem;
     }
 }

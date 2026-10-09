@@ -1,603 +1,646 @@
+
 import { API } from "./api.js";
 
 import {
     setNegociacaoAtual,
-    getNegociacaoAtual,
-    setNegociacaoInfo,
-    getNegociacaoInfo
+    setNegociacaoInfo
 } from "./estado.js";
 
-import {
-    conectarWebSocket
-} from "./websocket.js";
-
-import {
-    renderizarMensagens
-} from "./mensagens.js";
+import { conectarWebSocket } from "./websocket.js";
+import { renderizarMensagens } from "./mensagens.js";
 
 
 /* =========================================================
-   ELEMENTOS
+   ELEMENTOS DA TELA
 ========================================================= */
 
-const containerChat =
-    document.querySelector(".chat-container");
+const chatContainer = document.querySelector(".chat-container");
 
-const listaConversas =
-    document.getElementById("listaConversas");
+const listaConversas = document.getElementById("listaConversas");
+const chatArea = document.getElementById("chatArea");
+const chatSemSelecao = document.getElementById("chatSemSelecao");
+const chatNome = document.getElementById("chatNome");
+const chatProduto = document.getElementById("chatProduto");
+const chatFoto = document.getElementById("chatFoto");
+const mensagens = document.getElementById("mensagens");
 
-const mensagensContainer =
-    document.getElementById("mensagens");
-
-const chatNome =
-    document.getElementById("chatNome");
-
-const chatProduto =
-    document.getElementById("chatProduto");
-
-const chatFoto =
-    document.getElementById("chatFoto");
-
-const mensagemInput =
-    document.getElementById("mensagemInput");
-
-const chatArea =
-    document.getElementById("chatArea");
-
-const chatSemSelecao =
-    document.getElementById("chatSemSelecao");
-
-const btnInfoChat =
-    document.getElementById("btnInfoChat");
+const btnVoltarChat = document.getElementById("btnVoltarChat");
 
 
 /* =========================================================
    ELEMENTOS DO MODAL DE INFORMAÇÕES
 ========================================================= */
 
-const modalInfoNegociacao =
-    document.getElementById("modalInfoNegociacao");
+const btnInfoChat = document.getElementById("btnInfoChat");
+const modalInfoNegociacao = document.getElementById("modalInfoNegociacao");
+const btnFecharInfo = document.getElementById("btnFecharInfo");
 
-const btnFecharInfo =
-    document.getElementById("btnFecharInfo");
-
-const infoProduto =
-    document.getElementById("infoProduto");
-
-const infoQuantidade =
-    document.getElementById("infoQuantidade");
-
-const infoPreco =
-    document.getElementById("infoPreco");
-
-const infoUnidade =
-    document.getElementById("infoUnidade");
-
-const infoDataEntrega =
-    document.getElementById("infoDataEntrega");
-
-const infoStatus =
-    document.getElementById("infoStatus");
-
-const infoDescricao =
-    document.getElementById("infoDescricao");
-
-const infoNegociante =
-    document.getElementById("infoNegociante");
+const infoProduto = document.getElementById("infoProduto");
+const infoQuantidade = document.getElementById("infoQuantidade");
+const infoPreco = document.getElementById("infoPreco");
+const infoUnidade = document.getElementById("infoUnidade");
+const infoDataEntrega = document.getElementById("infoDataEntrega");
+const infoStatus = document.getElementById("infoStatus");
+const infoDescricao = document.getElementById("infoDescricao");
+const infoNegociante = document.getElementById("infoNegociante");
 
 
 /* =========================================================
-   ESTADO SEM SELEÇÃO
+   ESTADO DOS DETALHES DA NEGOCIAÇÃO
+========================================================= */
+
+let negociacaoDetalhesAtual = null;
+
+
+/* =========================================================
+   FOTO PADRÃO
+========================================================= */
+
+const FOTO_GENERICA = "../static/assets/user.png";
+
+
+/* =========================================================
+   FORMATAR VALORES
+========================================================= */
+
+function formatarPreco(valor) {
+
+    if (valor === null || valor === undefined || valor === "") {
+        return "-";
+    }
+
+    const numero = Number(valor);
+
+    if (!Number.isFinite(numero)) {
+        return "-";
+    }
+
+    return numero.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+
+function formatarData(data) {
+
+    if (!data) {
+        return "-";
+    }
+
+    const correspondencia = String(data).match(
+        /^(\d{4})-(\d{2})-(\d{2})$/
+    );
+
+    if (correspondencia) {
+        return `${correspondencia[3]}/${correspondencia[2]}/${correspondencia[1]}`;
+    }
+
+    const dataConvertida = new Date(data);
+
+    if (Number.isNaN(dataConvertida.getTime())) {
+        return String(data);
+    }
+
+    return dataConvertida.toLocaleDateString("pt-BR");
+}
+
+
+/* =========================================================
+   DATA DA ÚLTIMA MENSAGEM
+========================================================= */
+
+function obterDataUltimaMensagem(conversa) {
+
+    const ultimaMensagem = conversa?.ultima_mensagem;
+
+    if (
+        !ultimaMensagem ||
+        typeof ultimaMensagem !== "object" ||
+        !ultimaMensagem.data_envio
+    ) {
+        return 0;
+    }
+
+    const data = new Date(
+        ultimaMensagem.data_envio
+    ).getTime();
+
+    return Number.isFinite(data) ? data : 0;
+}
+
+
+/* =========================================================
+   FORMATAR HORÁRIO DA CONVERSA
+========================================================= */
+
+function formatarHorarioMensagem(data) {
+
+    if (!data) {
+        return "";
+    }
+
+    const dataConvertida = new Date(data);
+
+    if (Number.isNaN(dataConvertida.getTime())) {
+        return "";
+    }
+
+    return dataConvertida.toLocaleTimeString("pt-BR", {
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+
+
+/* =========================================================
+   PREENCHER DETALHES DA NEGOCIAÇÃO
+========================================================= */
+
+function preencherDetalhesNegociacao(detalhes) {
+
+    if (!detalhes) {
+        return;
+    }
+
+    if (infoProduto) {
+        infoProduto.textContent =
+            detalhes.produto_nome ||
+            detalhes.nome_produto ||
+            detalhes.produto ||
+            "-";
+    }
+
+    if (infoQuantidade) {
+
+        const quantidade = detalhes.quantidade;
+
+        infoQuantidade.textContent =
+            quantidade !== null && quantidade !== undefined
+                ? String(quantidade)
+                : "-";
+    }
+
+    if (infoPreco) {
+        infoPreco.textContent = formatarPreco(
+            detalhes.produto_preco ??
+            detalhes.preco
+        );
+    }
+
+    if (infoUnidade) {
+        infoUnidade.textContent =
+            detalhes.produto_unidade ||
+            detalhes.unidade ||
+            "-";
+    }
+
+    if (infoDataEntrega) {
+        infoDataEntrega.textContent = formatarData(
+            detalhes.data_entrega
+        );
+    }
+
+    if (infoStatus) {
+        infoStatus.textContent =
+            detalhes.status || "-";
+    }
+
+    if (infoDescricao) {
+        infoDescricao.textContent =
+            detalhes.descricao || "-";
+    }
+
+    if (infoNegociante) {
+        infoNegociante.textContent =
+            detalhes.negociante_nome ||
+            detalhes.nome_outro_usuario ||
+            detalhes.nome_usuario ||
+            detalhes.nome ||
+            "-";
+    }
+}
+
+
+/* =========================================================
+   ABRIR E FECHAR MODAL
+========================================================= */
+
+function abrirModalInfo() {
+
+    if (!negociacaoDetalhesAtual || !modalInfoNegociacao) {
+        return;
+    }
+
+    preencherDetalhesNegociacao(negociacaoDetalhesAtual);
+
+    modalInfoNegociacao.style.display = "flex";
+    modalInfoNegociacao.setAttribute("aria-hidden", "false");
+}
+
+
+function fecharModalInfo() {
+
+    if (!modalInfoNegociacao) {
+        return;
+    }
+
+    modalInfoNegociacao.style.display = "none";
+    modalInfoNegociacao.setAttribute("aria-hidden", "true");
+}
+
+
+/* =========================================================
+   EVENTOS DO MODAL
+========================================================= */
+
+if (btnInfoChat) {
+    btnInfoChat.addEventListener("click", abrirModalInfo);
+}
+
+if (btnFecharInfo) {
+    btnFecharInfo.addEventListener("click", fecharModalInfo);
+}
+
+
+if (modalInfoNegociacao) {
+
+    modalInfoNegociacao.addEventListener("click", event => {
+
+        if (event.target === modalInfoNegociacao) {
+            fecharModalInfo();
+        }
+
+    });
+}
+
+
+document.addEventListener("keydown", event => {
+
+    if (
+        event.key === "Escape" &&
+        modalInfoNegociacao &&
+        modalInfoNegociacao.style.display !== "none"
+    ) {
+        fecharModalInfo();
+    }
+
+});
+
+
+/* =========================================================
+   VOLTAR PARA A LISTA DE CONVERSAS
+========================================================= */
+
+function voltarParaLista() {
+
+    fecharModalInfo();
+
+    if (chatContainer) {
+        chatContainer.classList.remove("chat-aberto");
+    }
+
+    if (chatArea) {
+        chatArea.style.display = "none";
+    }
+
+}
+
+
+if (btnVoltarChat) {
+    btnVoltarChat.addEventListener("click", voltarParaLista);
+}
+
+
+/* =========================================================
+   ESTADO SEM CONVERSA SELECIONADA
 ========================================================= */
 
 export function mostrarEstadoSemSelecao() {
 
-    if (chatArea) {
+    setNegociacaoAtual(null);
+    setNegociacaoInfo(null);
 
-        chatArea.style.display =
-            "none";
+    negociacaoDetalhesAtual = null;
 
-    }
-
-
-    if (chatSemSelecao) {
-
-        chatSemSelecao.style.display =
-            "flex";
-
-    }
-
-
-    if (containerChat) {
-
-        containerChat.classList.remove(
-            "chat-aberto"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   MOSTRAR CONVERSA
-========================================================= */
-
-export function mostrarConversa() {
+    fecharModalInfo();
 
     if (chatArea) {
-
-        chatArea.style.display =
-            "flex";
-
+        chatArea.style.display = "none";
     }
-
 
     if (chatSemSelecao) {
-
-        chatSemSelecao.style.display =
-            "none";
-
+        chatSemSelecao.style.display = "flex";
     }
 
-
-    if (containerChat) {
-
-        containerChat.classList.add(
-            "chat-aberto"
-        );
-
+    if (chatContainer) {
+        chatContainer.classList.remove("chat-aberto");
     }
 
+    if (mensagens) {
+        mensagens.replaceChildren();
+    }
+
+    document.querySelectorAll(".conversa-item").forEach(item => {
+        item.classList.remove("ativa");
+    });
 }
 
 
 /* =========================================================
-   BOTÃO DE INFORMAÇÕES DA NEGOCIAÇÃO
+   FORMATAR ÚLTIMA MENSAGEM
 ========================================================= */
 
-if (btnInfoChat) {
+function obterTextoUltimaMensagem(conversa) {
 
-    btnInfoChat.addEventListener(
-        "click",
-        () => {
+    const ultimaMensagem = conversa.ultima_mensagem;
 
-            const negociacao =
-                getNegociacaoInfo();
+    if (!ultimaMensagem) {
+        return "Conversa iniciada";
+    }
 
+    if (typeof ultimaMensagem === "string") {
+        return ultimaMensagem;
+    }
 
-            console.log(
-                "ℹ️ INFORMAÇÕES DA NEGOCIAÇÃO:",
-                negociacao
-            );
-
-
-            /* ---------------------------------------------
-               Verifica se existem informações
-            --------------------------------------------- */
-
-            if (!negociacao) {
-
-                console.warn(
-                    "⚠️ Nenhuma informação de negociação disponível."
-                );
-
-                return;
-
-            }
-
-
-            /* ---------------------------------------------
-               Preenche as informações
-            --------------------------------------------- */
-
-            if (infoProduto) {
-
-                infoProduto.textContent =
-                    negociacao.produto_nome ||
-                    "-";
-
-            }
-
-
-            if (infoQuantidade) {
-
-                infoQuantidade.textContent =
-                    negociacao.quantidade != null
-                        ? negociacao.quantidade
-                        : "-";
-
-            }
-
-
-            if (infoPreco) {
-
-                infoPreco.textContent =
-                    negociacao.produto_preco != null
-                        ? `R$ ${Number(
-                            negociacao.produto_preco
-                        ).toFixed(2).replace(".", ",")}`
-                        : "-";
-
-            }
-
-
-            if (infoUnidade) {
-
-                infoUnidade.textContent =
-                    negociacao.produto_unidade ||
-                    "-";
-
-            }
-
-
-            if (infoDataEntrega) {
-
-                infoDataEntrega.textContent =
-                    negociacao.data_entrega ||
-                    "-";
-
-            }
-
-
-            if (infoStatus) {
-
-                infoStatus.textContent =
-                    negociacao.status ||
-                    "-";
-
-            }
-
-
-            if (infoDescricao) {
-
-                infoDescricao.textContent =
-                    negociacao.descricao ||
-                    "Nenhuma descrição informada.";
-
-            }
-
-
-            if (infoNegociante) {
-
-                infoNegociante.textContent =
-                    negociacao.negociante_nome ||
-                    "-";
-
-            }
-
-
-            /* ---------------------------------------------
-               Mostra o modal
-            --------------------------------------------- */
-
-            if (modalInfoNegociacao) {
-
-                modalInfoNegociacao.style.display =
-                    "flex";
-
-            }
-
-
-            /* ---------------------------------------------
-               Atualiza os ícones
-            --------------------------------------------- */
-
-            if (window.lucide) {
-
-                lucide.createIcons();
-
-            }
-
-        }
-    );
-
+    return ultimaMensagem.texto || "Conversa iniciada";
 }
 
 
 /* =========================================================
-   FECHAR MODAL
+   ATUALIZAR UMA CONVERSA NA LISTA
 ========================================================= */
 
-if (btnFecharInfo) {
+/*
+ * Atualiza a prévia e o horário da conversa.
+ * Em seguida, move o item para o topo da lista.
+ *
+ * A conversa não é recriada: isso preserva seus
+ * elementos, eventos e estado visual.
+ */
 
-    btnFecharInfo.addEventListener(
-        "click",
-        () => {
-
-            if (modalInfoNegociacao) {
-
-                modalInfoNegociacao.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   FECHAR CLICANDO FORA DO MODAL
-========================================================= */
-
-if (modalInfoNegociacao) {
-
-    modalInfoNegociacao.addEventListener(
-        "click",
-        event => {
-
-            if (
-                event.target ===
-                modalInfoNegociacao
-            ) {
-
-                modalInfoNegociacao.style.display =
-                    "none";
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   ATUALIZAR CONVERSA COM NOVA MENSAGEM
-========================================================= */
-
-function atualizarConversaComNovaMensagem(
-    notificacao
+function atualizarConversaNaLista(
+    negociacaoId,
+    mensagem
 ) {
 
-    console.log(
-        "🔄 ATUALIZANDO LISTA DE CONVERSAS:"
+    if (!listaConversas || !mensagem) {
+        return;
+    }
+
+    const id = Number(negociacaoId);
+
+    if (!Number.isInteger(id) || id <= 0) {
+        return;
+    }
+
+    const item = Array.from(
+        listaConversas.querySelectorAll(".conversa-item")
+    ).find(conversa => {
+        return Number(conversa.dataset.negociacaoId) === id;
+    });
+
+    /*
+     * Atualiza somente conversas que já existem
+     * na lista carregada pela API.
+     */
+
+    if (!item) {
+        return;
+    }
+
+    const preview = item.querySelector(".conversa-preview");
+    const hora = item.querySelector(".conversa-hora");
+
+    if (preview) {
+        preview.textContent =
+            typeof mensagem.texto === "string"
+                ? mensagem.texto
+                : "Conversa iniciada";
+    }
+
+    /*
+     * Usa a data fornecida pelo servidor quando disponível.
+     * Para mensagens provisórias, utiliza o horário atual.
+     */
+
+    const dataMensagem = mensagem.data_envio || new Date();
+
+    if (hora) {
+        hora.textContent = formatarHorarioMensagem(
+            dataMensagem
+        );
+    }
+
+    /*
+     * Move a conversa para a primeira posição.
+     */
+
+    if (listaConversas.firstElementChild !== item) {
+        listaConversas.prepend(item);
+    }
+}
+
+
+/* =========================================================
+   ATUALIZAR LISTA AO ENVIAR UMA MENSAGEM
+========================================================= */
+
+window.addEventListener("mensagemEnviadaChat", event => {
+
+    const mensagem = event.detail;
+
+    if (!mensagem) {
+        return;
+    }
+
+    atualizarConversaNaLista(
+        mensagem.negociacao_id,
+        mensagem
     );
 
-    console.log(
+});
+
+
+/* =========================================================
+   ATUALIZAR LISTA AO RECEBER UMA MENSAGEM
+========================================================= */
+
+window.addEventListener("novaMensagemChat", event => {
+
+    const notificacao = event.detail;
+
+    if (!notificacao) {
+        return;
+    }
+
+    atualizarConversaNaLista(
+        notificacao.negociacao_id,
         notificacao
     );
 
-
-    const negociacaoId =
-        Number(
-            notificacao.negociacao_id
-        );
+});
 
 
-    /* ---------------------------------------------
-       Procura a conversa na lista
-    --------------------------------------------- */
+/* =========================================================
+   ATUALIZAR CONTADOR DE NÃO LIDAS
+========================================================= */
 
-    const conversa =
-        document.querySelector(
-            `[data-negociacao="${negociacaoId}"]`
-        );
+function zerarContadorNaoLidas(negociacaoId) {
 
-
-    /* ---------------------------------------------
-       Se a conversa não estiver na lista
-    --------------------------------------------- */
-
-    if (!conversa) {
-
-        console.warn(
-            "⚠️ Conversa não encontrada na lista:",
-            negociacaoId
-        );
-
-        return;
-
-    }
-
-
-    /* ---------------------------------------------
-       Atualiza última mensagem
-    --------------------------------------------- */
-
-    const ultimaMensagem =
-        conversa.querySelector(
-            ".conversa-ultima-mensagem"
-        );
-
-
-    if (ultimaMensagem) {
-
-        ultimaMensagem.textContent =
-            notificacao.texto;
-
-    }
-
-
-    /* ---------------------------------------------
-       Verifica se essa conversa está aberta
-    --------------------------------------------- */
-
-    const negociacaoAtual =
-        getNegociacaoAtual();
-
-
-    const conversaEstaAberta =
-        Number(negociacaoAtual) ===
-        negociacaoId;
-
-
-    /* ---------------------------------------------
-       Se a conversa NÃO estiver aberta
-    --------------------------------------------- */
-
-    if (!conversaEstaAberta) {
-
-        let indicadorNaoLidas =
-            conversa.querySelector(
-                ".conversa-nao-lidas"
-            );
-
-
-        /* -----------------------------------------
-           Cria o indicador caso não exista
-        ----------------------------------------- */
-
-        if (!indicadorNaoLidas) {
-
-            indicadorNaoLidas =
-                document.createElement(
-                    "span"
-                );
-
-            indicadorNaoLidas.classList.add(
-                "conversa-nao-lidas"
-            );
-
-            indicadorNaoLidas.textContent =
-                "1";
-
-
-            conversa.appendChild(
-                indicadorNaoLidas
-            );
-
-        } else {
-
-            /* -------------------------------------
-               Aumenta o contador
-            ------------------------------------- */
-
-            const quantidadeAtual =
-                Number(
-                    indicadorNaoLidas.textContent
-                ) || 0;
-
-
-            indicadorNaoLidas.textContent =
-                quantidadeAtual + 1;
-
-        }
-
-    }
-
-
-    /* ---------------------------------------------
-       Move a conversa para o topo
-    --------------------------------------------- */
-
-    listaConversas.prepend(
-        conversa
+    const conversaSelecionada = document.querySelector(
+        `.conversa-item[data-negociacao-id="${negociacaoId}"]`
     );
 
+    if (!conversaSelecionada) {
+        return;
+    }
+
+    const contador = conversaSelecionada.querySelector(
+        ".conversa-nao-lidas"
+    );
+
+    if (contador) {
+        contador.remove();
+    }
 }
 
 
 /* =========================================================
-   ESCUTAR NOVAS MENSAGENS
+   CRIAR ITEM DA CONVERSA
 ========================================================= */
 
-window.addEventListener(
-    "novaMensagemChat",
-    event => {
+function criarItemConversa(conversa) {
 
-        const notificacao =
-            event.detail;
+    const item = document.createElement("button");
+
+    item.type = "button";
+    item.className = "conversa-item";
+    item.dataset.negociacaoId = conversa.negociacao_id;
 
 
-        console.log(
-            "🔔 NOVA MENSAGEM RECEBIDA PELA LISTA DE CONVERSAS:"
+    /* AVATAR */
+
+    const avatar = document.createElement("div");
+    avatar.className = "conversa-avatar";
+
+    const foto = document.createElement("img");
+
+    foto.alt = "";
+    foto.src = conversa.foto_perfil || FOTO_GENERICA;
+
+    foto.onerror = () => {
+        foto.onerror = null;
+        foto.src = FOTO_GENERICA;
+    };
+
+    avatar.appendChild(foto);
+
+
+    /* INFORMAÇÕES */
+
+    const conteudo = document.createElement("div");
+    conteudo.className = "conversa-info";
+
+    const cabecalho = document.createElement("div");
+    cabecalho.className = "conversa-topo";
+
+    const nome = document.createElement("span");
+    nome.className = "conversa-nome";
+    nome.textContent =
+        conversa.negociante_nome ||
+        conversa.nome ||
+        "Usuário";
+
+    const hora = document.createElement("span");
+    hora.className = "conversa-hora";
+
+    const ultimaMensagem = conversa.ultima_mensagem;
+
+    if (
+        ultimaMensagem &&
+        typeof ultimaMensagem === "object" &&
+        ultimaMensagem.data_envio
+    ) {
+        hora.textContent = formatarHorarioMensagem(
+            ultimaMensagem.data_envio
         );
-
-
-        console.log(
-            notificacao
-        );
-
-
-        atualizarConversaComNovaMensagem(
-            notificacao
-        );
-
     }
-);
+
+    cabecalho.appendChild(nome);
+    cabecalho.appendChild(hora);
 
 
-/* =========================================================
-   ESCUTAR MENSAGEM ENVIADA PELO USUÁRIO
-========================================================= */
+    /* PRODUTO E ÚLTIMA MENSAGEM */
 
-window.addEventListener(
-    "mensagemEnviadaChat",
-    event => {
+    const baixo = document.createElement("div");
+    baixo.className = "conversa-baixo";
 
-        const notificacao =
-            event.detail;
+    const produto = document.createElement("span");
+    produto.className = "conversa-produto";
+    produto.textContent =
+        conversa.produto_nome ||
+        conversa.produto ||
+        "Negociação";
+
+    const preview = document.createElement("span");
+    preview.className = "conversa-preview";
+    preview.textContent = obterTextoUltimaMensagem(conversa);
+
+    baixo.appendChild(produto);
+    baixo.appendChild(preview);
+
+    conteudo.appendChild(cabecalho);
+    conteudo.appendChild(baixo);
 
 
-        console.log(
-            "📤 MENSAGEM ENVIADA PELO USUÁRIO:"
+    /* MONTAR ITEM */
+
+    item.appendChild(avatar);
+    item.appendChild(conteudo);
+
+
+    /* CONTADOR */
+
+    const naoLidas = Number(conversa.mensagens_nao_lidas || 0);
+
+    if (naoLidas > 0) {
+
+        const contador = document.createElement("span");
+
+        contador.className = "conversa-nao-lidas";
+        contador.textContent = String(naoLidas);
+
+        contador.setAttribute(
+            "aria-label",
+            `${naoLidas} mensagens não lidas`
         );
 
-
-        console.log(
-            notificacao
-        );
-
-
-        const negociacaoId =
-            Number(
-                notificacao.negociacao_id
-            );
-
-
-        /* ---------------------------------------------
-           Procura a conversa na lista
-        --------------------------------------------- */
-
-        const conversa =
-            document.querySelector(
-                `[data-negociacao="${negociacaoId}"]`
-            );
-
-
-        if (!conversa) {
-
-            console.warn(
-                "⚠️ Conversa não encontrada na lista:",
-                negociacaoId
-            );
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-           Atualiza última mensagem
-        --------------------------------------------- */
-
-        const ultimaMensagem =
-            conversa.querySelector(
-                ".conversa-ultima-mensagem"
-            );
-
-
-        if (ultimaMensagem) {
-
-            ultimaMensagem.textContent =
-                notificacao.texto;
-
-        }
-
-
-        /* ---------------------------------------------
-           Move a conversa para o topo
-        --------------------------------------------- */
-
-        listaConversas.prepend(
-            conversa
-        );
-
+        item.appendChild(contador);
     }
-);
+
+
+    /* ABRIR CONVERSA */
+
+    item.addEventListener("click", async () => {
+
+        try {
+
+            await abrirConversa(conversa.negociacao_id);
+
+        } catch (error) {
+
+            console.error("Erro ao abrir conversa:", error);
+
+            alert(
+                error.message ||
+                "Não foi possível abrir a conversa."
+            );
+        }
+    });
+
+    return item;
+}
 
 
 /* =========================================================
@@ -606,212 +649,45 @@ window.addEventListener(
 
 export async function carregarConversas() {
 
-    try {
-
-        const conversas =
-            await API.buscarConversas();
-
-
-        console.log(
-            "💬 CONVERSAS RECEBIDAS DA API:",
-            conversas
+    if (!listaConversas) {
+        throw new Error(
+            "O elemento listaConversas não foi encontrado."
         );
-
-
-        listaConversas.innerHTML = "";
-
-
-        if (
-            !conversas ||
-            conversas.length === 0
-        ) {
-
-            listaConversas.innerHTML = `
-
-                <div class="chat-sem-conversas">
-
-                    <p>
-                        Nenhuma conversa ainda.
-                    </p>
-
-                </div>
-
-            `;
-
-
-            /*
-               Se nenhuma conversa estiver selecionada,
-               mostra a tela inicial.
-
-               Caso contrário, significa que uma conversa
-               já foi aberta pela URL ou por outro fluxo.
-               Nesse caso, não devemos esconder a conversa.
-            */
-
-            if (!getNegociacaoAtual()) {
-
-                mostrarEstadoSemSelecao();
-
-            }
-
-
-            return;
-
-        }
-
-
-        conversas.forEach(
-            conversa => {
-
-                console.log(
-                    "🖼️ FOTO DO USUÁRIO:",
-                    conversa.nome,
-                    conversa.foto_perfil
-                );
-
-
-                const item =
-                    document.createElement("div");
-
-
-                item.classList.add(
-                    "conversa-item"
-                );
-
-
-                item.dataset.negociacao =
-                    conversa.negociacao_id;
-
-                item.dataset.nome =
-                    conversa.nome;
-
-                item.dataset.produto =
-                    conversa.produto;
-
-                item.dataset.foto =
-                    conversa.foto_perfil || "";
-
-
-                /* ---------------------------------------------
-                   Contador de mensagens não lidas
-                --------------------------------------------- */
-
-                const mensagensNaoLidas =
-                    conversa.mensagens_nao_lidas || 0;
-
-
-                const indicadorNaoLidas =
-                    mensagensNaoLidas > 0
-                        ? `
-                            <span class="conversa-nao-lidas">
-                                ${mensagensNaoLidas}
-                            </span>
-                          `
-                        : "";
-
-
-                item.innerHTML = `
-
-                    <div class="conversa-avatar">
-
-                        ${
-                            conversa.foto_perfil
-                                ? `
-                                    <img
-                                        src="${conversa.foto_perfil}"
-                                        alt="Foto de ${conversa.nome}"
-                                        onerror="this.onerror=null; this.src='../static/assets/login/user.png';"
-                                    >
-                                  `
-                                : `
-                                    <img
-                                        src="../static/assets/login/user.png"
-                                        alt="Foto de ${conversa.nome}"
-                                    >
-                                  `
-                        }
-
-                    </div>
-
-
-                    <div class="conversa-info">
-
-                        <strong class="conversa-nome">
-                            ${conversa.nome}
-                        </strong>
-
-                        <span class="conversa-produto">
-                            ${conversa.produto}
-                        </span>
-
-                        <p class="conversa-ultima-mensagem">
-                            ${conversa.ultima_mensagem}
-                        </p>
-
-                    </div>
-
-
-                    ${indicadorNaoLidas}
-
-                `;
-
-
-                /* ---------------------------------------------
-                   Clique na conversa
-                --------------------------------------------- */
-
-                item.addEventListener(
-                    "click",
-                    () => {
-
-                        abrirConversa(
-                            conversa.negociacao_id
-                        );
-
-                    }
-                );
-
-
-                listaConversas.appendChild(
-                    item
-                );
-
-            }
-        );
-
-
-        /* ---------------------------------------------
-           Atualiza ícones Lucide
-        --------------------------------------------- */
-
-        if (window.lucide) {
-
-            lucide.createIcons();
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "❌ Erro ao carregar conversas:",
-            error
-        );
-
-
-        listaConversas.innerHTML = `
-
-            <div class="chat-erro">
-
-                <p>
-                    Não foi possível carregar as conversas.
-                </p>
-
-            </div>
-
-        `;
-
     }
 
+    const conversas = await API.buscarConversas();
+
+    listaConversas.replaceChildren();
+
+    if (!Array.isArray(conversas) || conversas.length === 0) {
+
+        const aviso = document.createElement("p");
+
+        aviso.className = "chat-sem-conversas";
+        aviso.textContent = "Nenhuma conversa ainda.";
+
+        listaConversas.appendChild(aviso);
+
+        return [];
+    }
+
+    /*
+     * Ordena da mensagem mais recente para a mais antiga.
+     *
+     * Conversas sem mensagem ficam depois das que possuem
+     * mensagens com data registrada.
+     */
+
+    conversas.sort((a, b) => {
+        return obterDataUltimaMensagem(b) -
+               obterDataUltimaMensagem(a);
+    });
+
+    conversas.forEach(conversa => {
+        listaConversas.appendChild(criarItemConversa(conversa));
+    });
+
+    return conversas;
 }
 
 
@@ -819,281 +695,123 @@ export async function carregarConversas() {
    ABRIR CONVERSA
 ========================================================= */
 
-export async function abrirConversa(
-    negociacaoId
-) {
+export async function abrirConversa(negociacaoId) {
 
-    negociacaoId =
-        Number(negociacaoId);
+    const id = Number(negociacaoId);
 
+    if (!Number.isInteger(id) || id <= 0) {
+        throw new Error("Identificador de negociação inválido.");
+    }
 
-    /* ---------------------------------------------
-       Verifica se o usuário possui acesso
-       à negociação
-    --------------------------------------------- */
+    // Confirma o acesso à negociação.
+    await API.verificarAcessoNegociacao(id);
 
-    try {
+    setNegociacaoAtual(id);
 
-        const acesso =
-            await API.verificarAcessoNegociacao(
-                negociacaoId
-            );
+    const detalhes = await API.buscarNegociacao(id);
 
+    console.log("Detalhes da negociação:", detalhes);
 
-        console.log(
-            "🔐 ACESSO À NEGOCIAÇÃO:",
-            negociacaoId,
-            acesso
-        );
+    negociacaoDetalhesAtual = detalhes;
+
+    setNegociacaoInfo(detalhes);
 
 
-        if (!acesso.permitido) {
+    /* ALTERNAR PARA A CONVERSA */
 
-            console.warn(
-                "⚠️ Usuário não possui acesso à negociação:",
-                negociacaoId
-            );
+    if (chatSemSelecao) {
+        chatSemSelecao.style.display = "none";
+    }
 
+    if (chatArea) {
+        chatArea.style.display = "flex";
+    }
 
-            setNegociacaoAtual(null);
-
-            setNegociacaoInfo(null);
-
-
-            mostrarEstadoSemSelecao();
-
-
-            return;
-
-        }
-
-    } catch (error) {
-
-        console.error(
-            "❌ Erro ao verificar acesso à negociação:",
-            error
-        );
-
-
-        setNegociacaoAtual(null);
-
-        setNegociacaoInfo(null);
-
-
-        mostrarEstadoSemSelecao();
-
-
-        return;
-
+    if (chatContainer) {
+        chatContainer.classList.add("chat-aberto");
     }
 
 
-    /* ---------------------------------------------
-       Usuário possui acesso
-    --------------------------------------------- */
+    /* NOME E PRODUTO */
 
-    setNegociacaoAtual(
-        negociacaoId
-    );
+    const nomeOutroUsuario =
+        detalhes.negociante_nome ||
+        detalhes.nome_outro_usuario ||
+        detalhes.nome_usuario ||
+        detalhes.nome ||
+        "Conversa";
 
+    const nomeProduto =
+        detalhes.produto_nome ||
+        detalhes.nome_produto ||
+        detalhes.produto ||
+        "Negociação";
 
-    /* ---------------------------------------------
-       Busca informações da negociação
-    --------------------------------------------- */
+    if (chatNome) {
+        chatNome.textContent = nomeOutroUsuario;
+    }
 
-    try {
-
-        const negociacao =
-            await API.buscarNegociacao(
-                negociacaoId
-            );
-
-
-        setNegociacaoInfo(
-            negociacao
-        );
-
-
-        console.log(
-            "📋 INFORMAÇÕES DA NEGOCIAÇÃO:",
-            negociacao
-        );
-
-    } catch (error) {
-
-        console.error(
-            "❌ Erro ao carregar informações da negociação:",
-            error
-        );
-
-
-        setNegociacaoInfo(
-            null
-        );
-
+    if (chatProduto) {
+        chatProduto.textContent = nomeProduto;
     }
 
 
-    /* ---------------------------------------------
-       Procura a conversa na lista lateral
-    --------------------------------------------- */
+    /* FOTO DO PARTICIPANTE */
 
-    const conversaSelecionada =
-        document.querySelector(
-            `[data-negociacao="${negociacaoId}"]`
+    if (chatFoto) {
+
+        const conversaSelecionada = document.querySelector(
+            `.conversa-item[data-negociacao-id="${id}"]`
         );
 
+        const fotoLista = conversaSelecionada?.querySelector(
+            ".conversa-avatar img"
+        );
 
-    /* ---------------------------------------------
-       Atualiza o cabeçalho
-    --------------------------------------------- */
+        chatFoto.onerror = () => {
+            chatFoto.onerror = null;
+            chatFoto.src = FOTO_GENERICA;
+        };
 
-    if (conversaSelecionada) {
-
-        const nome =
-            conversaSelecionada.dataset.nome ||
-            conversaSelecionada.querySelector(
-                ".conversa-nome"
-            )?.textContent.trim() ||
-            "Conversa";
-
-
-        const produto =
-            conversaSelecionada.dataset.produto ||
-            conversaSelecionada.querySelector(
-                ".conversa-produto"
-            )?.textContent.trim() ||
-            "Negociação";
-
-
-        const foto =
-            conversaSelecionada.dataset.foto ||
-            "";
-
-
-        chatNome.textContent =
-            nome;
-
-        chatProduto.textContent =
-            produto;
-
-
-        /* ---------------------------------------------
-           Atualiza foto do cabeçalho
-        --------------------------------------------- */
-
-        if (chatFoto) {
-
-            chatFoto.src =
-                foto ||
-                "../static/assets/login/user.png";
-
-            chatFoto.alt =
-                `Foto de ${nome}`;
-
-        }
-
+        chatFoto.src =
+            detalhes.foto_perfil ||
+            detalhes.foto_usuario ||
+            fotoLista?.src ||
+            FOTO_GENERICA;
     }
 
 
-    /* ---------------------------------------------
-       Atualiza item selecionado
-    --------------------------------------------- */
+    /* CARREGAR MENSAGENS */
 
-    document
-        .querySelectorAll(".conversa-item")
-        .forEach(item => {
+    if (mensagens) {
+        mensagens.replaceChildren();
+    }
 
-            item.classList.remove("ativa");
+    const listaMensagens = await API.buscarMensagens(id);
 
-        });
-
-
-    if (conversaSelecionada) {
-
-        conversaSelecionada
-            .classList.add("ativa");
-
+    if (Array.isArray(listaMensagens)) {
+        renderizarMensagens(listaMensagens);
     }
 
 
-    /* ---------------------------------------------
-       Carrega mensagens da API
-    --------------------------------------------- */
+    /* ZERAR CONTADOR VISUAL */
 
-    try {
-
-        const mensagens =
-            await API.buscarMensagens(
-                negociacaoId
-            );
+    zerarContadorNaoLidas(id);
 
 
-        /* ---------------------------------------------
-           Mostra a área da conversa
-        --------------------------------------------- */
+    /* WEBSOCKET */
 
-        mostrarConversa();
+    conectarWebSocket(id);
 
 
-        /* ---------------------------------------------
-           Remove indicador de mensagens não lidas
-        --------------------------------------------- */
+    /* DESTACAR CONVERSA */
 
-        const indicadorNaoLidas =
-            conversaSelecionada?.querySelector(
-                ".conversa-nao-lidas"
-            );
+    document.querySelectorAll(".conversa-item").forEach(item => {
 
-        if (indicadorNaoLidas) {
+        const selecionada =
+            Number(item.dataset.negociacaoId) === id;
 
-            indicadorNaoLidas.remove();
-
-        }
-
-
-        /* ---------------------------------------------
-           Renderiza as mensagens
-        --------------------------------------------- */
-
-        renderizarMensagens(
-            mensagens
-        );
-
-    } catch (error) {
-
-        console.error(
-            "❌ Erro ao carregar mensagens:",
-            error
-        );
-
-
-        mensagensContainer.innerHTML = `
-
-            <div class="chat-erro">
-
-                <p>
-                    Não foi possível carregar as mensagens.
-                </p>
-
-            </div>
-
-        `;
-
-    }
-
-
-    /* ---------------------------------------------
-       Conecta ao WebSocket
-    --------------------------------------------- */
-
-    conectarWebSocket(
-        negociacaoId
-    );
-
-
-    mensagemInput.focus();
+        item.classList.toggle("ativa", selecionada);
+    });
 
 }
-
-

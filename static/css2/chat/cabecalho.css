@@ -1,0 +1,335 @@
+/* =========================================================
+   ÁREA DO CHAT
+========================================================= */
+
+.chat-area {
+    flex: 1;
+
+    min-width: 0;
+
+    display: none;
+    flex-direction: column;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   CABEÇALHO DO CHAT
+========================================================= */
+
+.chat-header {
+    min-height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 22px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    background: #ffffff;
+}
+
+.chat-usuario {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+    flex: 1;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR PARA A LISTA
+========================================================= */
+
+.btn-voltar-chat {
+    display: none;
+
+    width: 38px;
+    height: 38px;
+
+    min-width: 38px;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #555;
+
+    cursor: pointer;
+
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-voltar-chat:hover {
+    background: #f1f4f1;
+    color: #2e7d32;
+}
+
+.btn-voltar-chat svg {
+    width: 21px;
+    height: 21px;
+}
+
+
+/* =========================================================
+   AVATAR DO CABEÇALHO
+========================================================= */
+
+.chat-avatar {
+    width: 45px;
+    height: 45px;
+
+    min-width: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #e8f2e8;
+
+    color: #2e7d32;
+
+    overflow: hidden;
+}
+
+.chat-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+.chat-avatar svg {
+    width: 21px;
+    height: 21px;
+}
+
+
+/* =========================================================
+   MENSAGENS NÃO LIDAS
+========================================================= */
+
+.conversa-nao-lidas {
+    width: 22px;
+    height: 22px;
+
+    min-width: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #2e7d32;
+
+    color: #ffffff;
+
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   INFORMAÇÕES DO USUÁRIO
+========================================================= */
+
+.chat-usuario-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.chat-usuario-info h2 {
+    margin: 0 0 3px;
+
+    overflow: hidden;
+
+    font-family: "Inter", sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+
+    color: #333;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.chat-usuario-info span {
+    display: block;
+
+    overflow: hidden;
+
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+
+    color: #777;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   BOTÃO DE INFORMAÇÕES
+========================================================= */
+
+.btn-info-chat {
+    width: 45px;
+    height: 45px;
+
+    min-width: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+
+    color: #666;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.btn-info-chat:hover {
+    background: #f1f4f1;
+
+    color: #2e7d32;
+}
+
+.btn-info-chat svg {
+    width: 25px;
+    height: 25px;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLETS E CELULARES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .chat-area {
+        display: none;
+
+        width: 100%;
+        height: 100%;
+
+        border-radius: 12px;
+    }
+
+    .chat-container.chat-aberto .chat-area {
+        display: flex;
+    }
+
+    .chat-header {
+        min-height: 65px;
+
+        padding: 0 12px;
+
+        gap: 8px;
+    }
+
+    .chat-usuario {
+        gap: 8px;
+    }
+
+    .btn-voltar-chat {
+        display: flex;
+    }
+
+    .chat-avatar {
+        width: 40px;
+        height: 40px;
+
+        min-width: 40px;
+    }
+
+    .chat-usuario-info h2 {
+        font-size: 14px;
+    }
+
+    .chat-usuario-info span {
+        font-size: 11px;
+    }
+
+    .btn-info-chat {
+        width: 34px;
+        height: 34px;
+
+        min-width: 34px;
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - CELULARES PEQUENOS
+========================================================= */
+
+@media (max-width: 450px) {
+
+    .chat-header {
+        padding: 0 8px;
+        gap: 5px;
+    }
+
+    .btn-voltar-chat {
+        width: 32px;
+        height: 32px;
+
+        min-width: 32px;
+    }
+
+    .chat-avatar {
+        width: 36px;
+        height: 36px;
+
+        min-width: 36px;
+    }
+
+    .chat-usuario {
+        gap: 6px;
+    }
+
+    .chat-usuario-info h2 {
+        font-size: 13px;
+    }
+
+    .chat-usuario-info span {
+        font-size: 10px;
+    }
+
+    .btn-info-chat {
+        width: 30px;
+        height: 30px;
+
+        min-width: 30px;
+    }
+}

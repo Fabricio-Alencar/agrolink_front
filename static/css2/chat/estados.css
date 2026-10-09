@@ -1,0 +1,99 @@
+/* =========================================================
+   ESTADO SEM CONVERSA
+========================================================= */
+
+.chat-sem-selecao {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e5e5;
+
+    border-radius: 14px;
+}
+
+.chat-sem-selecao-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 20px;
+}
+
+.chat-sem-selecao-conteudo svg {
+    width: 55px;
+    height: 55px;
+
+    margin-bottom: 15px;
+
+    color: #2e7d32;
+}
+
+.chat-sem-selecao-conteudo h2 {
+    margin: 0 0 7px;
+
+    font-family: "Fredoka", sans-serif;
+    font-size: 22px;
+
+    color: #333;
+}
+
+.chat-sem-selecao-conteudo p {
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+
+    color: #888;
+}
+
+
+/* =========================================================
+   ESTADOS DE ERRO / VAZIO
+========================================================= */
+
+.chat-sem-conversas,
+.chat-erro,
+.chat-vazio,
+.chat-sem-acesso {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+
+    padding: 25px;
+
+    text-align: center;
+
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+
+    color: #888;
+}
+
+.chat-sem-acesso {
+    height: 100%;
+}
+
+.chat-vazio {
+    flex: 1;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE - TABLETS E CELULARES
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .chat-sem-selecao {
+        display: none;
+    }
+}

@@ -404,7 +404,7 @@ export function criarCard(prod) {
                 class="btn-negociar"
                 type="button"
             >
-                Negociar
+                Fazer pedido
             </button>
 
         </div>

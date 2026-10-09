@@ -4,6 +4,8 @@ import {
     mostrarEstadoSemSelecao
 } from "./conversas.js";
 
+import { API } from "./api.js";
+
 import {
     conectarWebSocketGeral
 } from "./websocket.js";
@@ -13,206 +15,115 @@ import {
    PESQUISA DE CONVERSAS
 ========================================================= */
 
-const campoPesquisa =
-    document.getElementById("chatSearch");
-
+const campoPesquisa = document.getElementById("chatSearch");
 
 if (campoPesquisa) {
+    campoPesquisa.addEventListener("input", () => {
+        const termo = campoPesquisa.value.toLowerCase().trim();
 
-    campoPesquisa.addEventListener(
-        "input",
-        () => {
+        document.querySelectorAll(".conversa-item").forEach(item => {
+            const texto = item.textContent.toLowerCase();
 
-            const termo =
-                campoPesquisa.value
-                    .toLowerCase()
-                    .trim();
-
-
-            document
-                .querySelectorAll(".conversa-item")
-                .forEach(item => {
-
-                    const texto =
-                        item.textContent
-                            .toLowerCase();
-
-
-                    if (
-                        texto.includes(termo)
-                    ) {
-
-                        item.style.display =
-                            "flex";
-
-                    } else {
-
-                        item.style.display =
-                            "none";
-
-                    }
-
-                });
-
-        }
-    );
-
+            item.style.display = texto.includes(termo)
+                ? "flex"
+                : "none";
+        });
+    });
 }
 
 
 /* =========================================================
-   ABRIR CONVERSA PELA URL
+   OBTER NEGOCIAÇÃO DA URL
 ========================================================= */
 
-const parametros =
-    new URLSearchParams(
-        window.location.search
-    );
-
-
-const negociacaoUrl =
-    parametros.get(
-        "negociacao"
-    );
+const parametros = new URLSearchParams(window.location.search);
+const negociacaoUrl = parametros.get("negociacao");
 
 
 /* =========================================================
-   ESTADO INICIAL
-========================================================= */
-
-/*
-   Enquanto as conversas ainda estão sendo carregadas,
-   não abrimos nenhuma conversa automaticamente.
-*/
-
-
-/* =========================================================
-   CONECTAR AO WEBSOCKET GERAL
-========================================================= */
-
-conectarWebSocketGeral();
-
-
-/* =========================================================
-   CARREGAR CONVERSAS
+   INICIALIZAR CHAT
 ========================================================= */
 
 async function iniciarChat() {
-
     try {
+        // Conecta às notificações gerais.
+        conectarWebSocketGeral();
 
         /*
-           Primeiro carrega as conversas.
-
-           Isso é importante porque o banco novo
-           pode não possuir nenhuma mensagem ainda.
-        */
-
-        const conversas =
-            await carregarConversas();
-
-
-        console.log(
-            "💬 RESULTADO INICIAL DAS CONVERSAS:",
-            conversas
-        );
-
-
-        /* ---------------------------------------------
-           NENHUMA CONVERSA
-        --------------------------------------------- */
-
-        if (
-            !conversas ||
-            conversas.length === 0
-        ) {
-
-            /*
-               Não importa se existe uma negociação
-               na URL.
-
-               Se ainda não existe mensagem no banco,
-               essa negociação ainda não é uma conversa.
-
-               Portanto NÃO abrimos o chat vazio.
-            */
-
-            mostrarEstadoSemSelecao();
-
-            return;
-
-        }
-
-
-        /* ---------------------------------------------
-           EXISTEM CONVERSAS
-        --------------------------------------------- */
-
+         * Quando existe uma negociação na URL, inicia ou
+         * reutiliza a conversa antes de carregar a lista.
+         */
         if (negociacaoUrl) {
+            const negociacaoId = Number(negociacaoUrl);
 
-            const negociacaoExiste =
-                conversas.some(
-                    conversa =>
-                        Number(
-                            conversa.negociacao_id
-                        ) ===
-                        Number(
-                            negociacaoUrl
-                        )
-                );
-
-
-            /*
-               Só abre a conversa se ela realmente
-               existir na lista de conversas.
-            */
-
-            if (negociacaoExiste) {
-
-                await abrirConversa(
-                    negociacaoUrl
-                );
-
-            } else {
-
-                mostrarEstadoSemSelecao();
-
+            if (!Number.isInteger(negociacaoId) || negociacaoId <= 0) {
+                throw new Error("O identificador da negociação é inválido.");
             }
 
-        } else {
-
-            mostrarEstadoSemSelecao();
-
+            await API.iniciarConversa(negociacaoId);
         }
 
+        /*
+         * Carrega as conversas depois da inicialização.
+         * Conversas sem mensagens também devem aparecer.
+         */
+        const conversas = await carregarConversas();
+
+        console.log("Conversas carregadas:", conversas);
+
+        if (!Array.isArray(conversas) || conversas.length === 0) {
+            mostrarEstadoSemSelecao();
+            return;
+        }
+
+        /*
+         * Se a URL contém uma negociação, abre-a somente
+         * se ela estiver na lista retornada pelo servidor.
+         */
+        if (negociacaoUrl) {
+            const negociacaoId = Number(negociacaoUrl);
+
+            const conversaExiste = conversas.some(
+                conversa =>
+                    Number(conversa.negociacao_id) === negociacaoId
+            );
+
+            if (!conversaExiste) {
+                mostrarEstadoSemSelecao();
+                return;
+            }
+
+            await abrirConversa(negociacaoId);
+            return;
+        }
+
+        // Sem negociação na URL, aguarda a escolha do usuário.
+        mostrarEstadoSemSelecao();
+
     } catch (error) {
-
-        console.error(
-            "❌ Erro ao iniciar o chat:",
-            error
-        );
-
+        console.error("Erro ao inicializar o chat:", error);
 
         mostrarEstadoSemSelecao();
 
+        alert(
+            error.message ||
+            "Não foi possível abrir a conversa. Tente novamente."
+        );
     }
-
 }
 
 
 /* =========================================================
-   INICIAR CHAT
+   INICIAR PÁGINA
 ========================================================= */
 
 iniciarChat();
 
 
 /* =========================================================
-   LUCIDE
+   ÍCONES LUCIDE
 ========================================================= */
 
 if (window.lucide) {
-
-    lucide.createIcons();
-
+    window.lucide.createIcons();
 }

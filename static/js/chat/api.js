@@ -1,144 +1,143 @@
+/* =========================================================
+   API DO CHAT - AGROLINK
+========================================================= */
+
 const API_URL = CONFIG.API_URL;
 
 export const API = {
 
+    /* =====================================================
+       LISTAR CONVERSAS INICIADAS
+    ===================================================== */
+
     async buscarConversas() {
 
-        try {
-
-            const res = await fetch(
-                `${API_URL}/chat/conversas`,
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
-
-            if (!res.ok) {
-
-                throw new Error(
-                    "Erro ao carregar as conversas."
-                );
-
+        const resposta = await fetch(
+            `${API_URL}/chat/conversas`,
+            {
+                method: "GET",
+                credentials: "include"
             }
+        );
 
-            return await res.json();
+        const dados = await resposta.json().catch(() => []);
 
-        } catch (error) {
-
-            console.error(
-                "Erro na API buscarConversas:",
-                error.message
+        if (!resposta.ok) {
+            throw new Error(
+                dados.detail ||
+                "Não foi possível carregar as conversas."
             );
-
-            throw error;
         }
-    },
 
-
-    async buscarMensagens(negociacaoId) {
-
-        try {
-
-            const res = await fetch(
-                `${API_URL}/chat/mensagens/${negociacaoId}`,
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
-
-            if (!res.ok) {
-
-                throw new Error(
-                    "Erro ao carregar as mensagens."
-                );
-
-            }
-
-            return await res.json();
-
-        } catch (error) {
-
-            console.error(
-                "Erro na API buscarMensagens:",
-                error.message
-            );
-
-            throw error;
-        }
-    },
-
-
-    async verificarAcessoNegociacao(negociacaoId) {
-
-        try {
-
-            const res = await fetch(
-                `${API_URL}/chat/acesso/${negociacaoId}`,
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
-
-            if (!res.ok) {
-
-                throw new Error(
-                    "Erro ao verificar acesso à negociação."
-                );
-
-            }
-
-            return await res.json();
-
-        } catch (error) {
-
-            console.error(
-                "Erro na API verificarAcessoNegociacao:",
-                error.message
-            );
-
-            throw error;
-        }
+        return dados;
     },
 
 
     /* =====================================================
-       BUSCAR INFORMAÇÕES DA NEGOCIAÇÃO
+       INICIAR OU REUTILIZAR UMA CONVERSA
+    ===================================================== */
+
+    async iniciarConversa(negociacaoId) {
+
+        const resposta = await fetch(
+            `${API_URL}/chat/conversas/${encodeURIComponent(negociacaoId)}/iniciar`,
+            {
+                method: "POST",
+                credentials: "include"
+            }
+        );
+
+        const dados = await resposta.json().catch(() => ({}));
+
+        if (!resposta.ok) {
+            throw new Error(
+                dados.detail ||
+                "Não foi possível iniciar a conversa."
+            );
+        }
+
+        return dados;
+    },
+
+
+    /* =====================================================
+       BUSCAR MENSAGENS
+    ===================================================== */
+
+    async buscarMensagens(negociacaoId) {
+
+        const resposta = await fetch(
+            `${API_URL}/chat/mensagens/${encodeURIComponent(negociacaoId)}`,
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
+
+        const dados = await resposta.json().catch(() => []);
+
+        if (!resposta.ok) {
+            throw new Error(
+                dados.detail ||
+                "Não foi possível carregar as mensagens."
+            );
+        }
+
+        return dados;
+    },
+
+
+    /* =====================================================
+       VERIFICAR ACESSO À NEGOCIAÇÃO
+    ===================================================== */
+
+    async verificarAcessoNegociacao(negociacaoId) {
+
+        const resposta = await fetch(
+            `${API_URL}/chat/acesso/${encodeURIComponent(negociacaoId)}`,
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
+
+        const dados = await resposta.json().catch(() => ({}));
+
+        if (!resposta.ok) {
+            throw new Error(
+                dados.detail ||
+                "Você não tem acesso a esta conversa."
+            );
+        }
+
+        return dados;
+    },
+
+
+    /* =====================================================
+       BUSCAR DETALHES DA NEGOCIAÇÃO
     ===================================================== */
 
     async buscarNegociacao(negociacaoId) {
 
-        try {
-
-            const res = await fetch(
-                `${API_URL}/negociacoes/detalhes/${negociacaoId}`,
-                {
-                    method: "GET",
-                    credentials: "include"
-                }
-            );
-
-            if (!res.ok) {
-
-                throw new Error(
-                    "Erro ao carregar informações da negociação."
-                );
-
+        const resposta = await fetch(
+            `${API_URL}/negociacoes/detalhes/${encodeURIComponent(negociacaoId)}`,
+            {
+                method: "GET",
+                credentials: "include"
             }
+        );
 
-            return await res.json();
+        const dados = await resposta.json().catch(() => ({}));
 
-        } catch (error) {
-
-            console.error(
-                "Erro na API buscarNegociacao:",
-                error.message
+        if (!resposta.ok) {
+            throw new Error(
+                dados.detail ||
+                "Não foi possível carregar os detalhes da negociação."
             );
-
-            throw error;
         }
+
+        return dados;
     }
 
 };
