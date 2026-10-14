@@ -41,6 +41,11 @@ export function prepararConfirmacaoNegociacao(
     const botao =
         document.getElementById("btnConfirmarExclusao");
 
+    // Aceitar é uma ação positiva: botão verde em vez do escuro de exclusão
+    if (botao) {
+        botao.classList.toggle("confirmar-positivo", acao === "aceitar");
+    }
+
     if (!modal || !mensagem) {
 
         console.error(
@@ -55,7 +60,29 @@ export function prepararConfirmacaoNegociacao(
     // RECUSAR
     // ========================================================
 
-    if (acao === "recusar") {
+    if (acao === "aceitar") {
+
+        if (titulo) {
+            titulo.textContent = "Aceitar Pedido";
+        }
+
+        mensagem.innerHTML =
+            `Aceitar o pedido de <strong>${order.produto_nome || "produto"}</strong>` +
+            ` (${order.quantidade ?? ""} ${order.produto_unidade || ""})` +
+            ` para entrega em <strong>${order.data_entrega || "data a combinar"}</strong>?`;
+
+        if (botao) {
+            botao.textContent = "Aceitar";
+        }
+
+    }
+
+
+    // ========================================================
+    // RECUSAR
+    // ========================================================
+
+    else if (acao === "recusar") {
 
         if (titulo) {
             titulo.textContent = "Recusar Pedido";
@@ -230,7 +257,20 @@ if (!btnConfirmar) {
 
                 let mensagem = "";
 
-                if (acaoGlobal === "recusar") {
+                if (acaoGlobal === "aceitar") {
+
+                    agendarNotificacao(
+                        "cadastro",
+                        "Pedido aceito!"
+                    );
+
+                    fecharModalConfirmacao();
+
+                    location.reload();
+
+                    return;
+
+                } else if (acaoGlobal === "recusar") {
 
                     mensagem =
                         "Pedido recusado.";

@@ -20,8 +20,10 @@ import {
     "wss://backagrolinkbr-hfb4cpdvctheeycm.brazilsouth-01.azurewebsites.net";
 */
 
+// Usa o mesmo backend do config.js (http -> ws, https -> wss).
+// Assim, rodando local o chat fala com o backend local, e no Azure com o do Azure.
 const WEBSOCKET_URL =
-    "wss://backagrolinkbr-hfb4cpdvctheeycm.brazilsouth-01.azurewebsites.net";
+    CONFIG.API_URL.replace(/^http/, "ws").replace(/\/$/, "");
 
 /* =========================================================
    WEBSOCKET GERAL DO USUÁRIO

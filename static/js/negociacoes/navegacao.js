@@ -2,6 +2,13 @@
 import { getCacheNegociacoes } from "./renderizacao.js";
 import { API } from "./api.js";
 import { prepararConfirmacaoNegociacao } from "./confirmacao.js";
+import {
+    linhaDoTempoHTML,
+    avaliacaoHTML,
+    abrirAvaliacao,
+    nomeNegocianteHTML,
+    executarConfirmacao
+} from "./acompanhamento.js";
 
 // ============================================================
 // CONFIGURAÇÃO E ESTADO GLOBAL
@@ -135,6 +142,9 @@ export function showDetails(id, tipoUsuario) {
                 Este pedido está ${statusOriginal}.
             </p>
         `;
+
+        // Pedido finalizado: mostra a avaliação feita ou o botão para avaliar
+        botoesHTML += avaliacaoHTML(order, tipoUsuario);
     }
 
     // ========================================================
@@ -153,6 +163,8 @@ export function showDetails(id, tipoUsuario) {
                 ${statusOriginal}
             </span>
         </div>
+
+        ${linhaDoTempoHTML(order)}
 
         <div class="details-grid">
 
@@ -230,8 +242,12 @@ export function showDetails(id, tipoUsuario) {
                     </span>
 
                     <span class="info-value" style="font-size:18px;">
-                        ${order.negociante_nome || "Não informado"}
+                        ${nomeNegocianteHTML(order, tipoUsuario)}
                     </span>
+
+                    ${tipoUsuario === "estabelecimento"
+                        ? `<div style="margin-top:6px;">${window.Avaliacoes.resumo(order.produtor_avaliacao, order.produtor_total_avaliacoes)}</div>`
+                        : ""}
                 </div>
 
                 <div class="info-group">
@@ -274,7 +290,7 @@ export function showDetails(id, tipoUsuario) {
         <!-- BOTÕES DE AÇÃO DA NEGOCIAÇÃO -->
         <div
             class="action-buttons"
-            style="display:flex; justify-content:center; gap:15px; margin-top:20px;"
+            style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin-top:20px;"
         >
             ${botoesHTML}
         </div>
@@ -306,20 +322,22 @@ export function showDetails(id, tipoUsuario) {
     const btnCancelar = document.getElementById("btnCancelar");
     const btnConfirmarAcao = document.getElementById("btnConfirmarAcao");
     const btnConversar = document.getElementById("btnConversar");
+    const btnAbrirAvaliacao = document.getElementById("btnAbrirAvaliacao");
+
+    // ========================================================
+    // AVALIAR PRODUTOR (PEDIDO FINALIZADO E AINDA SEM NOTA)
+    // ========================================================
+    if (btnAbrirAvaliacao) {
+        btnAbrirAvaliacao.onclick = () => abrirAvaliacao(order);
+    }
 
     // ========================================================
     // ACEITAR PEDIDO
     // ========================================================
     if (btnAceitar) {
-        btnAceitar.onclick = async () => {
-            try {
-                await API.atualizarStatus(order.id, "Aceito");
-                agendarNotificacao("cadastro", "Pedido aceito!");
-                location.reload();
-            } catch (error) {
-                console.error("❌ Erro ao aceitar pedido:", error);
-                exibirNotificacao("erro", "Erro ao aceitar o pedido.");
-            }
+        // Mesmo fluxo do card: pede confirmação antes de aceitar
+        btnAceitar.onclick = () => {
+            prepararConfirmacaoNegociacao("aceitar", order, "Aceito");
         };
     }
 
@@ -345,28 +363,8 @@ export function showDetails(id, tipoUsuario) {
     // CONFIRMAR ENTREGA / RECEBIMENTO
     // ========================================================
     if (btnConfirmarAcao && !btnConfirmarAcao.disabled) {
-        btnConfirmarAcao.onclick = async () => {
-            try {
-                const acao = tipoUsuario === "produtor"
-                    ? "confirmar_entrega"
-                    : "confirmar_recebimento";
-
-                await API.registrarConfirmacao(order.id, acao);
-
-                agendarNotificacao(
-                    "cadastro",
-                    "Confirmação registrada com sucesso!"
-                );
-
-                location.reload();
-            } catch (error) {
-                console.error("❌ Erro ao registrar confirmação:", error);
-                exibirNotificacao(
-                    "erro",
-                    "Erro ao registrar confirmação."
-                );
-            }
-        };
+        // Recebimento confirmado = pedido finalizado: abre a avaliação na hora
+        btnConfirmarAcao.onclick = () => executarConfirmacao(order, tipoUsuario);
     }
 
     // ========================================================

@@ -83,6 +83,13 @@ export function applyFilters() {
 
             matchesStatus = true;
 
+        } else if (statusTerm === "ParaAvaliar") {
+
+            // Finalizados que o estabelecimento ainda não avaliou
+            matchesStatus =
+                orderStatus === "finalizado" &&
+                !order.avaliacao;
+
         } else if (statusTerm === "Cancelado") {
 
             // Cancelado também inclui Recusado

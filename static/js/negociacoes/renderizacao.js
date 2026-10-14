@@ -2,6 +2,14 @@ import { showDetails } from "./navegacao.js";
 import { deleteOrder } from "./filtros_botao_excluir.js";
 import { API } from './api.js';
 import { prepararConfirmacaoNegociacao } from "./confirmacao.js";
+import {
+    proximaAcaoHTML,
+    acaoPrincipal,
+    executarConfirmacao,
+    dataDoPedido,
+    nomeNegocianteHTML,
+    abrirAvaliacao
+} from "./acompanhamento.js";
 
 let cacheNegociacoes = null;
 
@@ -149,18 +157,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
             // Produtor recusa proposta pendente
 
             botaoSecundario = `
-                <button
-                    class="btn-acao-secundaria"
-                    style="
-                        background-color: var(--status-red);
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 20px;
-                        cursor: pointer;
-                        font-weight: 600;
-                    "
-                >
+                <button class="btn-acao-secundaria" type="button">
                     Recusar
                 </button>
             `;
@@ -173,18 +170,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
             // Estabelecimento cancela proposta pendente
 
             botaoSecundario = `
-                <button
-                    class="btn-acao-secundaria"
-                    style="
-                        background-color: var(--status-red);
-                        color: white;
-                        border: none;
-                        padding: 10px 20px;
-                        border-radius: 20px;
-                        cursor: pointer;
-                        font-weight: 600;
-                    "
-                >
+                <button class="btn-acao-secundaria" type="button">
                     Cancelar
                 </button>
             `;
@@ -203,18 +189,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         // Se foi apenas aceito, ainda pode cancelar
 
         botaoSecundario = `
-            <button
-                class="btn-acao-secundaria"
-                style="
-                    background-color: var(--status-red);
-                    color: white;
-                    border: none;
-                    padding: 10px 20px;
-                    border-radius: 20px;
-                    cursor: pointer;
-                    font-weight: 600;
-                "
-            >
+            <button class="btn-acao-secundaria" type="button">
                 Cancelar
             </button>
         `;
@@ -266,7 +241,17 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
     // HTML DO CARD
     // ==========================================
 
+    // Botão principal = próxima ação de quem está vendo (Aceitar, Confirmar
+    // entrega, Confirmar recebimento ou Avaliar), sem precisar abrir os detalhes
+    const principal = acaoPrincipal(order, tipo_de_usuario);
+
+    const botaoPrincipal = principal
+        ? `<button class="${principal.acao === 'avaliar' ? 'btn-avaliar-card' : 'btn-acao-principal'}" type="button" data-acao="${principal.acao}">${principal.texto}</button>`
+        : '';
+
     card.innerHTML = `
+
+        ${proximaAcaoHTML(order, tipo_de_usuario)}
 
         <div
             class="card-header"
@@ -287,7 +272,11 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         color: #333;
                     "
                 >
-                    ${order.negociante_nome}
+                    ${nomeNegocianteHTML(order, tipo_de_usuario)}
+                </div>
+
+                <div class="data-pedido">
+                    ${dataDoPedido(order)}
                 </div>
 
 
@@ -489,13 +478,27 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
 
 
         <div class="card-actions">
+            ${
+                botaoPrincipal
+                    // Com ação: Detalhes sozinho em cima, ação + Recusar/Cancelar/lixeira embaixo
+                    ? `
+                        <div class="linha-acoes">
+                            <button class="btn-details" type="button">Detalhes</button>
+                        </div>
 
-            <button class="btn-details">
-                Detalhes
-            </button>
-
-            ${botaoSecundario}
-
+                        <div class="linha-acoes">
+                            ${botaoPrincipal}
+                            ${botaoSecundario}
+                        </div>
+                    `
+                    // Sem ação: uma linha só (Detalhes e, se houver, Cancelar ou lixeira)
+                    : `
+                        <div class="linha-acoes">
+                            <button class="btn-details" type="button">Detalhes</button>
+                            ${botaoSecundario}
+                        </div>
+                    `
+            }
         </div>
     `;
 
@@ -512,6 +515,30 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         );
 
     };
+
+
+    // ==========================================
+    // BOTÃO PRINCIPAL (PRÓXIMA AÇÃO)
+    // ==========================================
+
+    const btnPrincipal = card.querySelector('[data-acao]');
+
+    if (btnPrincipal) {
+        btnPrincipal.onclick = () => {
+
+            if (principal.acao === 'aceitar') {
+                prepararConfirmacaoNegociacao('aceitar', order, 'Aceito');
+
+            } else if (principal.acao === 'avaliar') {
+                abrirAvaliacao(order);
+
+            } else {
+                // confirmar_entrega / confirmar_recebimento
+                btnPrincipal.disabled = true;
+                executarConfirmacao(order, tipo_de_usuario);
+            }
+        };
+    }
 
 
     // ==========================================
@@ -636,44 +663,17 @@ export async function renderOrders(
 
 
         // ==========================================
-        // LÓGICA DE AGRUPAMENTO / ORDENAÇÃO
+        // ORDENAÇÃO: ÚLTIMA ATUALIZAÇÃO PRIMEIRO
         // ==========================================
-
-        const ordemPrioridade = {
-
-            'pendente': 1,
-            'aceito': 2,
-            'entregue': 3,
-            'finalizado': 4,
-            'cancelado': 5,
-            'recusado': 6
-
-        };
-
+        // O backend já envia nessa ordem; ordenar aqui também mantém
+        // a ordem certa depois de buscas e filtros.
 
         const listaOrdenada =
-            [...lista].sort((a, b) => {
-
-                const statusA =
-                    (a.status || "").toLowerCase();
-
-                const statusB =
-                    (b.status || "").toLowerCase();
-
-
-                // Atribui peso alto (99) se o status
-                // não estiver no mapeamento
-
-                const pesoA =
-                    ordemPrioridade[statusA] || 99;
-
-                const pesoB =
-                    ordemPrioridade[statusB] || 99;
-
-
-                return pesoA - pesoB;
-
-            });
+            [...lista].sort((a, b) =>
+                String(b.data_atualizacao || b.data_criacao || "")
+                    .localeCompare(String(a.data_atualizacao || a.data_criacao || "")) ||
+                Number(b.id) - Number(a.id)
+            );
 
 
         // ==========================================
@@ -695,6 +695,9 @@ export async function renderOrders(
             );
 
         });
+
+        // Ícones dos selos de próxima ação
+        atualizarIcones();
 
 
     } catch (error) {

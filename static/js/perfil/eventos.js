@@ -127,6 +127,17 @@ export async function carregarDadosIniciais() {
         if (DOM.userName) DOM.userName.textContent = data.nome || "";
         if (DOM.userRole) DOM.userRole.textContent = capitalizar(data.tipo);
 
+        // Produtor: mostra a média das avaliações recebidas e o link do perfil público
+        const blocoAvaliacao = document.getElementById("perfil-avaliacao");
+        if (blocoAvaliacao && data.tipo === "produtor" && window.Avaliacoes) {
+            blocoAvaliacao.innerHTML = `
+                ${window.Avaliacoes.resumo(data.media_avaliacoes, data.total_avaliacoes, 20)}
+                <a class="link-produtor" href="/produtor/${Number(data.id)}">
+                    Ver meu perfil público e avaliações
+                </a>`;
+            blocoAvaliacao.style.display = "flex";
+        }
+
         configurarFotoComFallback(DOM.profileImg, caminhoFoto);
 
         const fotoDrawer = document.querySelector('.usuario-foto');

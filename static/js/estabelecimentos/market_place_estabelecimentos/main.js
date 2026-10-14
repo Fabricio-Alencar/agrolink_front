@@ -31,6 +31,28 @@ console.log(
 );
 
 
-renderizarProdutos();
+await renderizarProdutos();
 
 console.log("📌 Depois de renderizar");
+
+
+// =========================
+// VEIO DO PERFIL DO PRODUTOR? (/marketplace?produto=ID)
+// Rola até o produto e destaca o card
+// =========================
+
+const produtoEscolhido =
+    new URLSearchParams(window.location.search).get("produto");
+
+if (produtoEscolhido) {
+
+    const card = document.querySelector(
+        `.product-card[data-produto-id="${CSS.escape(produtoEscolhido)}"]`
+    );
+
+    if (card) {
+        card.classList.add("produto-destacado");
+        card.scrollIntoView({ behavior: "smooth", block: "center" });
+        setTimeout(() => card.classList.remove("produto-destacado"), 4000);
+    }
+}

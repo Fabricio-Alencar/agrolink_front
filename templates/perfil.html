@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="../static/css2/perfil/formulario.css">
     <link rel="stylesheet" href="../static/css2/perfil/botoes.css">
     <link rel="stylesheet" href="../static/css2/perfil/modal.css">
+    <link rel="stylesheet" href="../static/css2/geral/avaliacoes.css">
    
     <!-- Favicon -->
     <link
@@ -220,6 +221,12 @@
                 <h2 class="user-role">
                     Buscando dados do usuário...
                 </h2>
+
+                <!-- Média de avaliações (só aparece para produtor) -->
+                <div
+                    id="perfil-avaliacao"
+                    style="display:none; flex-wrap:wrap; align-items:center; gap:12px; margin-top:8px;">
+                </div>
 
             </div>
 
@@ -486,6 +493,7 @@
 
     <script src="../static/js/config.js"></script>
     <script src="../static/js/auth.js"></script>
+    <script src="../static/js/avaliacoes.js"></script>
     <script src="../static/js/drawer.js"></script>
 
     <script
