@@ -1,5 +1,6 @@
 body {
-    background-color: var(--bg-color);
+    /* Fundo com degradê radial: centro com a cor padrão e bordas escurecidas */
+    background: radial-gradient(circle at center, var(--bg-color) 50%, #0d4220 100%);
     font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column;
@@ -15,19 +16,40 @@ body {
     margin-bottom: 25px;
 }
 
-.logo {
+/* Imagem redonda da plantinha */
+.page-header img.logo {
     width: 25%;
     border-radius: 50%;
     margin-bottom: 10px;
+    
+    /* Sombra suave ao redor do círculo da plantinha */
+    filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.2));
 }
 
-.page-header h1 {
-    color: var(--primary);
+/* Estilização do título que contém o nome AgroLink */
+.page-header h1.logo-text {
     font-size: 2rem;
     font-weight: 700;
+    margin: 0 0 5px 0;
+    
+    /* Sombra elegante no texto para dar profundidade no fundo verde */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Agro: preto suavizado */
+.page-header .agro {
+    font-weight: 700;
+    color: #0b160e;
+}
+
+/* Link: verde natural e menos saturado */
+.page-header .link {
+    font-weight: 700;
+    color: #8EDB62;
 }
 
 .page-header p {
     color: var(--text-muted);
     font-size: 0.9rem;
+    margin: 0;
 }

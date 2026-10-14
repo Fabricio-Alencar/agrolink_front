@@ -1,27 +1,57 @@
+
 /* =========================
-   HEADER 
+   HEADER
 ========================= */
 
 .header {
-    position: relative;                    /* Referência para o botão absoluto */
-    display: flex;                         
-    justify-content: center;               /* Centraliza a logo */
-    align-items: center;                   /* Centraliza verticalmente */
-    padding: var(--space-md) 5%;           /* Espaçamento interno */
-    background-color: var(--cor-primaria); /* Cor de fundo */
-    color: var(--cor-branco);              /* Cor do texto */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-md) 5%;
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
 }
 
-/* Logo */
 .logo {
-    font-size: var(--fs-h3);    /* Tamanho da fonte */
-    font-weight: bold;          /* Texto em negrito */
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    overflow: visible;
+    font-family: 'Montserrat', 'Inter', 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: -0.5px;
+    /* Sombra discreta e suave */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.10);
+}
+
+/* Agro: preto suavizado */
+.logo .agro,
+.logo span:first-child {
+    font-weight: 700;
+    color: #192B1D;
+}
+
+/* Link: verde natural e menos saturado */
+.logo .link,
+.logo span:last-child {
+    font-weight: 700;
+    color: #8EDB62;
+}
+
+.logo img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+    transform: scale(1.8);
+    transform-origin: center;
 }
 
 /* Botão hambúrguer */
 .btn-menu-hamburger {
     position: absolute;
-    left: var(--space-xl);      /* Fica no canto esquerdo */
+    left: var(--space-xl);
     top: 50%;
     transform: translateY(-50%);
 
@@ -38,21 +68,22 @@
 
 /* Linhas do ícone */
 .btn-menu-hamburger span {
-    width: 100%;                /* Ocupa toda a largura do botão */
-    height: 3px;                /* Espessura da linha */
+    width: 100%;
+    height: 3px;
     background: var(--cor-branco);
-    border-radius: 2px;         /* Arredonda as extremidades */
+    border-radius: 2px;
 }
 
 /* =========================
    Tablet e Desktop
 ========================= */
+
 @media (min-width: 768px) {
     .header {
         padding: var(--space-lg) 8%;
     }
 
     .logo {
-        font-size: var(--fs-h2);
+        font-size: 2.4rem;
     }
 }

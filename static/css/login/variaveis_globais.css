@@ -1,11 +1,11 @@
 /* Definição de variáveis para consistência de cores */
 :root {
-    --bg-color: #D0E9C1;
+    --bg-color: #005027;
     --primary: #00873E;
     --primary-dark: #006C32;
     --white: #FFFFFF;
     --text-main: #1A1A1A;
-    --text-muted: #6C8271;
+    --text-muted: #F2E9D8;
     --gray-light: #F3F5EA;
     --border: #D1D5DB;
 }

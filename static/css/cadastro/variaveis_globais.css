@@ -1,6 +1,6 @@
 /* Definição de variáveis para consistência de cores */
 :root {
-    --bg-color: #D0E9C1;
+    --bg-color: #005027;
     --primary-green: #00873E;
     --primary-hover: #006C32;
     --white: #FFFFFF;
@@ -8,6 +8,7 @@
     --text-label: #4B5563;
     --border-gray: #D1D5DB;
     --toggle-active-bg: #E7F3D9;
+    --text-muted: #dbb376;
 }
 
 /* Reset de estilos globais e fonte base */

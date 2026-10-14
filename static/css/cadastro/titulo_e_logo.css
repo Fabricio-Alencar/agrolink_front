@@ -1,19 +1,24 @@
 /* Container do Header */
+/* Estilização da Logo e Títulos do Topo (Header externo) */
 .page-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
-/* Estilo da Logomarca */
-.logo {
+/* Imagem redonda da plantinha */
+.page-header img.logo {
     width: 25%;
     border-radius: 50%;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    
+    /* Sombra suave ao redor do círculo da plantinha */
+    filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.2));
 }
+
 
 /* Título de Boas-vindas */
 .page-header h1 {
-    color: var(--primary-green);
+    color: var(--text-muted);
     font-size: 2.0rem;
     font-weight: 700;
     font-weight: bold;

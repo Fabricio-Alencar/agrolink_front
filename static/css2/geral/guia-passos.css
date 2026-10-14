@@ -1,0 +1,265 @@
+/* Estilos do Botão Flutuante (Minhoca) */
+.guia-flutuante-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tooltip-ajuda {
+  background: #ffffff;
+  padding: 8px 14px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.guia-flutuante-container:hover .tooltip-ajuda {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-4px);
+}
+
+.minhoca-trigger {
+  position: relative;
+  cursor: pointer;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.minhoca-trigger:hover {
+  transform: scale(1.05);
+}
+
+.minhoca-trigger img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+}
+
+.badge-duvida {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background-color: #2d5a3f;
+  color: white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Estilos do Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.ativo {
+  opacity: 1;
+  visibility: visible;
+  display:flex;
+}
+
+.modal-card {
+  background: #ffffff;
+  width: 90%;
+  max-width: 880px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  padding: 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform 0.3s ease;
+}
+
+.modal-overlay.ativo .modal-card {
+  transform: translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.header-icon {
+  width: 60px;
+  height: 60px;
+  background: #eaf3ed;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon img {
+  width: 45px;
+  height: 45px;
+}
+
+.header-text span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #4a7c59;
+  text-transform: uppercase;
+}
+
+.header-text h2 {
+  margin: 4px 0 2px 0;
+  font-size: 22px;
+  color: #1b3022;
+}
+
+.header-text p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.btn-fechar {
+  background: #f7f9f8;
+  border: 1px solid #e2e8f0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-fechar:hover {
+  background: #edf2ee;
+}
+
+/* Grid dos Passos Dinâmicos */
+.grid-passos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.card-passo {
+  background: #ffffff;
+  border: 1px solid #e5ede7;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: box-shadow 0.2s;
+}
+
+.card-passo:hover {
+  box-shadow: 0 4px 12px rgba(45, 90, 63, 0.06);
+}
+
+.passo-numero {
+  background: #2d5a3f;
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.passo-conteudo h4 {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  color: #1b3022;
+}
+
+.passo-conteudo p {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Rodapé do Modal */
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #eaeaea;
+  padding-top: 16px;
+}
+
+.footer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #777;
+}
+
+.btn-entendi {
+  background: #1b3022;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-entendi:hover {
+  background: #2d5a3f;
+}

@@ -1,10 +1,12 @@
 /* Alinhamento centralizado de toda a tela */
 body {
-    background-color: var(--bg-color);
-    min-height: 100vh;
+    /* Fundo com degradê radial: centro com a cor padrão e bordas escurecidas */
+    background: radial-gradient(circle at center, var(--bg-color) 50%, #0d4220 100%);
+    font-family: 'Inter', sans-serif;
     display: flex;
     flex-direction: column;
-    align-items: center;       /* Centraliza horizontalmente */
-    justify-content: center;   /* Centraliza verticalmente */
-    padding: 10px 20px;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
 }
