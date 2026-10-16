@@ -27,11 +27,136 @@ const usuarioLogadoId =
 
 
 /* =========================================================
+   CONVERSÃO E FORMATAÇÃO DE DATAS
+========================================================= */
+
+/*
+ * O backend salva as datas sem fuso horário, mas em UTC.
+ * Para esses valores, adicionamos Z antes de converter.
+ *
+ * Se a data já possuir fuso horário, ele é preservado.
+ */
+
+function converterDataMensagem(dataEnvio) {
+    if (!dataEnvio) {
+        return null;
+    }
+
+    let dataTexto = String(dataEnvio).trim();
+
+    const temFusoHorario =
+        /(?:Z|[+-]\d{2}:?\d{2})$/i.test(dataTexto);
+
+    dataTexto = dataTexto.replace(" ", "T");
+
+    if (!temFusoHorario) {
+        // JavaScript trabalha com milissegundos.
+        dataTexto = dataTexto.replace(
+            /(\.\d{3})\d+$/,
+            "$1"
+        );
+
+        dataTexto += "Z";
+    }
+
+    const data = new Date(dataTexto);
+
+    if (Number.isNaN(data.getTime())) {
+        console.warn("Data de mensagem inválida:", dataEnvio);
+        return null;
+    }
+
+    return data;
+}
+
+
+/* =========================================================
+   IDENTIFICAR O DIA DA MENSAGEM
+========================================================= */
+
+function obterChaveData(data) {
+    return [
+        data.getFullYear(),
+        String(data.getMonth() + 1).padStart(2, "0"),
+        String(data.getDate()).padStart(2, "0")
+    ].join("-");
+}
+
+
+/* =========================================================
+   TEXTO DA DIVISÓRIA
+========================================================= */
+
+function formatarDataDivisoria(dataEnvio) {
+    const data = converterDataMensagem(dataEnvio);
+
+    if (!data) {
+        return "";
+    }
+
+    const agora = new Date();
+
+    const hoje = new Date(
+        agora.getFullYear(),
+        agora.getMonth(),
+        agora.getDate()
+    );
+
+    const ontem = new Date(hoje);
+    ontem.setDate(ontem.getDate() - 1);
+
+    const dataMensagem = new Date(
+        data.getFullYear(),
+        data.getMonth(),
+        data.getDate()
+    );
+
+    if (dataMensagem.getTime() === hoje.getTime()) {
+        return "Hoje";
+    }
+
+    if (dataMensagem.getTime() === ontem.getTime()) {
+        return "Ontem";
+    }
+
+    return data.toLocaleDateString("pt-BR");
+}
+
+
+/* =========================================================
+   CRIAR DIVISÓRIA DE DATA
+========================================================= */
+
+function criarDivisoriaData(dataEnvio) {
+    const textoData = formatarDataDivisoria(dataEnvio);
+
+    if (!textoData) {
+        return null;
+    }
+
+    const divisoria = document.createElement("div");
+
+    divisoria.className = "mensagem-divisoria-data";
+    divisoria.dataset.data = obterChaveData(
+        converterDataMensagem(dataEnvio)
+    );
+
+    const etiqueta = document.createElement("span");
+
+    etiqueta.className = "mensagem-divisoria-data-texto";
+    etiqueta.textContent = textoData;
+
+    divisoria.appendChild(etiqueta);
+
+    return divisoria;
+}
+
+
+/* =========================================================
    CRIAR ÍCONE LUCIDE DO STATUS
 ========================================================= */
 
 function criarIconeStatus(lida = false) {
-
     const status = document.createElement("span");
 
     status.classList.add(
@@ -61,17 +186,10 @@ function criarIconeStatus(lida = false) {
 
     status.appendChild(icone);
 
-    /*
-     * Converte o ícone Lucide dentro do elemento.
-     * O SVG gerado herda a cor definida no CSS.
-     */
-
     if (window.lucide) {
-
         window.lucide.createIcons({
             root: status
         });
-
     }
 
     return status;
@@ -86,7 +204,6 @@ function atualizarStatusMensagem(
     elementoStatus,
     lida = false
 ) {
-
     if (!elementoStatus) {
         return;
     }
@@ -98,81 +215,110 @@ function atualizarStatusMensagem(
 
 
 /* =========================================================
-   ADICIONAR MENSAGEM NA TELA
+   ADICIONAR DIVISÓRIA QUANDO O DIA MUDAR
 ========================================================= */
 
-export function adicionarMensagemNaTela(
+function adicionarDivisoriaSeNecessario(dataEnvio) {
+    const data = converterDataMensagem(dataEnvio);
+
+    if (!data) {
+        return;
+    }
+
+    const chaveData = obterChaveData(data);
+
+    /*
+     * Procura a última mensagem real do histórico.
+     * As divisórias não são consideradas mensagens.
+     */
+
+    const mensagensExistentes =
+        mensagensContainer.querySelectorAll(".mensagem");
+
+    const ultimaMensagem =
+        mensagensExistentes[mensagensExistentes.length - 1];
+
+    let chaveUltimaMensagem = null;
+
+    if (ultimaMensagem?.dataset.dataMensagem) {
+        chaveUltimaMensagem =
+            ultimaMensagem.dataset.dataMensagem;
+    }
+
+    /*
+     * Se o dia for diferente, adiciona uma divisória.
+     * Não cria outra divisória para o mesmo dia.
+     */
+
+    if (chaveUltimaMensagem !== chaveData) {
+        const divisoria = criarDivisoriaData(dataEnvio);
+
+        if (divisoria) {
+            mensagensContainer.appendChild(divisoria);
+        }
+    }
+}
+
+
+/* =========================================================
+   CRIAR ELEMENTO DE MENSAGEM
+========================================================= */
+
+function criarElementoMensagem(
     mensagem,
     enviada = true
 ) {
-
     const texto =
         typeof mensagem === "object"
             ? mensagem.texto
             : mensagem;
 
+    const dataEnvio =
+        typeof mensagem === "object"
+            ? mensagem.data_envio
+            : null;
 
-    /*
-     * Remove o estado de conversa vazia
-     * quando uma mensagem é adicionada.
-     */
-
-    const mensagemVazia =
-        mensagensContainer.querySelector(
-            ".chat-vazio"
-        );
-
-    if (mensagemVazia) {
-        mensagemVazia.remove();
-    }
-
+    const dataConvertida =
+        converterDataMensagem(dataEnvio);
 
     const elementoMensagem =
         document.createElement("div");
 
     elementoMensagem.classList.add("mensagem");
 
-
-    /*
-     * Guarda o ID da mensagem no elemento.
-     */
+    if (enviada) {
+        elementoMensagem.classList.add(
+            "mensagem-enviada"
+        );
+    } else {
+        elementoMensagem.classList.add(
+            "mensagem-recebida"
+        );
+    }
 
     if (
         typeof mensagem === "object" &&
         mensagem.id
     ) {
-
         elementoMensagem.dataset.mensagemId =
             mensagem.id;
-
     }
 
+    /*
+     * Guarda o dia da mensagem para comparar
+     * com o dia da próxima mensagem.
+     */
 
-    if (enviada) {
-
-        elementoMensagem.classList.add(
-            "mensagem-enviada"
-        );
-
-    } else {
-
-        elementoMensagem.classList.add(
-            "mensagem-recebida"
-        );
-
+    if (dataConvertida) {
+        elementoMensagem.dataset.dataMensagem =
+            obterChaveData(dataConvertida);
     }
 
+    const hora = dataEnvio
+        ? formatarHora(dataEnvio)
+        : obterHoraAtual();
 
-    const hora =
-        typeof mensagem === "object" &&
-        mensagem.data_envio
-            ? formatarHora(mensagem.data_envio)
-            : obterHoraAtual();
-
-
-    /* ---------------------------------------------
-       CONTEÚDO DA MENSAGEM
-    --------------------------------------------- */
+    /* Conteúdo da mensagem */
 
     const elementoConteudo =
         document.createElement("div");
@@ -181,26 +327,14 @@ export function adicionarMensagemNaTela(
         "mensagem-conteudo"
     );
 
-
-    /* ---------------------------------------------
-       TEXTO DA MENSAGEM
-    --------------------------------------------- */
+    /* Texto */
 
     const elementoTexto =
         document.createElement("p");
 
-    /*
-     * O conteúdo é tratado como texto para impedir
-     * que HTML ou JavaScript enviados pelo usuário
-     * sejam executados.
-     */
+    elementoTexto.textContent = texto ?? "";
 
-    elementoTexto.textContent = texto;
-
-
-    /* ---------------------------------------------
-       HORÁRIO DA MENSAGEM
-    --------------------------------------------- */
+    /* Horário */
 
     const elementoHora =
         document.createElement("span");
@@ -211,244 +345,136 @@ export function adicionarMensagemNaTela(
         document.createTextNode(hora)
     );
 
-
-    /* ---------------------------------------------
-       INDICADOR DA MENSAGEM ENVIADA
-    --------------------------------------------- */
+    /* Indicador de leitura para mensagens enviadas */
 
     if (enviada) {
-
         const elementoStatus =
-            criarIconeStatus(false);
+            criarIconeStatus(
+                typeof mensagem === "object"
+                    ? Boolean(mensagem.lida)
+                    : false
+            );
 
-        elementoHora.appendChild(
-            elementoStatus
-        );
-
+        elementoHora.appendChild(elementoStatus);
     }
 
+    elementoConteudo.appendChild(elementoTexto);
+    elementoConteudo.appendChild(elementoHora);
+    elementoMensagem.appendChild(elementoConteudo);
 
-    /* ---------------------------------------------
-       MONTAR A MENSAGEM
-    --------------------------------------------- */
-
-    elementoConteudo.appendChild(
-        elementoTexto
-    );
-
-    elementoConteudo.appendChild(
-        elementoHora
-    );
-
-    elementoMensagem.appendChild(
-        elementoConteudo
-    );
-
-    mensagensContainer.appendChild(
-        elementoMensagem
-    );
-
-    mensagensContainer.scrollTop =
-        mensagensContainer.scrollHeight;
-
+    return elementoMensagem;
 }
 
 
 /* =========================================================
-   RENDERIZAR MENSAGENS
+   ADICIONAR MENSAGEM NA TELA
 ========================================================= */
 
-export function renderizarMensagens(
-    listaMensagens
+export function adicionarMensagemNaTela(
+    mensagem,
+    enviada = true
 ) {
+    if (!mensagensContainer) {
+        return;
+    }
+
+    const mensagemVazia =
+        mensagensContainer.querySelector(".chat-vazio");
+
+    if (mensagemVazia) {
+        mensagemVazia.remove();
+    }
+
+    const elementoMensagem =
+        criarElementoMensagem(mensagem, enviada);
 
     /*
-     * Limpa completamente o conteúdo anterior.
+     * Para mensagens sem data, não adicionamos divisória.
+     * Isso ocorre com a mensagem provisória enviada antes
+     * de o servidor confirmar sua data real.
      */
+
+    const dataEnvio =
+        typeof mensagem === "object"
+            ? mensagem.data_envio
+            : null;
+
+    if (dataEnvio) {
+        adicionarDivisoriaSeNecessario(dataEnvio);
+    }
+
+    mensagensContainer.appendChild(elementoMensagem);
+
+    mensagensContainer.scrollTop =
+        mensagensContainer.scrollHeight;
+}
+
+
+/* =========================================================
+   RENDERIZAR MENSAGENS DO HISTÓRICO
+========================================================= */
+
+export function renderizarMensagens(listaMensagens) {
+    if (!mensagensContainer) {
+        return;
+    }
 
     mensagensContainer.replaceChildren();
 
-
-    /* ---------------------------------------------
-       CONVERSA SEM MENSAGENS
-    --------------------------------------------- */
+    /* Conversa sem mensagens */
 
     if (
         !listaMensagens ||
         listaMensagens.length === 0
     ) {
-
         mensagensContainer.innerHTML = `
-
             <div class="chat-vazio">
-
                 <div class="chat-vazio-conteudo">
-
                     <div class="chat-vazio-icone">
                         <i data-lucide="message-circle"></i>
                     </div>
 
-                    <h3>
-                        Nenhuma mensagem ainda
-                    </h3>
+                    <h3>Nenhuma mensagem ainda</h3>
 
                     <p>
                         Envie uma mensagem para iniciar
                         esta conversa.
                     </p>
-
                 </div>
-
             </div>
-
         `;
 
-        /*
-         * Atualiza o ícone da conversa vazia.
-         */
-
         if (window.lucide) {
-
             window.lucide.createIcons();
-
         }
 
         return;
-
     }
 
-
-    /* ---------------------------------------------
-       EXISTEM MENSAGENS
-    --------------------------------------------- */
+    /*
+     * As mensagens devem chegar ordenadas da mais antiga
+     * para a mais recente para as divisórias aparecerem
+     * corretamente entre os dias.
+     */
 
     listaMensagens.forEach(mensagem => {
+        const enviada =
+            Number(mensagem.remetente_id) === usuarioLogadoId;
+
+        const dataEnvio = mensagem.data_envio;
+
+        if (dataEnvio) {
+            adicionarDivisoriaSeNecessario(dataEnvio);
+        }
 
         const elementoMensagem =
-            document.createElement("div");
+            criarElementoMensagem(mensagem, enviada);
 
-        elementoMensagem.classList.add("mensagem");
-
-
-        /*
-         * Guarda o ID da mensagem.
-         */
-
-        elementoMensagem.dataset.mensagemId =
-            mensagem.id;
-
-
-        const enviada =
-            Number(mensagem.remetente_id) ===
-            usuarioLogadoId;
-
-
-        if (enviada) {
-
-            elementoMensagem.classList.add(
-                "mensagem-enviada"
-            );
-
-        } else {
-
-            elementoMensagem.classList.add(
-                "mensagem-recebida"
-            );
-
-        }
-
-
-        const hora =
-            formatarHora(mensagem.data_envio);
-
-
-        /* ---------------------------------------------
-           CRIAR CONTEÚDO
-        --------------------------------------------- */
-
-        const elementoConteudo =
-            document.createElement("div");
-
-        elementoConteudo.classList.add(
-            "mensagem-conteudo"
-        );
-
-
-        /* ---------------------------------------------
-           TEXTO
-        --------------------------------------------- */
-
-        const elementoTexto =
-            document.createElement("p");
-
-        elementoTexto.textContent =
-            mensagem.texto;
-
-
-        /* ---------------------------------------------
-           HORÁRIO
-        --------------------------------------------- */
-
-        const elementoHora =
-            document.createElement("span");
-
-        elementoHora.classList.add(
-            "mensagem-hora"
-        );
-
-        elementoHora.appendChild(
-            document.createTextNode(hora)
-        );
-
-
-        /* ---------------------------------------------
-           INDICADOR DE LEITURA
-        --------------------------------------------- */
-
-        if (enviada) {
-
-            const elementoStatus =
-                criarIconeStatus(
-                    Boolean(mensagem.lida)
-                );
-
-            elementoHora.appendChild(
-                elementoStatus
-            );
-
-        }
-
-
-        /* ---------------------------------------------
-           MONTAR MENSAGEM
-        --------------------------------------------- */
-
-        elementoConteudo.appendChild(
-            elementoTexto
-        );
-
-        elementoConteudo.appendChild(
-            elementoHora
-        );
-
-        elementoMensagem.appendChild(
-            elementoConteudo
-        );
-
-        mensagensContainer.appendChild(
-            elementoMensagem
-        );
-
+        mensagensContainer.appendChild(elementoMensagem);
     });
-
-
-    /*
-     * Mantém a rolagem no final da conversa.
-     */
 
     mensagensContainer.scrollTop =
         mensagensContainer.scrollHeight;
-
 }
 
 
@@ -459,56 +485,83 @@ export function renderizarMensagens(
 window.addEventListener(
     "mensagemConfirmadaChat",
     event => {
-
         const mensagem = event.detail;
 
+        if (!mensagensContainer || !mensagem) {
+            return;
+        }
+
         console.log(
-            "🔄 ATUALIZANDO MENSAGEM PROVISÓRIA:"
+            "🔄 ATUALIZANDO MENSAGEM PROVISÓRIA:",
+            mensagem
         );
-
-        console.log(mensagem);
-
-
-        /*
-         * Busca as mensagens enviadas.
-         * A mensagem provisória ainda não possui
-         * o ID retornado pelo banco.
-         */
 
         const mensagensEnviadas =
             mensagensContainer.querySelectorAll(
                 ".mensagem-enviada"
             );
 
-
         if (mensagensEnviadas.length === 0) {
-
             console.warn(
                 "⚠️ Nenhuma mensagem provisória encontrada."
             );
 
             return;
-
         }
-
 
         const mensagemProvisoria =
             mensagensEnviadas[
                 mensagensEnviadas.length - 1
             ];
 
-
-        /* ---------------------------------------------
-           ADICIONAR ID REAL DO BANCO
-        --------------------------------------------- */
+        /* Adicionar ID real do banco */
 
         mensagemProvisoria.dataset.mensagemId =
             mensagem.id;
 
+        /* Atualizar dia e horário */
 
-        /* ---------------------------------------------
-           ATUALIZAR HORÁRIO E STATUS
-        --------------------------------------------- */
+        if (mensagem.data_envio) {
+            const dataConvertida =
+                converterDataMensagem(mensagem.data_envio);
+
+            if (dataConvertida) {
+                mensagemProvisoria.dataset.dataMensagem =
+                    obterChaveData(dataConvertida);
+            }
+
+            const chaveData =
+                mensagemProvisoria.dataset.dataMensagem;
+
+            /*
+             * Se a mensagem confirmada pertence a outro dia
+             * e não existe uma divisória correspondente antes
+             * dela, insere a divisória no lugar correto.
+             */
+
+            const divisorias =
+                mensagensContainer.querySelectorAll(
+                    ".mensagem-divisoria-data"
+                );
+
+            const ultimaDivisoria =
+                divisorias[divisorias.length - 1];
+
+            if (
+                chaveData &&
+                ultimaDivisoria?.dataset.data !== chaveData
+            ) {
+                const divisoria =
+                    criarDivisoriaData(mensagem.data_envio);
+
+                if (divisoria) {
+                    mensagensContainer.insertBefore(
+                        divisoria,
+                        mensagemProvisoria
+                    );
+                }
+            }
+        }
 
         const elementoHora =
             mensagemProvisoria.querySelector(
@@ -516,29 +569,25 @@ window.addEventListener(
             );
 
         if (elementoHora) {
-
             elementoHora.replaceChildren();
 
             elementoHora.appendChild(
                 document.createTextNode(
-                    formatarHora(mensagem.data_envio)
+                    mensagem.data_envio
+                        ? formatarHora(mensagem.data_envio)
+                        : obterHoraAtual()
                 )
             );
 
             elementoHora.appendChild(
-                criarIconeStatus(
-                    Boolean(mensagem.lida)
-                )
+                criarIconeStatus(Boolean(mensagem.lida))
             );
-
         }
-
 
         console.log(
             "✅ MENSAGEM ATUALIZADA COM DADOS DO BANCO:",
             mensagem.id
         );
-
     }
 );
 
@@ -550,91 +599,53 @@ window.addEventListener(
 window.addEventListener(
     "mensagensLidasChat",
     event => {
-
         const notificacao = event.detail;
 
         const negociacaoAtual =
             getNegociacaoAtual();
 
-
-        /* ---------------------------------------------
-           VERIFICAR CONVERSA ATUAL
-        --------------------------------------------- */
-
         if (
             Number(negociacaoAtual) !==
             Number(notificacao.negociacao_id)
         ) {
-
             return;
-
         }
-
-
-        /* ---------------------------------------------
-           IDs DAS MENSAGENS LIDAS
-        --------------------------------------------- */
 
         const mensagensLidas =
             notificacao.mensagem_ids || [];
 
-
-        /* ---------------------------------------------
-           ATUALIZAR SOMENTE AS MENSAGENS LIDAS
-        --------------------------------------------- */
-
         mensagensLidas.forEach(mensagemId => {
-
             const mensagem =
                 mensagensContainer.querySelector(
                     `[data-mensagem-id="${mensagemId}"]`
                 );
 
-
             if (!mensagem) {
                 return;
             }
-
-
-            /*
-             * Atualiza somente mensagens enviadas
-             * pelo usuário atual.
-             */
 
             if (
                 !mensagem.classList.contains(
                     "mensagem-enviada"
                 )
             ) {
-
                 return;
-
             }
-
 
             const status =
                 mensagem.querySelector(
                     ".mensagem-status"
                 );
 
-
             if (status) {
-
-                atualizarStatusMensagem(
-                    status,
-                    true
-                );
-
+                atualizarStatusMensagem(status, true);
             }
-
         });
-
 
         console.log(
             "✅ Mensagens lidas atualizadas:",
             mensagensLidas
         );
-
     }
 );
 
@@ -646,125 +657,80 @@ window.addEventListener(
 chatForm.addEventListener(
     "submit",
     event => {
-
         event.preventDefault();
-
 
         const texto =
             mensagemInput.value.trim();
-
 
         if (!texto) {
             return;
         }
 
-
         const negociacaoAtual =
             getNegociacaoAtual();
 
-
         if (!negociacaoAtual) {
-
             console.warn(
                 "⚠️ Nenhuma negociação selecionada."
             );
 
             return;
-
         }
 
+        const socket = getSocket();
 
-        const socket =
-            getSocket();
-
-
-        console.log(
-            "🟣 Tentando enviar mensagem..."
-        );
-
-        console.log(
-            "🟣 Mensagem:",
-            texto
-        );
-
-        console.log(
-            "🟣 Negociação:",
-            negociacaoAtual
-        );
-
-        console.log(
-            "🟣 Socket:",
-            socket
-        );
-
+        console.log("🟣 Tentando enviar mensagem...");
+        console.log("🟣 Mensagem:", texto);
+        console.log("🟣 Negociação:", negociacaoAtual);
+        console.log("🟣 Socket:", socket);
         console.log(
             "🟣 Estado do socket:",
-            socket
-                ? socket.readyState
-                : "null"
+            socket ? socket.readyState : "null"
         );
-
 
         if (
             !socket ||
             socket.readyState !== WebSocket.OPEN
         ) {
-
             console.warn(
                 "⚠️ WebSocket ainda não está conectado."
             );
 
             return;
-
         }
-
 
         console.log(
             "📤 Enviando mensagem pelo WebSocket..."
         );
 
-
         socket.send(texto);
-
 
         console.log(
             "✅ Mensagem enviada para o WebSocket."
         );
 
+        /*
+         * Adiciona a mensagem provisória.
+         * O horário real será definido após a confirmação
+         * do servidor.
+         */
 
-        /* ---------------------------------------------
-           ADICIONAR MENSAGEM ENVIADA AO CHAT
-        --------------------------------------------- */
+        adicionarMensagemNaTela(texto, true);
 
-        adicionarMensagemNaTela(
-            texto,
-            true
-        );
-
-
-        /* ---------------------------------------------
-           ATUALIZAR ÚLTIMA MENSAGEM NA LISTA
-        --------------------------------------------- */
+        /*
+         * Atualiza a prévia da conversa na lista.
+         */
 
         window.dispatchEvent(
-            new CustomEvent(
-                "mensagemEnviadaChat",
-                {
-                    detail: {
-                        negociacao_id:
-                            negociacaoAtual,
-
-                        texto:
-                            texto
-                    }
+            new CustomEvent("mensagemEnviadaChat", {
+                detail: {
+                    negociacao_id: negociacaoAtual,
+                    texto
                 }
-            )
+            })
         );
 
-
         mensagemInput.value = "";
-
         mensagemInput.focus();
-
     }
 );

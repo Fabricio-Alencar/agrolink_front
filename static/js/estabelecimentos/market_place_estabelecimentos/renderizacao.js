@@ -1,5 +1,5 @@
 import { DOM } from './acesso_a_elementos_DOM.js';
-import { formatarPreco, renderizarEstrelas } from './estrelas_formatacao_preco.js';
+import { formatarPreco } from './estrelas_formatacao_preco.js';
 import { abrirModal } from './modal.js';
 import { API } from './api.js';
 
@@ -294,6 +294,9 @@ export function criarCard(prod) {
     card.className =
         'product-card';
 
+    // Usado para achar o card quando se chega pelo perfil do produtor (?produto=ID)
+    card.dataset.produtoId = prod.id;
+
 
     // ========================================================
     // FOTO
@@ -366,28 +369,22 @@ export function criarCard(prod) {
             <div class="producer-info">
 
                 Produtor:
-                ${prod.produtor_nome || 'Produtor Local'}
+                ${
+                    prod.produtor_id
+                        ? `<a class="link-produtor" href="/produtor/${Number(prod.produtor_id)}" title="Ver perfil e avaliações do produtor">${window.Avaliacoes.escaparHTML(prod.produtor_nome || 'Produtor Local')}</a>`
+                        : (prod.produtor_nome || 'Produtor Local')
+                }
 
             </div>
 
 
+            <!-- Avaliação é do PRODUTOR: mesma média em todos os produtos dele -->
             <div class="rating">
 
-                ${renderizarEstrelas(
-                    prod.produtor_avaliacao || 5
+                ${window.Avaliacoes.resumo(
+                    prod.produtor_avaliacao,
+                    prod.produtor_total_avaliacoes
                 )}
-
-                <span>
-                    (
-                    ${
-                        prod.produtor_avaliacao
-                            ? Number(
-                                prod.produtor_avaliacao
-                            ).toFixed(1)
-                            : '5.0'
-                    }
-                    )
-                </span>
 
             </div>
 

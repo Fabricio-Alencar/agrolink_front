@@ -24,12 +24,41 @@
 }
 
 /* =========================================================
+   DIVISÓRIAS DE DATA DAS MENSAGENS
+========================================================= */
+
+.mensagem-divisoria-data {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 12px 0;
+    flex-shrink: 0;
+}
+
+.mensagem-divisoria-data-texto {
+    display: inline-block;
+    padding: 6px 13px;
+    border-radius: 10px;
+    background: #e8eee6;
+    color: #53634f;
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-align: center;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+    user-select: none;
+}
+
+/* =========================================================
    MENSAGEM
 ========================================================= */
 
 .mensagem {
     display: flex;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .mensagem-conteudo {
@@ -55,7 +84,6 @@
     color: #999;
 }
 
-
 /* =========================================================
    STATUS DA MENSAGEM - ÍCONES SVG
 ========================================================= */
@@ -64,12 +92,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-
     width: 16px;
     height: 14px;
-
     margin-left: 2px;
-
     flex-shrink: 0;
     vertical-align: middle;
 }
@@ -80,7 +105,6 @@
     display: block;
     width: 15px;
     height: 15px;
-
     fill: none;
     stroke: currentColor;
     stroke-width: 2;
@@ -98,14 +122,8 @@
 
 .mensagem-status.visualizado {
     color: #8be9fd;
-}
-
-/* Dois tiques ficam ligeiramente mais largos */
-
-.mensagem-status.visualizado {
     width: 19px;
 }
-
 
 /* =========================================================
    MENSAGEM RECEBIDA
@@ -124,7 +142,6 @@
 .mensagem-recebida .mensagem-conteudo p {
     color: #333;
 }
-
 
 /* =========================================================
    MENSAGEM ENVIADA
@@ -147,7 +164,6 @@
     color: rgba(255, 255, 255, 0.75);
 }
 
-
 /* =========================================================
    RESPONSIVIDADE - TELAS MÉDIAS
 ========================================================= */
@@ -157,7 +173,6 @@
         max-width: 75%;
     }
 }
-
 
 /* =========================================================
    RESPONSIVIDADE - TABLETS E CELULARES
@@ -171,8 +186,11 @@
     .mensagem-conteudo {
         max-width: 82%;
     }
-}
 
+    .mensagem-divisoria-data {
+        margin: 10px 0;
+    }
+}
 
 /* =========================================================
    RESPONSIVIDADE - CELULARES PEQUENOS
@@ -200,5 +218,10 @@
 
     .mensagem-status.visualizado {
         width: 18px;
+    }
+
+    .mensagem-divisoria-data-texto {
+        padding: 5px 11px;
+        font-size: 11px;
     }
 }

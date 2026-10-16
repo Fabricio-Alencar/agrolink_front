@@ -118,26 +118,35 @@ export const API = {
        BUSCAR DETALHES DA NEGOCIAÇÃO
     ===================================================== */
 
-    async buscarNegociacao(negociacaoId) {
 
-        const resposta = await fetch(
-            `${API_URL}/negociacoes/detalhes/${encodeURIComponent(negociacaoId)}`,
-            {
-                method: "GET",
-                credentials: "include"
-            }
-        );
+async buscarNegociacao(negociacaoId) {
 
-        const dados = await resposta.json().catch(() => ({}));
-
-        if (!resposta.ok) {
-            throw new Error(
-                dados.detail ||
-                "Não foi possível carregar os detalhes da negociação."
-            );
+    const resposta = await fetch(
+        `${API_URL}/negociacoes/detalhes/${encodeURIComponent(negociacaoId)}`,
+        {
+            method: "GET",
+            credentials: "include"
         }
+    );
 
-        return dados;
+    const dados = await resposta.json().catch(() => ({}));
+
+    // 🔎 LOGS PARA DEBUG
+    console.log("🔎 ID DA NEGOCIAÇÃO:", negociacaoId);
+    console.log("📡 STATUS DA RESPOSTA:", resposta.status);
+    console.log("📦 DADOS RETORNADOS PELA NEGOCIAÇÃO:", dados);
+
+    if (!resposta.ok) {
+        console.error("❌ ERRO AO BUSCAR NEGOCIAÇÃO:", dados);
+
+        throw new Error(
+            dados.detail ||
+            "Não foi possível carregar os detalhes da negociação."
+        );
     }
+
+    return dados;
+}
+
 
 };

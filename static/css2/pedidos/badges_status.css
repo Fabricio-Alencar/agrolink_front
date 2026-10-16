@@ -166,6 +166,114 @@
 }
 
 /* =========================
+   BOTÕES DO CARD UNIFORMES
+   Mesma altura, cantos e fonte para Detalhes, Avaliar,
+   Aceitar/Recusar/Cancelar e lixeira
+========================= */
+/* Detalhes sempre na linha de cima; quando existe uma ação,
+   ela fica embaixo, lado a lado com Recusar/Cancelar/lixeira */
+.card-actions {
+    flex-direction: column;
+}
+
+.linha-acoes {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.linha-acoes > button {
+    /* Altura fixa (com borda incluída) para todos ficarem iguais */
+    box-sizing: border-box;
+    height: 2.5rem;
+    border-radius: clamp(0.8rem, 1vw, 1.25rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Detalhes com contorno: a ação colorida fica em destaque */
+.card-actions .btn-details {
+    background-color: transparent;
+    color: var(--cor-primaria);
+    border: 2px solid var(--cor-primaria);
+}
+
+.card-actions .btn-details:hover {
+    background-color: var(--verde-menta-claro);
+}
+
+.btn-acao-secundaria,
+.btn-avaliar-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: var(--space-sm);
+    border: none;
+    color: var(--cor-branco);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-acao-secundaria {
+    background-color: var(--status-red);
+}
+
+.btn-acao-secundaria:hover,
+.btn-avaliar-card:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* Botão principal = próxima ação (Aceitar, Confirmar entrega/recebimento) */
+.btn-acao-principal {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm);
+    border: none;
+    background-color: var(--verde-oliva, #558B2F);
+    color: var(--cor-branco);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-acao-principal:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* Botão verde no modal de confirmação ao aceitar pedido */
+.btn-confirmar-exclusao.confirmar-positivo {
+    background: var(--cor-primaria);
+}
+
+.btn-confirmar-exclusao.confirmar-positivo:hover {
+    background: var(--cor-primaria-hover);
+}
+
+.linha-acoes > .btn-avaliar-card {
+    padding: var(--space-sm);
+}
+
+/* Lixeira: quadrada, mesma altura dos outros botões */
+.linha-acoes > .btn-delete {
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    padding: 0;
+}
+
+/* =========================
    TABLET
 ========================= */
 @media (min-width: 768px) {

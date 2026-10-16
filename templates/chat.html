@@ -195,7 +195,7 @@
 
                         <img
                             id="chatFoto"
-                            src="../static/assets/login/user.png"
+                            src="../static/assets/user.png"
                             alt="Foto do usuário"
                         >
 
@@ -269,73 +269,106 @@
             style="display: none;"
             aria-hidden="true"
         >
+            <section
+                class="modal-info-conteudo"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="tituloInfoPedido"
+            >
+                <!-- Cabeçalho -->
+                <header class="modal-info-header">
+                    <div class="modal-info-titulo">
+                        <span class="modal-info-icone">
+                            <i data-lucide="clipboard-list"></i>
+                        </span>
 
-            <div class="modal-info-conteudo">
-
-                <div class="modal-info-header">
-
-                    <h2>
-                        Informações do Pedido
-                    </h2>
+                        <div class="modal-info-titulo-texto">
+                            <h2 id="tituloInfoPedido">Informações do pedido</h2>
+                            <p id="infoDataRecebido">Detalhes da negociação</p>
+                        </div>
+                    </div>
 
                     <button
                         type="button"
                         class="btn-fechar-info"
                         id="btnFecharInfo"
                         title="Fechar"
-                        aria-label="Fechar informações"
+                        aria-label="Fechar informações do pedido"
                     >
                         <i data-lucide="x"></i>
                     </button>
-
-                </div>
+                </header>
 
                 <div class="modal-info-corpo">
+                    <!-- Cartão do produto -->
+                    <section class="info-produto-card" aria-label="Produto do pedido">
+                        <div class="info-produto-imagem">
+                            <img
+                                id="infoProdutoFoto"
+                                src=""
+                                alt="Foto do produto"
+                                hidden
+                            >
 
-                    <div class="info-item">
-                        <span>Produto</span>
-                        <strong id="infoProduto">-</strong>
-                    </div>
+                            <i data-lucide="sprout" class="info-produto-fallback"></i>
+                        </div>
 
-                    <div class="info-item">
-                        <span>Quantidade</span>
-                        <strong id="infoQuantidade">-</strong>
-                    </div>
+                        <div class="info-produto-dados">
+                            <span class="info-etiqueta">PRODUTO</span>
+                            <h3 id="infoProduto">-</h3>
 
-                    <div class="info-item">
-                        <span>Preço</span>
-                        <strong id="infoPreco">-</strong>
-                    </div>
+                            <p class="info-produto-resumo">
+                                <span id="infoQuantidade">-</span>
+                                <span aria-hidden="true">×</span>
+                                <span id="infoPreco">-</span>
+                                <span id="infoUnidade"></span>
+                            </p>
+                        </div>
 
-                    <div class="info-item">
-                        <span>Unidade</span>
-                        <strong id="infoUnidade">-</strong>
-                    </div>
+                        <div class="info-produto-total">
+                            <span>Total</span>
+                            <strong id="infoTotal">-</strong>
+                        </div>
+                    </section>
 
-                    <div class="info-item">
-                        <span>Data de entrega</span>
-                        <strong id="infoDataEntrega">-</strong>
-                    </div>
+                    <!-- Informações da negociação -->
+                    <section
+                        class="info-detalhes-card"
+                        aria-label="Detalhes da negociação"
+                    >
+                        <div class="info-item">
+                            <span>NEGOCIANDO COM</span>
+                            <strong id="infoNegociante">-</strong>
+                        </div>
 
-                    <div class="info-item">
-                        <span>Status</span>
-                        <strong id="infoStatus">-</strong>
-                    </div>
+                        <div class="info-item">
+                            <span>ENTREGA</span>
+                            <strong id="infoDataEntrega">-</strong>
+                        </div>
 
-                    <div class="info-item info-descricao">
-                        <span>Descrição</span>
-                        <p id="infoDescricao">-</p>
-                    </div>
+                        <div class="info-item">
+                            <span>TELEFONE</span>
+                            <strong id="infoTelefone">-</strong>
+                        </div>
 
-                    <div class="info-item">
-                        <span>Negociando com</span>
-                        <strong id="infoNegociante">-</strong>
-                    </div>
+                        <div class="info-item">
+                            <span>E-MAIL</span>
+                            <strong id="infoEmail">-</strong>
+                        </div>
 
+                        <div class="info-item info-status-item">
+                            <span>STATUS DO PEDIDO</span>
+                            <strong id="infoStatus" class="info-status-badge">-</strong>
+                        </div>
+                    </section>
+
+                    <!-- Descrição, quando houver -->
+                    <section class="info-descricao-card" id="infoDescricaoContainer" hidden>
+                        <span>OBSERVAÇÕES DO PEDIDO</span>
+                        <p id="infoDescricao"></p>
+                    </section>
                 </div>
-
-            </div>
-
+            </section>
         </div>
 
         <!-- ESTADO SEM CONVERSA -->
