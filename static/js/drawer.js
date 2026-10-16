@@ -12,15 +12,43 @@ console.log("mascara:", mascara);
 
 const API_URL1 = CONFIG.API_URL;
 
+
 function alternarMenu() {
     if (menu) {
         menu.classList.toggle('ativo');
+        const aberto = menu.classList.contains('ativo');
+        const elementoGuia = document.querySelector('guia-passos');
+
+        if (elementoGuia) {
+            if (aberto) {
+                // Guarda os dados originais que vieram do HTML da página antes de abrir o drawer
+                dadosGuiaDaPagina = {
+                    titulo: elementoGuia.getAttribute('titulo'),
+                    subtitulo: elementoGuia.getAttribute('subtitulo'),
+                    passos: elementoGuia.getAttribute('passos')
+                };
+
+                // Mostra a explicação das opções do drawer
+                elementoGuia.setAttribute('titulo', 'Guia do Menu Lateral');
+                elementoGuia.setAttribute('subtitulo', 'Conheça o que você encontra em cada seção do sistema:');
+                elementoGuia.setAttribute('passos', JSON.stringify([
+                    {"numero": 1, "titulo": "Pedidos", "descricao": "Aqui você pode encontrar e gerenciar todos os pedidos feitos."},
+                    {"numero": 2, "titulo": "Chat", "descricao": "Aqui você pode encontrar suas conversas e negociar diretamente."},
+                    {"numero": 3, "titulo": "Perfil", "descricao": "Aqui você gerencia suas informações pessoais e dados da conta."},
+                    {"numero": 4, "titulo": "Marketplace / Produtos", "descricao": "Aqui você explora ou cadastra os itens disponíveis."}
+                ]));
+            } else {
+                // Restaura exatamente os dados originais da página ao fechar
+                elementoGuia.setAttribute('titulo', dadosGuiaDaPagina.titulo);
+                elementoGuia.setAttribute('subtitulo', dadosGuiaDaPagina.subtitulo);
+                elementoGuia.setAttribute('passos', dadosGuiaDaPagina.passos);
+            }
+        }
     }
     if (mascara) {
         mascara.classList.toggle('ativo');
     }
 }
-
 function capitalizar(texto) {
     if (!texto) {
         return "";
@@ -366,8 +394,10 @@ async function carregarUsuario() {
                     </a>
 
                 `;
+                
 
             }
+            
 
 
             else {
@@ -412,6 +442,7 @@ async function carregarUsuario() {
         );
 
     }
+    
 
 }
 
@@ -450,3 +481,4 @@ document.addEventListener(
     "DOMContentLoaded",
     carregarUsuario
 );
+

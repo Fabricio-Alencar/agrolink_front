@@ -310,8 +310,21 @@
         </div>
     </div>
 </div>
+<!-- Chamada limpa do componente passando os parâmetros  para ajuda passo a passo-->
+<guia-passos 
+    titulo="Como usar esta página" 
+    subtitulo="Veja como manter seu catálogo organizado em poucos passos."
+    imagem="../static/assets/login/minhoca_pequena.png"
+    passos='[
+        {"numero": 1, "titulo": "Cadastre um produto", "descricao": "Clique em Adicionar Produto e preencha nome, categoria, preço e descrição."},
+        {"numero": 2, "titulo": "Importe vários itens", "descricao": "Baixe o modelo, preencha a planilha e use Enviar Planilha para importar."},
+        {"numero": 3, "titulo": "Encontre e atualize", "descricao": "Use a busca para localizar produtos. Depois, edite ou exclua itens desatualizados."},
+        {"numero": 4, "titulo": "Acompanhe sua operação", "descricao": "Use as abas do cabeçalho para acessar o Marketplace, pedidos e conversas."}
+    ]'
+>
+</guia-passos>
 
-
+<script src="../static/js/guia-passos.js" defer></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   lucide.createIcons();
