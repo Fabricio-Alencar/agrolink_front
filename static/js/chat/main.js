@@ -1,3 +1,4 @@
+
 import {
     carregarConversas,
     abrirConversa,
@@ -5,54 +6,70 @@ import {
 } from "./conversas.js";
 
 import { API } from "./api.js";
-
-import {
-    conectarWebSocketGeral
-} from "./websocket.js";
-
-
-/* =========================================================
-   PESQUISA DE CONVERSAS
-========================================================= */
+import { conectarWebSocketGeral } from "./websocket.js";
 
 const campoPesquisa = document.getElementById("chatSearch");
 
-if (campoPesquisa) {
-    campoPesquisa.addEventListener("input", () => {
-        const termo = campoPesquisa.value.toLowerCase().trim();
+function aplicarPesquisa() {
+    const termo = campoPesquisa?.value.toLowerCase().trim() || "";
 
-        document.querySelectorAll(".conversa-item").forEach(item => {
-            const texto = item.textContent.toLowerCase();
+    const itens = document.querySelectorAll(".conversa-item");
+    const secaoArquivadas = document.querySelector(".conversas-arquivadas");
+    const listaAtivas = document.querySelector(".conversas-ativas-lista");
+    const conteudoArquivadas = document.querySelector(
+        ".conversas-arquivadas-conteudo"
+    );
+    const botaoArquivadas = document.querySelector(
+        ".conversas-arquivadas-toggle"
+    );
 
-            item.style.display = texto.includes(termo)
-                ? "flex"
-                : "none";
-        });
+    itens.forEach(item => {
+        const texto = item.textContent.toLowerCase();
+        item.style.display = texto.includes(termo) ? "flex" : "none";
     });
+
+    if (!secaoArquivadas || !conteudoArquivadas) {
+        return;
+    }
+
+    const arquivadasVisiveis = Array.from(
+        secaoArquivadas.querySelectorAll(".conversa-item")
+    ).some(item => item.style.display !== "none");
+
+    const ativasVisiveis = Array.from(
+        listaAtivas?.querySelectorAll(".conversa-item") || []
+    ).some(item => item.style.display !== "none");
+
+    secaoArquivadas.hidden = !arquivadasVisiveis;
+
+    if (termo && arquivadasVisiveis) {
+        conteudoArquivadas.hidden = false;
+        secaoArquivadas.classList.add("expandida");
+        botaoArquivadas?.setAttribute("aria-expanded", "true");
+    } else if (!termo) {
+        const expandida =
+            botaoArquivadas?.getAttribute("aria-expanded") === "true";
+
+        conteudoArquivadas.hidden = !expandida;
+        secaoArquivadas.classList.toggle("expandida", expandida);
+    }
+
+    const avisoAtivas = listaAtivas?.querySelector(".chat-sem-conversas");
+
+    if (avisoAtivas) {
+        avisoAtivas.hidden = termo !== "" || ativasVisiveis;
+    }
 }
 
-
-/* =========================================================
-   OBTER NEGOCIAÇÃO DA URL
-========================================================= */
+campoPesquisa?.addEventListener("input", aplicarPesquisa);
 
 const parametros = new URLSearchParams(window.location.search);
 const negociacaoUrl = parametros.get("negociacao");
 
-
-/* =========================================================
-   INICIALIZAR CHAT
-========================================================= */
-
 async function iniciarChat() {
     try {
-        // Conecta às notificações gerais.
         conectarWebSocketGeral();
 
-        /*
-         * Quando existe uma negociação na URL, inicia ou
-         * reutiliza a conversa antes de carregar a lista.
-         */
         if (negociacaoUrl) {
             const negociacaoId = Number(negociacaoUrl);
 
@@ -63,23 +80,15 @@ async function iniciarChat() {
             await API.iniciarConversa(negociacaoId);
         }
 
-        /*
-         * Carrega as conversas depois da inicialização.
-         * Conversas sem mensagens também devem aparecer.
-         */
         const conversas = await carregarConversas();
 
-        console.log("Conversas carregadas:", conversas);
+        aplicarPesquisa();
 
         if (!Array.isArray(conversas) || conversas.length === 0) {
             mostrarEstadoSemSelecao();
             return;
         }
 
-        /*
-         * Se a URL contém uma negociação, abre-a somente
-         * se ela estiver na lista retornada pelo servidor.
-         */
         if (negociacaoUrl) {
             const negociacaoId = Number(negociacaoUrl);
 
@@ -97,9 +106,7 @@ async function iniciarChat() {
             return;
         }
 
-        // Sem negociação na URL, aguarda a escolha do usuário.
         mostrarEstadoSemSelecao();
-
     } catch (error) {
         console.error("Erro ao inicializar o chat:", error);
 
@@ -112,17 +119,7 @@ async function iniciarChat() {
     }
 }
 
-
-/* =========================================================
-   INICIAR PÁGINA
-========================================================= */
-
 iniciarChat();
-
-
-/* =========================================================
-   ÍCONES LUCIDE
-========================================================= */
 
 if (window.lucide) {
     window.lucide.createIcons();
