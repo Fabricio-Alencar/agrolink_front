@@ -74,6 +74,9 @@ export function montarSecoesConversas(listaConversas) {
     };
 }
 
+/* =========================================================
+   ATUALIZAÇÃO DO CONTADOR DE MENSAGENS NÃO LIDAS NAS CONVERSAS ARQUIVADAS
+========================================================= */
 export function atualizarContadorArquivadas({
     listaArquivadas,
     contadorArquivadas,

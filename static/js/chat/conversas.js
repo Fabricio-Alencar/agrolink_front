@@ -3,20 +3,10 @@ import { API } from "./api.js";
 import { setNegociacaoAtual, setNegociacaoInfo } from "./estado.js";
 import { conectarWebSocket } from "./websocket.js";
 import { renderizarMensagens } from "./mensagens.js";
-import {
-    atualizarInfoNegociacao,
-    fecharModalInfo
-} from "./info-negociacao.js";
-import {
-    montarSecoesConversas,
-    atualizarContadorArquivadas as atualizarContadorArquivadasModulo
-} from "./conversas-arquivadas.js";
-import {
-    inicializarListaConversas,
-    criarItemConversa,
-    localizarItemConversa,
-    atualizarContadorItem
-} from "./lista-conversas.js";
+import { atualizarInfoNegociacao, fecharModalInfo } from "./info-negociacao.js";
+import { montarSecoesConversas, atualizarContadorArquivadas as atualizarContadorArquivadasModulo} from "./conversas-arquivadas.js";
+import { inicializarListaConversas, criarItemConversa,localizarItemConversa, atualizarContadorItem} from "./lista-conversas.js";
+import { obterDataUltimaMensagem, obterDataValida, conversaEstaArquivada} from "./utils.js";
 
 const chatContainer = document.querySelector(".chat-container");
 const listaConversas = document.getElementById("listaConversas");
@@ -35,27 +25,6 @@ let listaArquivadas = null;
 let secaoArquivadas = null;
 let conteudoArquivadas = null;
 let contadorArquivadas = null;
-
-function obterDataUltimaMensagem(conversa) {
-    const ultimaMensagem = conversa?.ultima_mensagem;
-
-    if (
-        !ultimaMensagem ||
-        typeof ultimaMensagem !== "object" ||
-        !ultimaMensagem.data_envio
-    ) {
-        return 0;
-    }
-
-    const data = new Date(ultimaMensagem.data_envio).getTime();
-
-    return Number.isFinite(data) ? data : 0;
-}
-
-function conversaEstaArquivada(conversa) {
-    return conversa?.arquivada === true ||
-        String(conversa?.arquivada).trim().toLowerCase() === "true";
-}
 
 function voltarParaLista() {
     fecharModalInfo();
@@ -151,9 +120,19 @@ export async function carregarConversas() {
         return [];
     }
 
+    // Ordena pela data mais recente da última mensagem.
+    // Utiliza a mesma função de obtenção de data do restante do chat.
     conversas.sort((a, b) => {
-        return obterDataUltimaMensagem(b) -
-            obterDataUltimaMensagem(a);
+        const dataA = obterDataValida(
+            obterDataUltimaMensagem(a)
+        );
+
+        const dataB = obterDataValida(
+            obterDataUltimaMensagem(b)
+        );
+
+        return (dataB?.getTime() ?? 0) -
+            (dataA?.getTime() ?? 0);
     });
 
     criarSecoesConversas();
