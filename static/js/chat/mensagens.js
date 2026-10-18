@@ -476,6 +476,7 @@ export function renderizarMensagens(listaMensagens) {
 }
 
 
+
 /* =========================================================
    ATUALIZAR MENSAGEM ENVIADA COM DADOS REAIS
 ========================================================= */
@@ -489,35 +490,53 @@ window.addEventListener(
             return;
         }
 
-        console.log(
-            "🔄 ATUALIZANDO MENSAGEM PROVISÓRIA:",
-            mensagem
-        );
-
-        const mensagensEnviadas =
+        /*
+         * Procura somente mensagens provisórias:
+         * mensagens enviadas que ainda não possuem ID do banco.
+         */
+        const mensagensProvisorias =
             mensagensContainer.querySelectorAll(
-                ".mensagem-enviada"
+                ".mensagem-enviada:not([data-mensagem-id])"
             );
 
-        if (mensagensEnviadas.length === 0) {
+        /*
+         * Identifica a mensagem pelo texto confirmado
+         * pelo servidor, em vez de pegar sempre a última.
+         */
+        const mensagemProvisoria =
+            Array.from(mensagensProvisorias).find(
+                elemento => {
+                    const textoElemento =
+                        elemento.querySelector(
+                            ".mensagem-conteudo p"
+                        )?.textContent;
+
+                    return textoElemento === mensagem.texto;
+                }
+            );
+
+        if (!mensagemProvisoria) {
             console.warn(
-                "⚠️ Nenhuma mensagem provisória encontrada."
+                "Não foi encontrada uma mensagem provisória correspondente:",
+                mensagem
             );
 
             return;
         }
 
-        const mensagemProvisoria =
-            mensagensEnviadas[
-                mensagensEnviadas.length - 1
-            ];
+        console.log(
+            "Atualizando mensagem provisória:",
+            mensagem
+        );
 
-        /* Adicionar ID real do banco */
+        /* Adiciona o ID real do banco */
 
-        mensagemProvisoria.dataset.mensagemId =
-            mensagem.id;
+        if (mensagem.id) {
+            mensagemProvisoria.dataset.mensagemId =
+                mensagem.id;
+        }
 
-        /* Atualizar dia e horário */
+        /* Atualiza a data da mensagem */
 
         if (mensagem.data_envio) {
             const dataConvertida =
@@ -532,9 +551,8 @@ window.addEventListener(
                 mensagemProvisoria.dataset.dataMensagem;
 
             /*
-             * Se a mensagem confirmada pertence a outro dia
-             * e não existe uma divisória correspondente antes
-             * dela, insere a divisória no lugar correto.
+             * Mantém a divisória de data antes da mensagem
+             * quando necessário.
              */
 
             const divisorias =
@@ -561,6 +579,8 @@ window.addEventListener(
             }
         }
 
+        /* Atualiza horário e status */
+
         const elementoHora =
             mensagemProvisoria.querySelector(
                 ".mensagem-hora"
@@ -583,11 +603,12 @@ window.addEventListener(
         }
 
         console.log(
-            "✅ MENSAGEM ATUALIZADA COM DADOS DO BANCO:",
+            "Mensagem confirmada e atualizada:",
             mensagem.id
         );
     }
 );
+
 
 
 /* =========================================================

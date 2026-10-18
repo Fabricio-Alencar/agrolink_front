@@ -7,660 +7,520 @@ import {
     adicionarMensagemNaTela
 } from "./mensagens.js";
 
-
 /* =========================================================
    CONFIGURAÇÃO DO WEBSOCKET
 ========================================================= */
 
-/*
-   Local:
-   ws://127.0.0.1:5500
+// Mantém o backend definido em config.js.
+// http  -> ws
+// https -> wss
 
-   Produção:
-    "wss://backagrolinkbr-hfb4cpdvctheeycm.brazilsouth-01.azurewebsites.net";
-*/
+const WEBSOCKET_URL = CONFIG.API_URL
+    .replace(/^http/, "ws")
+    .replace(/\/+$/, "");
 
-// Usa o mesmo backend do config.js (http -> ws, https -> wss).
-// Assim, rodando local o chat fala com o backend local, e no Azure com o do Azure.
-const WEBSOCKET_URL =
-    CONFIG.API_URL.replace(/^http/, "ws").replace(/\/$/, "");
+// Intervalos de reconexão.
+const TEMPO_RECONEXAO_INICIAL = 2000;
+const TEMPO_RECONEXAO_MAXIMO = 15000;
+
+/**
+ * Função utilitária para capturar o token de acesso e isolar sessões
+ * no mesmo navegador (suporta localStorage ou cookies de leitura em JS).
+ */
+function obterTokenAutenticacao() {
+    // 1. Tenta pegar do localStorage (se o seu projeto salvar lá)
+    let token = localStorage.getItem("access_token");
+
+    if (token) return token;
+
+    // 2. Fallback: Tenta ler direto dos cookies caso estejam disponíveis para o JS
+    const match = document.cookie.match(new RegExp('(^| )access_token=([^;]+)'));
+    if (match) return match[2];
+
+    return "";
+}
 
 /* =========================================================
    WEBSOCKET GERAL DO USUÁRIO
 ========================================================= */
 
 let socketGeral = null;
-
-
-/* =========================================================
-   CONTROLE DE RECONEXÃO DO WEBSOCKET GERAL
-========================================================= */
-
-let tentandoReconectarGeral = false;
-
+let timerReconexaoGeral = null;
+let tentativasReconexaoGeral = 0;
 
 /* =========================================================
    CONECTAR AO WEBSOCKET GERAL
 ========================================================= */
 
 export function conectarWebSocketGeral() {
+    console.log("🔵 Tentando conectar ao WebSocket geral...");
 
-    console.log(
-        "🔵 Tentando conectar ao WebSocket geral..."
-    );
-
-
-    /* ---------------------------------------------
-       Evita criar outra conexão
-    --------------------------------------------- */
-
+    // Não cria outra conexão se já houver uma ativa
+    // ou em processo de conexão.
     if (
         socketGeral &&
         (
-            socketGeral.readyState ===
-            WebSocket.OPEN
-            ||
-            socketGeral.readyState ===
-            WebSocket.CONNECTING
+            socketGeral.readyState === WebSocket.OPEN ||
+            socketGeral.readyState === WebSocket.CONNECTING
         )
     ) {
-
         console.log(
             "🟢 WebSocket geral já está conectado ou conectando."
         );
-
         return;
-
     }
 
+    // Impede que um temporizador antigo abra outra conexão.
+    if (timerReconexaoGeral !== null) {
+        clearTimeout(timerReconexaoGeral);
+        timerReconexaoGeral = null;
+    }
 
-    /* ---------------------------------------------
-       Cria nova conexão
-    --------------------------------------------- */
+    const token = obterTokenAutenticacao();
+    const url = `${WEBSOCKET_URL}/chat/ws?token=${encodeURIComponent(token)}`;
 
-    const url =
-        `${WEBSOCKET_URL}/chat/ws`;
+    console.log("🔵 URL do WebSocket geral:", url);
 
+    let socket;
 
-    console.log(
-        "🔵 URL do WebSocket geral:",
-        url
-    );
-
-
-    socketGeral =
-        new WebSocket(url);
-
-
-    /* ---------------------------------------------
-       Quando conectar
-    --------------------------------------------- */
-
-    socketGeral.onopen = () => {
-
-        console.log(
-            "✅ WebSocket geral conectado!"
+    try {
+        socket = new WebSocket(url);
+    } catch (error) {
+        console.error(
+            "❌ Não foi possível criar o WebSocket geral:",
+            error
         );
 
+        agendarReconexaoGeral();
+        return;
+    }
 
-        console.log(
-            "✅ Estado:",
-            socketGeral.readyState
-        );
+    socketGeral = socket;
 
+    /* -----------------------------------------------------
+       CONEXÃO ESTABELECIDA
+    ----------------------------------------------------- */
 
-        /* ---------------------------------------------
-           Informa que não está mais tentando reconectar
-        --------------------------------------------- */
+    socket.onopen = () => {
+        // Ignora eventos de conexões antigas.
+        if (socketGeral !== socket) {
+            return;
+        }
 
-        tentandoReconectarGeral = false;
+        console.log("✅ WebSocket geral conectado!");
 
+        tentativasReconexaoGeral = 0;
+
+        if (timerReconexaoGeral !== null) {
+            clearTimeout(timerReconexaoGeral);
+            timerReconexaoGeral = null;
+        }
     };
 
+    /* -----------------------------------------------------
+       MENSAGENS RECEBIDAS
+    ----------------------------------------------------- */
 
-    /* ---------------------------------------------
-       Quando receber mensagem
-    --------------------------------------------- */
-
-    socketGeral.onmessage = event => {
-
-        console.log(
-            "🔔 NOTIFICAÇÃO RECEBIDA PELO WEBSOCKET GERAL:"
-        );
-
+    socket.onmessage = event => {
+        if (socketGeral !== socket) {
+            return;
+        }
 
         console.log(
+            "🔔 NOTIFICAÇÃO RECEBIDA PELO WEBSOCKET GERAL:",
             event.data
         );
 
+        let notificacao;
 
         try {
-
-            const notificacao =
-                JSON.parse(event.data);
-
-
-            console.log(
-                "🔔 NOTIFICAÇÃO:",
-                notificacao
-            );
-
-
-            /* ---------------------------------------------
-            Nova mensagem recebida
-            --------------------------------------------- */
-
-            if (
-                notificacao.tipo ===
-                "nova_mensagem"
-            ) {
-
-                console.log(
-                    "📩 NOVA MENSAGEM:"
-                );
-
-
-                console.log(
-                    "Negociação:",
-                    notificacao.negociacao_id
-                );
-
-
-                console.log(
-                    "Remetente:",
-                    notificacao.remetente_id
-                );
-
-
-                console.log(
-                    "Texto:",
-                    notificacao.texto
-                );
-
-
-                window.dispatchEvent(
-                    new CustomEvent(
-                        "novaMensagemChat",
-                        {
-                            detail: notificacao
-                        }
-                    )
-                );
-
-            }
-
-
-            /* ---------------------------------------------
-            Mensagens foram lidas
-            --------------------------------------------- */
-
-            if (
-                notificacao.tipo ===
-                "mensagens_lidas"
-            ) {
-
-                console.log(
-                    "👀 MENSAGENS FORAM LIDAS:"
-                );
-
-
-                console.log(
-                    "Negociação:",
-                    notificacao.negociacao_id
-                );
-
-
-                console.log(
-                    "Leitor:",
-                    notificacao.leitor_id
-                );
-
-
-                console.log(
-                    "Mensagens:",
-                    notificacao.mensagem_ids
-                );
-
-
-                window.dispatchEvent(
-                    new CustomEvent(
-                        "mensagensLidasChat",
-                        {
-                            detail: notificacao
-                        }
-                    )
-                );
-
-            }
-
+            notificacao = JSON.parse(event.data);
         } catch (error) {
-
             console.error(
                 "❌ Erro ao interpretar notificação:",
                 error
             );
-
+            return;
         }
 
+        // Nova mensagem recebida.
+        if (notificacao.tipo === "nova_mensagem") {
+            console.log(
+                "📩 Nova mensagem na negociação:",
+                notificacao.negociacao_id
+            );
+
+            window.dispatchEvent(
+                new CustomEvent("novaMensagemChat", {
+                    detail: notificacao
+                })
+            );
+        }
+
+        // Mensagens marcadas como lidas.
+        if (notificacao.tipo === "mensagens_lidas") {
+            console.log(
+                "👀 Mensagens lidas na negociação:",
+                notificacao.negociacao_id
+            );
+
+            window.dispatchEvent(
+                new CustomEvent("mensagensLidasChat", {
+                    detail: notificacao
+                })
+            );
+        }
     };
 
+    /* -----------------------------------------------------
+       ERRO
+    ----------------------------------------------------- */
 
-    /* ---------------------------------------------
-       Quando ocorrer erro
-    --------------------------------------------- */
+    socket.onerror = error => {
+        if (socketGeral !== socket) {
+            return;
+        }
 
-    socketGeral.onerror = error => {
-
-        console.error(
-            "❌ ERRO NO WEBSOCKET GERAL:"
-        );
-
-
-        console.error(
-            error
-        );
-
+        console.error("❌ ERRO NO WEBSOCKET GERAL:", error);
     };
 
+    /* -----------------------------------------------------
+       DESCONEXÃO
+    ----------------------------------------------------- */
 
-    /* ---------------------------------------------
-       Quando desconectar
-    --------------------------------------------- */
-
-    socketGeral.onclose = event => {
-
-        console.log(
-            "🔌 WebSocket geral desconectado."
-        );
-
-
-        console.log(
+    socket.onclose = event => {
+        console.warn(
+            "🔌 WebSocket geral desconectado.",
             "Código:",
-            event.code
-        );
-
-
-        console.log(
+            event.code,
             "Motivo:",
-            event.reason
+            event.reason || "(não informado)"
         );
 
+        // Uma conexão antiga não pode modificar
+        // o estado da conexão atual.
+        if (socketGeral !== socket) {
+            return;
+        }
 
         socketGeral = null;
 
-
-        /* ---------------------------------------------
-           Tenta reconectar
-        --------------------------------------------- */
-
-        reconectarWebSocketGeral();
-
+        agendarReconexaoGeral();
     };
-
 }
-
 
 /* =========================================================
-   RECONEXÃO DO WEBSOCKET GERAL
+   AGENDAR RECONEXÃO DO WEBSOCKET GERAL
 ========================================================= */
 
-function reconectarWebSocketGeral() {
-
-    /* ---------------------------------------------
-       Evita várias tentativas simultâneas
-    --------------------------------------------- */
-
-    if (tentandoReconectarGeral) {
-
+function agendarReconexaoGeral() {
+    // Impede múltiplos temporizadores simultâneos.
+    if (timerReconexaoGeral !== null) {
         return;
-
     }
 
+    const atraso = Math.min(
+        TEMPO_RECONEXAO_INICIAL *
+            (2 ** tentativasReconexaoGeral),
+        TEMPO_RECONEXAO_MAXIMO
+    );
 
-    tentandoReconectarGeral = true;
-
+    tentativasReconexaoGeral++;
 
     console.log(
-        "⏳ WebSocket geral será reconectado em 2 segundos..."
+        `⏳ WebSocket geral: nova tentativa em ${atraso / 1000}s.`
     );
 
+    timerReconexaoGeral = setTimeout(() => {
+        timerReconexaoGeral = null;
 
-    setTimeout(
-        () => {
+        // Se outra conexão já estiver ativa, não abre outra.
+        if (
+            socketGeral &&
+            (
+                socketGeral.readyState === WebSocket.OPEN ||
+                socketGeral.readyState === WebSocket.CONNECTING
+            )
+        ) {
+            return;
+        }
 
-            tentandoReconectarGeral = false;
+        console.log(
+            "🔄 Tentando reconectar o WebSocket geral..."
+        );
 
-
-            console.log(
-                "🔄 Tentando reconectar o WebSocket geral..."
-            );
-
-
-            conectarWebSocketGeral();
-
-        },
-        2000
-    );
-
+        conectarWebSocketGeral();
+    }, atraso);
 }
 
+/* =========================================================
+   WEBSOCKET DA CONVERSA
+========================================================= */
+
+let negociacaoAtiva = null;
+let timerReconexaoChat = null;
+let tentativasReconexaoChat = 0;
 
 /* =========================================================
    CONECTAR AO WEBSOCKET DA CONVERSA
 ========================================================= */
 
-export function conectarWebSocket(
-    negociacaoId
-) {
-
-    console.log(
-        "🔵 Tentando conectar ao WebSocket..."
-    );
-
-
-    console.log(
-        "🔵 Negociação:",
-        negociacaoId
-    );
-
-
-    /* ---------------------------------------------
-       Fecha conexão anterior
-    --------------------------------------------- */
-
-    const socketAnterior =
-        getSocket();
-
-
-    if (socketAnterior) {
-
-        console.log(
-            "🟡 Fechando WebSocket anterior..."
+export function conectarWebSocket(negociacaoId) {
+    if (
+        negociacaoId === null ||
+        negociacaoId === undefined ||
+        String(negociacaoId).trim() === ""
+    ) {
+        console.error(
+            "❌ ID da negociação inválido:",
+            negociacaoId
         );
-
-
-        socketAnterior.close();
-
-
-        setSocket(null);
-
+        return;
     }
 
-
-    /* ---------------------------------------------
-       Cria nova conexão
-    --------------------------------------------- */
-
-    const url =
-        `${WEBSOCKET_URL}/chat/ws/${negociacaoId}`;
-
+    const id = String(negociacaoId);
 
     console.log(
-        "🔵 URL do WebSocket:",
-        url
+        "🔵 Tentando conectar ao WebSocket da negociação:",
+        id
     );
 
+    const socketAnterior = getSocket();
 
-    const socket =
-        new WebSocket(url);
+    // Se já estamos conectados ou conectando à mesma
+    // negociação, não cria uma conexão duplicada.
+    if (
+        socketAnterior &&
+        negociacaoAtiva === id &&
+        (
+            socketAnterior.readyState === WebSocket.OPEN ||
+            socketAnterior.readyState === WebSocket.CONNECTING
+        )
+    ) {
+        console.log(
+            "🟢 WebSocket desta negociação já está conectado ou conectando."
+        );
+        return;
+    }
 
+    // A negociação solicitada passa a ser a atual.
+    negociacaoAtiva = id;
+
+    // Cancela a tentativa de reconexão da conversa anterior.
+    if (timerReconexaoChat !== null) {
+        clearTimeout(timerReconexaoChat);
+        timerReconexaoChat = null;
+    }
+
+    // Retira a conexão anterior do estado ANTES de fechá-la.
+    // Assim, o evento onclose antigo não inicia uma reconexão
+    // para a negociação que acabou de ser abandonada.
+    if (socketAnterior) {
+        setSocket(null);
+
+        console.log(
+            "🟡 Fechando WebSocket da conversa anterior."
+        );
+
+        socketAnterior.close();
+    }
+
+    const token = obterTokenAutenticacao();
+    const url = `${WEBSOCKET_URL}/chat/ws/${encodeURIComponent(id)}?token=${encodeURIComponent(token)}`;
+
+    console.log("🔵 URL do WebSocket:", url);
+
+    let socket;
+
+    try {
+        socket = new WebSocket(url);
+    } catch (error) {
+        console.error(
+            "❌ Não foi possível criar o WebSocket da conversa:",
+            error
+        );
+
+        agendarReconexaoChat(id);
+        return;
+    }
 
     setSocket(socket);
 
-
-    /* ---------------------------------------------
-       Quando conectar
-    --------------------------------------------- */
+    /* -----------------------------------------------------
+       CONEXÃO ESTABELECIDA
+    ----------------------------------------------------- */
 
     socket.onopen = () => {
+        // Ignora conexões que já não representam a conversa atual.
+        if (
+            getSocket() !== socket ||
+            negociacaoAtiva !== id
+        ) {
+            socket.close();
+            return;
+        }
 
         console.log(
-            "✅ WebSocket conectado!"
+            "✅ WebSocket da conversa conectado!",
+            "Negociação:",
+            id
         );
 
+        tentativasReconexaoChat = 0;
 
-        console.log(
-            "✅ Negociação:",
-            negociacaoId
-        );
-
-
-        console.log(
-            "✅ Estado:",
-            socket.readyState
-        );
-
+        if (timerReconexaoChat !== null) {
+            clearTimeout(timerReconexaoChat);
+            timerReconexaoChat = null;
+        }
     };
 
-
-    /* ---------------------------------------------
-       Quando receber mensagem
-    --------------------------------------------- */
+    /* -----------------------------------------------------
+       MENSAGENS RECEBIDAS
+    ----------------------------------------------------- */
 
     socket.onmessage = event => {
+        if (
+            getSocket() !== socket ||
+            negociacaoAtiva !== id
+        ) {
+            return;
+        }
 
         console.log(
-            "📩 Mensagem recebida pelo WebSocket:"
-        );
-
-
-        console.log(
+            "📩 Mensagem recebida pelo WebSocket:",
             event.data
         );
 
+        let mensagem;
 
         try {
-
-            const mensagem =
-                JSON.parse(event.data);
-
-
-            console.log(
-                "📩 MENSAGEM RECEBIDA:",
-                mensagem
-            );
-
-
-            /* ---------------------------------------------
-               Confirmação da mensagem enviada
-            --------------------------------------------- */
-
-            if (
-                mensagem.tipo ===
-                "confirmacao_mensagem"
-            ) {
-
-                console.log(
-                    "✅ CONFIRMAÇÃO DA MENSAGEM RECEBIDA:"
-                );
-
-
-                console.log(
-                    mensagem
-                );
-
-
-                window.dispatchEvent(
-                    new CustomEvent(
-                        "mensagemConfirmadaChat",
-                        {
-                            detail: mensagem
-                        }
-                    )
-                );
-
-
-                return;
-
-            }
-
-
-            /* ---------------------------------------------
-               Mensagem recebida do outro usuário
-            --------------------------------------------- */
-
-            adicionarMensagemNaTela(
-                mensagem,
-                false
-            );
-
-
+            mensagem = JSON.parse(event.data);
         } catch (error) {
-
             console.error(
                 "❌ Erro ao interpretar mensagem:",
                 error
             );
-
+            return;
         }
 
+        // Confirmação de mensagem enviada.
+        if (mensagem.tipo === "confirmacao_mensagem") {
+            window.dispatchEvent(
+                new CustomEvent("mensagemConfirmadaChat", {
+                    detail: mensagem
+                })
+            );
+
+            return;
+        }
+
+        // Mensagem recebida do outro participante.
+        adicionarMensagemNaTela(mensagem, false);
     };
 
-
-    /* ---------------------------------------------
-       Quando ocorrer erro
-    --------------------------------------------- */
+    /* -----------------------------------------------------
+       ERRO
+    ----------------------------------------------------- */
 
     socket.onerror = error => {
-
-        console.error(
-            "❌ ERRO NO WEBSOCKET:"
-        );
-
-
-        console.error(
-            error
-        );
-
-    };
-
-
-    /* ---------------------------------------------
-       Quando desconectar
-    --------------------------------------------- */
-
-    socket.onclose = event => {
-
-        console.log(
-            "🔌 WebSocket desconectado."
-        );
-
-
-        console.log(
-            "Código:",
-            event.code
-        );
-
-
-        console.log(
-            "Motivo:",
-            event.reason
-        );
-
-
-        /*
-           Só reconecta se esta ainda for
-           a conexão atualmente utilizada.
-        */
-
-        if (
-            getSocket() === socket
-        ) {
-
-            setSocket(null);
-
-
-            reconectarWebSocket(
-                negociacaoId
-            );
-
+        if (getSocket() !== socket) {
+            return;
         }
 
+        console.error(
+            "❌ ERRO NO WEBSOCKET DA CONVERSA:",
+            error
+        );
     };
 
+    /* -----------------------------------------------------
+       DESCONEXÃO
+    ----------------------------------------------------- */
+
+    socket.onclose = event => {
+        console.warn(
+            "🔌 WebSocket da conversa desconectado.",
+            "Negociação:",
+            id,
+            "Código:",
+            event.code,
+            "Motivo:",
+            event.reason || "(não informado)"
+        );
+
+        // Não permite que uma conexão antiga altere
+        // o estado ou reconecte uma conversa anterior.
+        if (
+            getSocket() !== socket ||
+            negociacaoAtiva !== id
+        ) {
+            return;
+        }
+
+        setSocket(null);
+
+        agendarReconexaoChat(id);
+    };
 }
 
-
 /* =========================================================
-   CONTROLE DE RECONEXÃO DA CONVERSA
+   AGENDAR RECONEXÃO DO WEBSOCKET DA CONVERSA
 ========================================================= */
 
-let tentandoReconectarChat = false;
-
-let negociacaoParaReconectar = null;
-
-
-/* =========================================================
-   RECONEXÃO DO WEBSOCKET DA CONVERSA
-========================================================= */
-
-function reconectarWebSocket(
-    negociacaoId
-) {
-
-    /*
-       Guarda a negociação que deverá
-       ser reconectada.
-    */
-
-    negociacaoParaReconectar =
-        negociacaoId;
-
-
-    /* ---------------------------------------------
-       Evita várias tentativas simultâneas
-    --------------------------------------------- */
-
-    if (tentandoReconectarChat) {
-
+function agendarReconexaoChat(negociacaoId) {
+    // Não reconecta conversas que deixaram de ser a atual.
+    if (negociacaoAtiva !== String(negociacaoId)) {
         return;
-
     }
 
+    // Mantém no máximo um temporizador ativo.
+    if (timerReconexaoChat !== null) {
+        return;
+    }
 
-    tentandoReconectarChat = true;
+    const atraso = Math.min(
+        TEMPO_RECONEXAO_INICIAL *
+            (2 ** tentativasReconexaoChat),
+        TEMPO_RECONEXAO_MAXIMO
+    );
 
+    tentativasReconexaoChat++;
 
     console.log(
-        "⏳ WebSocket da conversa será reconectado em 2 segundos..."
+        `⏳ WebSocket da conversa: nova tentativa em ${atraso / 1000}s.`,
+        "Negociação:",
+        negociacaoId
     );
 
+    timerReconexaoChat = setTimeout(() => {
+        timerReconexaoChat = null;
 
-    setTimeout(
-        () => {
+        // O usuário pode ter aberto outra conversa durante a espera.
+        if (
+            negociacaoAtiva !== String(negociacaoId)
+        ) {
+            return;
+        }
 
-            tentandoReconectarChat = false;
+        const socketAtual = getSocket();
 
+        // Não cria outra conexão se já houver uma válida
+        // ou uma tentativa de conexão em andamento.
+        if (
+            socketAtual &&
+            (
+                socketAtual.readyState === WebSocket.OPEN ||
+                socketAtual.readyState === WebSocket.CONNECTING
+            )
+        ) {
+            return;
+        }
 
-            /*
-               Verifica se ainda existe uma negociação
-               para reconectar.
-            */
+        console.log(
+            "🔄 Tentando reconectar a conversa:",
+            negociacaoId
+        );
 
-            if (
-                !negociacaoParaReconectar
-            ) {
-
-                return;
-
-            }
-
-
-            const negociacaoAtual =
-                negociacaoParaReconectar;
-
-
-            console.log(
-                "🔄 Tentando reconectar o WebSocket da conversa..."
-            );
-
-
-            conectarWebSocket(
-                negociacaoAtual
-            );
-
-        },
-        2000
-    );
-
+        conectarWebSocket(negociacaoId);
+    }, atraso);
 }

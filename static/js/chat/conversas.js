@@ -169,6 +169,10 @@ export async function abrirConversa(negociacaoId) {
 
     await API.verificarAcessoNegociacao(id);
 
+    // Garante que a conversa exista antes de buscar mensagens
+    // e conectar o WebSocket.
+    await API.iniciarConversa(id);
+
     setNegociacaoAtual(id);
 
     const detalhes = await API.buscarNegociacao(id);
