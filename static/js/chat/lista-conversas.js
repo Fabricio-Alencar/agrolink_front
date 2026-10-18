@@ -1,9 +1,5 @@
 
-import {
-    formatarHorarioMensagem,
-    obterDataUltimaMensagem,
-    conversaEstaArquivada
-} from "./utils.js";
+import { formatarHorarioMensagem, obterDataUltimaMensagem, conversaEstaArquivada} from "./utils.js";
 
 const FOTO_GENERICA = "../static/assets/user.png";
 

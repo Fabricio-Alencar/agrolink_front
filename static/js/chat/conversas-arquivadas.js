@@ -43,21 +43,18 @@ export function montarSecoesConversas(listaConversas) {
     const listaAtivas = document.createElement("div");
     listaAtivas.className = "conversas-ativas-lista";
 
+    
     botaoArquivadas.addEventListener("click", () => {
         const expandida =
             botaoArquivadas.getAttribute("aria-expanded") === "true";
 
-        botaoArquivadas.setAttribute(
-            "aria-expanded",
-            String(!expandida)
-        );
-
+        botaoArquivadas.setAttribute("aria-expanded", String(!expandida));
         conteudoArquivadas.hidden = expandida;
         listaAtivas.hidden = !expandida;
-
         secaoArquivadas.classList.toggle("expandida", !expandida);
         secaoArquivadas.hidden = false;
     });
+
 
     listaConversas.append(secaoArquivadas, listaAtivas);
 

@@ -207,9 +207,7 @@ function atualizarStatusMensagem(
     if (!elementoStatus) {
         return;
     }
-
     const novoStatus = criarIconeStatus(lida);
-
     elementoStatus.replaceWith(novoStatus);
 }
 
