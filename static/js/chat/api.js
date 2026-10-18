@@ -130,15 +130,7 @@ async buscarNegociacao(negociacaoId) {
     );
 
     const dados = await resposta.json().catch(() => ({}));
-
-    // 🔎 LOGS PARA DEBUG
-    console.log("🔎 ID DA NEGOCIAÇÃO:", negociacaoId);
-    console.log("📡 STATUS DA RESPOSTA:", resposta.status);
-    console.log("📦 DADOS RETORNADOS PELA NEGOCIAÇÃO:", dados);
-
     if (!resposta.ok) {
-        console.error("❌ ERRO AO BUSCAR NEGOCIAÇÃO:", dados);
-
         throw new Error(
             dados.detail ||
             "Não foi possível carregar os detalhes da negociação."

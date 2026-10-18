@@ -8,9 +8,6 @@
  *
  * Datas sem indicação de fuso horário são consideradas UTC.
  * Datas que já possuem fuso horário mantêm essa informação.
- *
- * @param {string|Date} data - Data recebida do backend.
- * @returns {Date|null} Data convertida ou null se for inválida.
  */
 export function obterDataValida(data) {
     if (!data) {

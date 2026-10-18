@@ -3,9 +3,7 @@
 ========================================================= */
 
 let negociacaoAtual = null;
-
 let negociacaoInfo = null;
-
 let socket = null;
 
 
@@ -14,7 +12,6 @@ let socket = null;
 ========================================================= */
 
 export function getNegociacaoAtual() {
-
     return negociacaoAtual;
 
 }
@@ -23,10 +20,8 @@ export function getNegociacaoAtual() {
 export function setNegociacaoAtual(
     negociacaoId
 ) {
-
     negociacaoAtual =
         negociacaoId;
-
 }
 
 
@@ -35,19 +30,15 @@ export function setNegociacaoAtual(
 ========================================================= */
 
 export function getNegociacaoInfo() {
-
     return negociacaoInfo;
-
 }
 
 
 export function setNegociacaoInfo(
     dados
 ) {
-
     negociacaoInfo =
         dados;
-
 }
 
 
@@ -56,17 +47,13 @@ export function setNegociacaoInfo(
 ========================================================= */
 
 export function getSocket() {
-
     return socket;
-
 }
 
 
 export function setSocket(
     novoSocket
 ) {
-
     socket =
         novoSocket;
-
 }
