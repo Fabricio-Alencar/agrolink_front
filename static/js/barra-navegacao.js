@@ -1,4 +1,3 @@
-
 (() => {
   const currentScript = document.currentScript;
 
@@ -75,19 +74,19 @@
       const links = {
         produtos:
           this.getAttribute("url-produtos") ||
-          "produtos_produtor.html",
+          "/meus_produtos",
 
         pedidos:
           this.getAttribute("url-pedidos") ||
-          "pedidos.html",
+          "/negociacoes_produtor",
 
         chat:
           this.getAttribute("url-chat") ||
-          "chat.html",
+          "/chat",
 
         inicio:
           this.getAttribute("url-inicio") ||
-          "index.html"
+          "/"
       };
 
       const pagina = (
@@ -115,9 +114,8 @@
 
           linkProdutos.setAttribute(
             "href",
-            links.produtos === "produtos_produtor.html"
-              ? "marketplace_estabelecimento.html"
-              : links.produtos
+            this.getAttribute("url-produtos") ||
+              "/marketplace"
           );
 
           linkProdutos.dataset.page = "marketplace";
@@ -134,12 +132,25 @@
           );
 
           linkProdutos.dataset.page = "produtos";
+
         } else {
           console.warn(
             "[barra-navegacao] Tipo de usuário não identificado:",
             tipoUsuario
           );
         }
+      }
+
+      // Configura os pedidos conforme o tipo de usuário
+      if (tipoUsuario === "estabelecimento") {
+        links.pedidos =
+          this.getAttribute("url-pedidos") ||
+          "/negociacoes_estabelecimento";
+
+      } else if (tipoUsuario === "produtor") {
+        links.pedidos =
+          this.getAttribute("url-pedidos") ||
+          "/negociacoes_produtor";
       }
 
       // Configura os outros links
