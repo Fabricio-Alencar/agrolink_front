@@ -34,6 +34,8 @@
     <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/botoes_modal.css">
     <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/upload_descriacao.css">
     <link rel="stylesheet" href="../static/css2/meus_produtos/planilha.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
+
 
     <!-- ícone da aba de navegação -->
     <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
@@ -48,7 +50,15 @@
             <span></span>
     </button>
     <div class="logo">🌱 AgroLink</div>
+
 </header>
+
+<barra-navegacao
+  pagina="produtos"
+  url-produtos="produtos_produtor.html"
+  url-pedidos="pedidos.html"
+  url-chat="chat.html">
+</barra-navegacao>
 
 
 <!-- =========================
@@ -323,7 +333,7 @@
     ]'
 >
 </guia-passos>
-
+<script src="../static/js/barra-navegacao.js" defer></script>
 <script src="../static/js/guia-passos.js" defer></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>

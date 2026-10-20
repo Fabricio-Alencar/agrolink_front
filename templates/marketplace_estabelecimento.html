@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="../static/css2/marketplace/modal_pedidos.css">
     <link rel="stylesheet" href="../static/css2/marketplace/card_produtos.css">
     <link rel="stylesheet" href="../static/css2/geral/avaliacoes.css">
-
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
 
 
 
@@ -47,7 +47,12 @@
     </button>
     <div class="logo">🌱 AgroLink</div>
 </header>
-
+<barra-navegacao
+  pagina="marketplace"
+  url-produtos="market_place_estabelecimentos.html"
+  url-pedidos="pedidos.html"
+  url-chat="chat.html">
+</barra-navegacao>
 <!-- =========================
      MENU LATERAL
 ========================= -->
@@ -269,13 +274,14 @@
 <script>
   lucide.createIcons();
 </script>
+
 <script src="../static/js/config.js"></script>
 <script src="../static/js/auth.js"></script>
 <script src="../static/js/avaliacoes.js"></script>
 <script type="module" src="../static/js/drawer.js"></script>
 <script type="module" src="../static/js/estabelecimentos/market_place_estabelecimentos/main.js"></script>
 <script src="../static/js/notificacao.js"></script>
-
+<script src="../static/js/barra-navegacao.js" defer></script>
 
 
 </body>

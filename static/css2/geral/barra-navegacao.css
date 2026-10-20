@@ -1,0 +1,251 @@
+/* Barra superior reutilizável AgroLink */
+barra-navegacao {
+  display: block;
+  position: relative;
+  z-index: 1000;
+}
+
+.agro-nav,
+.agro-nav * {
+  box-sizing: border-box;
+}
+
+.agro-nav {
+  --nav-green: #26734d;
+  --nav-green-dark: #1b573a;
+  --nav-green-soft: #eaf5ee;
+  width: 100%;
+  min-height: 78px;
+  padding: 0 clamp(20px, 4vw, 64px);
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: 24px;
+  background: rgba(255, 255, 255, 0.97);
+  border-bottom: 1px solid #e7eee9;
+  box-shadow: 0 4px 18px rgba(27, 67, 45, 0.055);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding-top: 12px;
+}
+
+
+.agro-nav__links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+}
+
+.agro-nav__link {
+  position: relative;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 17px;
+  color: #5b6d61;
+  text-decoration: none;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  font-size: 0.91rem;
+  font-weight: 600;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.agro-nav__link svg {
+  width: 19px;
+  height: 19px;
+  stroke-width: 1.9;
+  flex: 0 0 auto;
+}
+
+.agro-nav__link:hover {
+  color: var(--nav-green-dark);
+  background: #f3f8f4;
+  transform: translateY(-1px);
+}
+
+.agro-nav__link:focus-visible,
+
+
+.agro-nav__link.is-active {
+  color: var(--nav-green-dark);
+  background: var(--nav-green-soft);
+  border-color: #d8eadf;
+}
+
+.agro-nav__link.is-active::after {
+  content: "";
+  position: absolute;
+  left: 17px;
+  right: 17px;
+  bottom: -17px;
+  height: 3px;
+  border-radius: 999px 999px 0 0;
+  background: var(--nav-green);
+}
+
+
+
+@media (max-width: 820px) {
+  .agro-nav {
+    grid-template-columns: 1fr auto;
+    gap: 10px 16px;
+    padding: 12px 18px 0;
+  }
+
+
+
+  .agro-nav__right {
+    display: none;
+  }
+
+  .agro-nav__links {
+    grid-column: 1;
+    grid-row: auto;
+    width: 100%;
+    justify-content:  center;
+    gap: 4px;
+    padding-bottom: 10px;
+  }
+
+  .agro-nav__link {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 44px;
+    gap: 7px;
+    padding: 0 9px;
+    font-size: 0.82rem;
+  }
+
+  .agro-nav__link.is-active::after {
+    left: 12px;
+    right: 12px;
+    bottom: -10px;
+  }
+}
+
+@media (max-width: 420px) {
+  .agro-nav {
+    padding-inline: 12px;
+  }
+
+  .agro-nav__link {
+    flex-direction: column;
+    gap: 4px;
+    padding: 7px 3px;
+    font-size: 0.72rem;
+  }
+
+  .agro-nav__link svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .agro-nav__link.is-active::after {
+    left: 18%;
+    right: 18%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agro-nav__link {
+    transition: none;
+  }
+}
+
+/* Navegação fixa na parte inferior em celulares */
+@media screen and (max-width: 820px) {
+  barra-navegacao {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .agro-nav {
+    width: 100%;
+    min-height: auto;
+    padding: 10px 12px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.98);
+    border-top: 1px solid #e7eee9;
+    border-bottom: none;
+    box-shadow: 0 -4px 18px rgba(27, 67, 45, 0.08);
+    gap: 0;
+  }
+
+  .agro-nav__links {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    gap: 4px;
+  }
+
+  .agro-nav__link {
+    flex: 1 1 0;
+    min-height: 48px;
+    justify-content: center;
+    border-radius: 12px;
+  }
+
+  .agro-nav__link.is-active::after {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 820px) {
+  body {
+    padding-bottom: 90px;
+  }
+}
+
+
+/* O componente não deve ocupar espaço no layout da página */
+:host {
+    display: block;
+}
+
+/* Computador: canto inferior direito */
+.guia-flutuante-container {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+}
+
+/* Chat */
+.guia-flutuante-container.guia-chat-posicao {
+    right: 20px;
+    bottom: 100px;
+}
+
+/* Celular: canto superior direito */
+@media (max-width: 767px) {
+    .guia-flutuante-container,
+    :host(.guia-chat) .guia-flutuante-container {
+        position: fixed;
+        top: 8px;
+        right: 8px;
+        bottom: auto;
+        left: auto;
+        z-index: 10001;
+    }
+}
+
+/* Celulares estreitos */
+@media (max-width: 380px) {
+    .guia-flutuante-container,
+    :host(.guia-chat) .guia-flutuante-container {
+        top: 6px;
+        right: 6px;
+    }
+}

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="../static/css2/pedidos/botao_whatsapp.css">
     <link rel="stylesheet" href="../static/css2/pedidos/modal.css">
     <link rel="stylesheet" href="../static/css2/geral/avaliacoes.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
 
 
     <link rel="stylesheet" href="../static/css2/meus_produtos/exclusao.css">
@@ -47,6 +48,13 @@
 
     <div class="logo">🌱 AgroLink</div>
 </header>
+
+<barra-navegacao
+  pagina="pedidos"
+  url-produtos="produtos_produtor.html"
+  url-pedidos="pedidos.html"
+  url-chat="chat.html">
+</barra-navegacao>
 
 <!-- =========================
      MENU LATERAL
@@ -454,6 +462,7 @@
     type="module"
     src="../static/js/negociacoes/calendario.js"
 ></script>
-
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../static/js/barra-navegacao.js" defer></script>
 </body>
 </html>

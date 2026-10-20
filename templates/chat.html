@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="../static/css2/geral/header.css">
     <link rel="stylesheet" href="../static/css2/geral/layout.css">
     <link rel="stylesheet" href="../static/css2/geral/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
 
     <!-- CSS DO CHAT -->
     <link rel="stylesheet" href="../static/css2/chat/chat.css">
@@ -65,6 +66,15 @@
         </div>
 
     </header>
+
+    <!-- NAVEGAÇÃO SUPERIOR -->
+
+    <barra-navegacao
+  pagina="chat"
+  url-produtos="produtos_produtor.html"
+  url-pedidos="pedidos.html"
+  url-chat="chat.html">
+    </barra-navegacao>
 
     <!-- MENU LATERAL -->
     <aside class="painel-lateral" id="painelLateral">
@@ -387,7 +397,10 @@
             </div>
 
         </section>
+
+    </main>
     <guia-passos
+    class="guia-chat"
     titulo="Como usar o Chat"
     subtitulo="Converse com outros usuários e acompanhe os detalhes das suas negociações."
     imagem="../static/assets/login/minhoca_pequena.png"
@@ -398,8 +411,6 @@
         {"numero": 4, "titulo": "Consulte o pedido", "descricao": "Clique no botão de informações da negociação para conferir os dados do produto, a quantidade, o preço, a entrega e o status do pedido."}
     ]'
 ></guia-passos>
-    </main>
-
 
 
 <script src="../static/js/guia-passos.js" defer></script>
@@ -426,6 +437,10 @@
 
     <!-- Chat -->
     <script type="module" src="../static/js/chat/main.js"></script>
+
+     <!--Barra_superior_navegação -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../static/js/barra-navegacao.js" defer></script>
 
 </body>
 </html>

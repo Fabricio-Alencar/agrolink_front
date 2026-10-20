@@ -1,237 +1,185 @@
-
 class GuiaPassosComponent extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
-  }
-
-  connectedCallback() {
-    this.render();
-    this.setupListeners();
-  }
-
-  static get observedAttributes() {
-    return ['titulo', 'subtitulo', 'passos', 'imagem'];
-  }
-
-  attributeChangedCallback() {
-    if (this.shadowRoot && this.isConnected) {
-      this.render();
-      this.setupListeners();
-    }
-  }
-
-  render() {
-    const titulo =
-      this.getAttribute('titulo') || 'Como usar esta página';
-
-    const subtitulo =
-      this.getAttribute('subtitulo') ||
-      'Veja como manter sua página organizada em poucos passos.';
-
-    const imagemSrc =
-      this.getAttribute('imagem') ||
-      '../static/assets/login/minhoca_pequena.png';
-
-    let passos = [];
-
-    try {
-      passos = JSON.parse(this.getAttribute('passos') || '[]');
-    } catch (e) {
-      passos = [];
+    constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
     }
 
-    this.shadowRoot.innerHTML = `
-      <link
-        rel="stylesheet"
-        href="../static/css2/geral/guia-passos.css"
-      >
+    connectedCallback() {
+        if (this.parentElement !== document.body) {
+            document.body.appendChild(this);
+            return;
+        }
 
-      <!-- Botão flutuante da minhoca -->
-      <div
-        class="guia-flutuante-container"
-        style="position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; align-items:center; gap:12px; visibility:hidden;"
-      >
-        <div class="tooltip-ajuda">Precisa de ajuda?</div>
+        this.render();
+        this.setupListeners();
+    }
 
-        <div
-          class="minhoca-trigger"
-          id="abrirModal"
-          title="Precisa de ajuda?"
-          style="position:relative; width:70px; height:70px; flex:0 0 70px; display:flex; align-items:center; justify-content:center; cursor:pointer;"
-        >
-          <img
-            src="${imagemSrc}"
-            alt="Minhoca Guia"
-            width="65"
-            height="65"
-            style="display:block; width:65px; height:65px; max-width:100%; object-fit:contain;"
-          >
+    static get observedAttributes() {
+        return ['titulo', 'subtitulo', 'passos', 'imagem'];
+    }
 
-          <div class="badge-duvida">?</div>
-        </div>
-      </div>
+    attributeChangedCallback() {
+        if (this.shadowRoot && this.isConnected && this.shadowRoot.querySelector('.guia-flutuante-container')) {
+            this.render();
+            this.setupListeners();
+        }
+    }
 
-      <!-- Estrutura do Modal -->
-      <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-card">
-          <div class="modal-header">
-            <div class="header-content">
-              <div class="header-icon">
-                <img
-                  src="${imagemSrc}"
-                  alt="Ícone Guia"
-                  width="45"
-                  height="45"
-                  style="display:block; width:45px; height:45px; object-fit:contain;"
+    render() {
+        const titulo = this.getAttribute('titulo') || 'Como usar esta página';
+        const subtitulo = this.getAttribute('subtitulo') ||
+            'Veja como manter sua página organizada em poucos passos.';
+        const imagemSrc = this.getAttribute('imagem') ||
+            '../static/assets/login/minhoca_pequena.png';
+
+        let passos = [];
+
+        try {
+            passos = JSON.parse(this.getAttribute('passos') || '[]');
+        } catch {
+            passos = [];
+        }
+
+        this.shadowRoot.innerHTML = `
+            <link rel="stylesheet" href="../static/css2/geral/guia-passos.css">
+
+            <div class="guia-flutuante-container">
+                <div class="tooltip-ajuda">Precisa de ajuda?</div>
+
+                <div
+                    class="minhoca-trigger"
+                    id="abrirModal"
+                    title="Precisa de ajuda?"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Abrir guia de ajuda"
                 >
-              </div>
-
-              <div class="header-text">
-                <span>Guia Rápido</span>
-                <h2>${titulo}</h2>
-                <p>${subtitulo}</p>
-              </div>
-            </div>
-
-            <button class="btn-fechar" id="fecharModalX">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 14 14"
-                fill="none"
-              >
-                <path
-                  d="M13 1L1 13M1 1L13 13"
-                  stroke="#333"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                />
-              </svg>
-            </button>
-          </div>
-
-          <div class="grid-passos">
-            ${passos.map(p => `
-              <div class="card-passo">
-                <div class="passo-numero">${p.numero}</div>
-
-                <div class="passo-conteudo">
-                  <h4>${p.titulo}</h4>
-                  <p>${p.descricao}</p>
+                    <img src="${imagemSrc}" alt="Minhoca Guia">
+                    <div class="badge-duvida">?</div>
                 </div>
-              </div>
-            `).join('')}
-          </div>
-
-          <div class="modal-footer">
-            <div class="footer-info">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <circle cx="12" cy="12" r="10"></circle>
-                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-              </svg>
-
-              Abra este guia sempre que precisar.
             </div>
 
-            <button class="btn-entendi" id="fecharModalBtn">
-              Entendi
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal-card">
+                    <div class="modal-header">
+                        <div class="header-content">
+                            <div class="header-icon">
+                                <img src="${imagemSrc}" alt="Ícone Guia">
+                            </div>
 
-    // Exibe a minhoca somente quando o CSS e a imagem estiverem prontos.
-    const shadow = this.shadowRoot;
-    const linkCSS = shadow.querySelector('link[rel="stylesheet"]');
-    const container = shadow.querySelector('.guia-flutuante-container');
-    const imagens = shadow.querySelectorAll('img');
+                            <div class="header-text">
+                                <span>Guia Rápido</span>
+                                <h2>${titulo}</h2>
+                                <p>${subtitulo}</p>
+                            </div>
+                        </div>
 
-    let cssCarregado = false;
-    let imagensCarregadas = false;
+                        <button class="btn-fechar" id="fecharModalX" aria-label="Fechar guia">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                <path d="M13 1L1 13M1 1L13 13"
+                                    stroke="#333" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
 
-    const verificarCarregamento = () => {
-      if (cssCarregado && imagensCarregadas && this.isConnected) {
-        container.style.visibility = 'visible';
-      }
-    };
+                    <div class="grid-passos">
+                        ${passos.map(p => `
+                            <div class="card-passo">
+                                <div class="passo-numero">${p.numero}</div>
+                                <div class="passo-conteudo">
+                                    <h4>${p.titulo}</h4>
+                                    <p>${p.descricao}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
 
-    const verificarImagens = () => {
-      imagensCarregadas = Array.from(imagens).every(
-        img => img.complete && img.naturalWidth > 0
-      );
+                    <div class="modal-footer">
+                        <div class="footer-info">
+                            <svg width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Abra este guia sempre que precisar.
+                        </div>
 
-      verificarCarregamento();
-    };
+                        <button class="btn-entendi" id="fecharModalBtn">Entendi</button>
+                    </div>
+                </div>
+            </div>
+        `;
 
-    imagens.forEach(img => {
-      img.addEventListener('load', verificarImagens);
-      img.addEventListener('error', verificarImagens);
-    });
+        const linkCSS = this.shadowRoot.querySelector('link');
+        const container = this.shadowRoot.querySelector('.guia-flutuante-container');
+        const imagens = [...this.shadowRoot.querySelectorAll('img')];
 
-    const finalizarCSS = () => {
-      cssCarregado = true;
-      verificarCarregamento();
-    };
+        // Posição especial na tela de chat.
+        if (this.classList.contains('guia-chat')) {
+            container.classList.add('guia-chat-posicao');
+        }
 
-    linkCSS.addEventListener('load', finalizarCSS, { once: true });
+        // Exibe o componente após o carregamento do CSS e das imagens.
+        this.style.visibility = 'hidden';
 
-    linkCSS.addEventListener('error', () => {
-      // Evita deixar o botão permanentemente invisível se o CSS falhar.
-      finalizarCSS();
-    }, { once: true });
+        let cssCarregado = Boolean(linkCSS.sheet);
+        let imagensCarregadas = imagens.every(img => img.complete && img.naturalWidth > 0);
 
-    // Trata recursos que já estavam em cache.
-    if (linkCSS.sheet) {
-      finalizarCSS();
+        const verificarCarregamento = () => {
+            imagensCarregadas = imagens.every(img => img.complete && img.naturalWidth > 0);
+
+            if (cssCarregado && imagensCarregadas && this.isConnected) {
+                this.style.visibility = 'visible';
+            }
+        };
+
+        linkCSS.addEventListener('load', () => {
+            cssCarregado = true;
+            verificarCarregamento();
+        }, { once: true });
+
+        linkCSS.addEventListener('error', () => {
+            cssCarregado = true;
+            verificarCarregamento();
+        }, { once: true });
+
+        imagens.forEach(img => {
+            img.addEventListener('load', verificarCarregamento);
+            img.addEventListener('error', verificarCarregamento);
+        });
+
+        verificarCarregamento();
     }
 
-    verificarImagens();
-  }
+    setupListeners() {
+        const shadow = this.shadowRoot;
+        const abrir = shadow.getElementById('abrirModal');
+        const fecharX = shadow.getElementById('fecharModalX');
+        const fecharBtn = shadow.getElementById('fecharModalBtn');
+        const overlay = shadow.getElementById('modalOverlay');
 
-  setupListeners() {
-    const shadow = this.shadowRoot;
+        if (!abrir || !fecharX || !fecharBtn || !overlay) return;
 
-    const abrir = shadow.getElementById('abrirModal');
-    const fecharX = shadow.getElementById('fecharModalX');
-    const fecharBtn = shadow.getElementById('fecharModalBtn');
-    const overlay = shadow.getElementById('modalOverlay');
+        abrir.onclick = () => overlay.classList.add('ativo');
+        abrir.onkeydown = event => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                overlay.classList.add('ativo');
+            }
+        };
 
-    if (!abrir || !fecharX || !fecharBtn || !overlay) {
-      return;
+        fecharX.onclick = () => overlay.classList.remove('ativo');
+        fecharBtn.onclick = () => overlay.classList.remove('ativo');
+
+        overlay.onclick = event => {
+            if (event.target === overlay) {
+                overlay.classList.remove('ativo');
+            }
+        };
     }
-
-    const toggleModal = (ativo) => {
-      if (ativo) {
-        overlay.classList.add('ativo');
-      } else {
-        overlay.classList.remove('ativo');
-      }
-    };
-
-    abrir.addEventListener('click', () => toggleModal(true));
-
-    fecharX.addEventListener('click', () => toggleModal(false));
-
-    fecharBtn.addEventListener('click', () => toggleModal(false));
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) {
-        toggleModal(false);
-      }
-    });
-  }
 }
 
 if (!customElements.get('guia-passos')) {
-  customElements.define('guia-passos', GuiaPassosComponent);
+    customElements.define('guia-passos', GuiaPassosComponent);
 }
