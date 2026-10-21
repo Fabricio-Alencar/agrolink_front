@@ -96,46 +96,61 @@
 <!-- =========================
      MÁSCARA
 ========================= -->
+
 <div
     id="mascaraMenu"
     class="mascara-menu"
 ></div>
 
-
 <main class="main">
     <section class="topo">
-        <h1>Meus Produtos</h1>
-    </section>
-
-    <section class="busca">
-        <div class="barra-busca">
-            <i data-lucide="search" class="icone-busca"></i>
-            <input id="searchInput" type="text" placeholder="Pesquisar Produtos...">
+        <div class="header-texto">
+            <h1>Meus Produtos</h1>
+            <p class="subtitulo">Gerencie seus produtos e mantenha o catálogo sempre atualizado</p>
         </div>
-    </section>
 
-    <section class="acoes">
-        <button class="acao-btn" onclick="abrirModalCriar()">
-            <i data-lucide="plus"></i>            
+        <button class="acao-btn btn-add" onclick="abrirModalCriar()">
+            <i data-lucide="plus"></i>
             <span>Adicionar Produto</span>
         </button>
-           
-        <button class="acao-btn" id="btnBaixarTemplate">
-            <i data-lucide="download"></i>            
-            <span>Baixar Template Excel</span>
-        </button>
-
-        <button class="acao-btn" onclick="abrirModalPlanilha()">
-            <i data-lucide="upload"></i>            
-            <span>Enviar Planilha</span>
-        </button>   
     </section>
 
+    <!-- Busca e ações -->
+    <div class="busca-acoes">
+
+        <!-- Busca de produtos -->
+        <section class="busca">
+            <div class="barra-busca destaque-verde">
+                <i data-lucide="search" class="icone-busca"></i>
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Pesquisar Produtos..."
+                >
+            </div>
+        </section>
+
+        <!-- Ações de planilha -->
+        <section class="acoes">
+            <button class="acao-btn" id="btnBaixarTemplate">
+                <i data-lucide="download"></i>
+                <span>Baixar Template Excel</span>
+            </button>
+
+            <button class="acao-btn" onclick="abrirModalPlanilha()">
+                <i data-lucide="upload"></i>
+                <span>Enviar Planilha</span>
+            </button>
+        </section>
+
+    </div>
+
+    <!-- Lista de produtos -->
     <section id="produtosContainer" class="produtores-container">
-      <p id="mensagemCarregando" class="mensagem-carregando">
-        </p>
+        <p id="mensagemCarregando" class="mensagem-carregando"></p>
     </section>
 </main>
+
 
 
 

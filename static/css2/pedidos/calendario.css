@@ -256,48 +256,50 @@
 /* CELULAR */
 @media (max-width: 767px) {
     .calendar-view {
-        padding: 0.5rem;
+        padding: 0.65rem;
         border-radius: 0.7rem;
     }
 
     .calendar-header {
-        gap: 0.4rem;
-        margin-bottom: 0.6rem;
+        gap: 0.45rem;
+        margin-bottom: 0.75rem;
     }
 
     .calendar-header h2 {
-        font-size: 0.95rem;
+        min-width: 0;
+        font-size: clamp(0.85rem, 4vw, 1rem);
+        line-height: 1.3;
     }
 
     .calendar-nav {
-        width: 2rem;
-        height: 2rem;
+        width: 2.1rem;
+        height: 2.1rem;
     }
 
     .calendar-nav svg {
-        width: 0.9rem;
-        height: 0.9rem;
+        width: 0.95rem;
+        height: 0.95rem;
     }
 
     .calendar-today {
-        gap: 0.3rem;
-        margin-bottom: 0.6rem;
-        padding: 0.4rem 0.7rem;
+        gap: 0.35rem;
+        margin-bottom: 0.75rem;
+        padding: 0.45rem 0.75rem;
         font-size: 0.8rem;
     }
 
     .calendar-today svg {
-        width: 0.85rem;
-        height: 0.85rem;
+        width: 0.9rem;
+        height: 0.9rem;
     }
 
     .calendar-weekdays {
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.35rem;
     }
 
     .calendar-weekdays span {
-        padding: 0.35rem 0.05rem;
-        font-size: 0.58rem;
+        padding: 0.4rem 0;
+        font-size: 0.65rem;
         letter-spacing: 0;
     }
 
@@ -306,15 +308,136 @@
     }
 
     .calendar-day {
-        min-height: 4.2rem;
-        padding: 0.25rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 0;
+        min-height: 3.6rem;
+        padding: 0.3rem 0.1rem;
         border-radius: 0.4rem;
     }
 
     .day-number {
-        width: 1.35rem;
-        height: 1.35rem;
-        margin-bottom: 0.2rem;
+        width: 1.45rem;
+        height: 1.45rem;
+        flex: 0 0 auto;
+        margin: 0 0 0.25rem;
+        font-size: 0.7rem;
+    }
+
+    .calendar-orders {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        gap: 0.2rem;
+        min-width: 0;
+    }
+
+    /*
+       No celular, cada pedido vira um indicador compacto.
+       O botão continua clicável para abrir os detalhes do pedido.
+    */
+    .calendar-order {
+        display: block;
+        width: 0.48rem;
+        min-width: 0.48rem;
+        height: 0.48rem;
+        min-height: 0.48rem;
+        flex: 0 0 0.48rem;
+        padding: 0;
+        border: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        font-size: 0;
+        box-shadow: none;
+    }
+
+    .calendar-order:hover {
+        transform: scale(1.15);
+        box-shadow: none;
+    }
+
+    .calendar-order-product,
+    .calendar-order-person,
+    .calendar-order-status {
+        display: none;
+    }
+
+    .calendar-order.status-pendente {
+        background-color: var(--status-orange);
+        border: 0;
+    }
+
+    .calendar-order.status-aceito {
+        background-color: var(--status-blue);
+        border: 0;
+    }
+
+    .calendar-order.status-entregue {
+        background-color: var(--status-green);
+        border: 0;
+    }
+
+    .calendar-order.status-finalizado {
+        background-color: var(--status-gray);
+        border: 0;
+    }
+
+    .calendar-order.status-recusado {
+        background-color: var(--status-red);
+        border: 0;
+    }
+
+    .calendar-order.status-cancelado {
+        background-color: var(--status-black);
+        border: 0;
+    }
+
+    .calendar-order:focus-visible {
+        outline: 2px solid var(--cor-primaria);
+        outline-offset: 2px;
+    }
+}
+
+/* CELULARES PEQUENOS */
+@media (max-width: 380px) {
+    .calendar-view {
+        padding: 0.45rem;
+    }
+
+    .calendar-header {
+        gap: 0.3rem;
+    }
+
+    .calendar-header h2 {
+        font-size: 0.82rem;
+    }
+
+    .calendar-nav {
+        width: 1.85rem;
+        height: 1.85rem;
+    }
+
+    .calendar-grid {
+        gap: 0.15rem;
+    }
+
+    .calendar-day {
+        min-height: 3.25rem;
+        padding: 0.25rem 0.05rem;
+        border-radius: 0.3rem;
+    }
+
+    .calendar-weekdays span {
+        font-size: 0.58rem;
+    }
+
+    .day-number {
+        width: 1.3rem;
+        height: 1.3rem;
         font-size: 0.65rem;
     }
 
@@ -323,69 +446,11 @@
     }
 
     .calendar-order {
-        gap: 0.05rem;
-        padding: 0.25rem;
-        border-radius: 0.3rem;
-    }
-
-    .calendar-order-product {
-        font-size: 0.55rem;
-    }
-
-    .calendar-order-person {
-        font-size: 0.5rem;
-    }
-
-    .calendar-order-status {
-        margin-top: 0.05rem;
-        font-size: 0.45rem;
-    }
-}
-
-/* CELULARES PEQUENOS */
-@media (max-width: 380px) {
-    .calendar-view {
-        padding: 0.4rem;
-    }
-
-    .calendar-header h2 {
-        font-size: 0.85rem;
-    }
-
-    .calendar-grid {
-        gap: 0.15rem;
-    }
-
-    .calendar-day {
-        min-height: 3.6rem;
-        padding: 0.2rem;
-        border-radius: 0.3rem;
-    }
-
-    .calendar-weekdays span {
-        font-size: 0.52rem;
-    }
-
-    .day-number {
-        width: 1.2rem;
-        height: 1.2rem;
-        font-size: 0.6rem;
-    }
-
-    .calendar-order {
-        padding: 0.2rem;
-    }
-
-    .calendar-order-product {
-        font-size: 0.5rem;
-    }
-
-    .calendar-order-person {
-        font-size: 0.45rem;
-    }
-
-    .calendar-order-status {
-        font-size: 0.4rem;
+        width: 0.4rem;
+        min-width: 0.4rem;
+        height: 0.4rem;
+        min-height: 0.4rem;
+        flex-basis: 0.4rem;
     }
 }
 

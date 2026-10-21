@@ -1,5 +1,5 @@
 /* =========================
-   MAIN
+   MAIN oi
 ========================= */
 .main {
     width: 100%;
@@ -15,13 +15,20 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: var(--space-md);
-    margin-bottom: var(--space-xl);
+    align-items: flex-start;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-md);
 }
 
 /* =========================
-   TÍTULO
+   CONTAINER DO TEXTO (TÍTULO E SUBTÍTULO)
+========================= */
+.header-texto {
+    width: 100%;
+}
+
+/* =========================
+   TÍTULO E SUBTÍTULO
 ========================= */
 .topo h1 {
     margin: 0;
@@ -31,17 +38,10 @@
     color: var(--cor-texto);
 }
 
-/* =========================
-   ALTERNÂNCIA DE VISUALIZAÇÃO
-========================= */
-.view-toggle {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem;
-    background-color: var(--cor-barra-pesquisa);
-    border: 0.125rem solid var(--cor-borda);
-    border-radius: clamp(0.8rem, 1.5vw, 1.2rem);
+.subtitulo {
+    margin: 15px 0 0 0;
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.9rem, 1vw, 1rem);
 }
 
 /* =========================
@@ -101,7 +101,15 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: var(--space-xl);
+        gap: var(--space-lg);
+        margin-bottom: var(--space-lg);
+    }
+
+    /* O pulo do gato está aqui: */
+    .header-texto {
+        flex: 1;          /* Ocupa todo o espaço flexível restante à esquerda */
+        min-width: 0;     /* Impede que o texto estoure o limite do container flex */
+        padding-right: var(--space-md);
     }
 
     .topo h1 {

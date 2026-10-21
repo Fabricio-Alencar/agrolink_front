@@ -1,8 +1,11 @@
+
 /* =========================
    CONTAINER DA BUSCA
 ========================= */
 .busca {
+    flex: 1 1 0;
     width: 100%;
+    min-width: 0;
     margin-bottom: var(--space-md);
 
     display: flex;
@@ -16,7 +19,8 @@
 .barra-busca {
     position: relative;
     width: 100%;
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
 }
 
 /* =========================
@@ -40,7 +44,9 @@
 ========================= */
 .busca input {
     width: 100%;
+    min-width: 0;
     display: block;
+    box-sizing: border-box;
 
     background-color: var(--cor-barra-pesquisa);
 
@@ -68,6 +74,7 @@
 .filtro-status {
     flex-shrink: 0;
     width: clamp(10rem, 18vw, 15rem);
+    box-sizing: border-box;
 
     padding: clamp(0.6rem, 1.2vw, 1rem) 2.8rem clamp(0.6rem, 1.2vw, 1rem) 1rem;
 
@@ -83,15 +90,16 @@
     outline: none;
     cursor: pointer;
 
-    /* Remove aparência padrão */
     appearance: none;
 
-    /* Seta personalizada */
-    background-image: linear-gradient(45deg, transparent 50%, var(--cor-texto-secundario) 50%),
-                      linear-gradient(135deg, var(--cor-texto-secundario) 50%, transparent 50%);
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--cor-texto-secundario) 50%),
+        linear-gradient(135deg, var(--cor-texto-secundario) 50%, transparent 50%);
+
     background-position:
         calc(100% - 1.2rem) 50%,
         calc(100% - 0.8rem) 50%;
+
     background-size: 0.4rem 0.4rem;
     background-repeat: no-repeat;
 
@@ -124,12 +132,10 @@
     color: var(--cor-texto);
 }
 
-
 /* =========================
    TABLET E DESKTOP
 ========================= */
 @media (min-width: 768px) {
-
     .icone-busca {
         width: var(--fs-h2);
         height: var(--fs-h2);
@@ -137,5 +143,48 @@
 
     .busca input {
         padding-left: 4rem;
+    }
+
+    .busca {
+        flex-direction: row;
+        margin-bottom: 0;
+    }
+
+    .barra-busca {
+        flex: 1 1 auto;
+        width: auto;
+    }
+
+    .filtro-status {
+        width: clamp(10rem, 18vw, 15rem);
+    }
+}
+
+/* =========================
+   CELULAR
+========================= */
+@media (max-width: 767px) {
+    .busca {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-sm);
+        margin-bottom: 0;
+    }
+
+    .barra-busca {
+        width: 100%;
+        flex: 1 1 auto;
+    }
+
+    .busca input {
+        width: 100%;
+        padding-left: var(--space-xll);
+    }
+
+    .filtro-status {
+        width: 100%;
+        max-width: 100%;
+        flex-shrink: 1;
     }
 }

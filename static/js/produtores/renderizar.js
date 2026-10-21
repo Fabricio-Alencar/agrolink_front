@@ -244,7 +244,7 @@ async function renderProdutos(listaParaRenderizar) {
 
                 <div class="status ${produto.status || ''}">
                     <span>
-                        ${produto.status || 'indefinido'}
+                      ● ${(produto.status || 'indefinido').charAt(0).toUpperCase() + (produto.status || 'indefinido').slice(1)}
                     </span>
                 </div>
 

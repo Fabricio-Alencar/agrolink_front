@@ -1,3 +1,65 @@
+
+/* =========================
+   ALTERNÂNCIA DE VISUALIZAÇÃO
+   MOBILE FIRST
+========================= */
+.view-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background-color: var(--cor-barra-pesquisa);
+    border: 0.125rem solid var(--cor-borda);
+    border-radius: clamp(0.8rem, 1.5vw, 1.2rem);
+}
+
+/* Botões de visualização */
+.view-toggle .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Ícones */
+.view-toggle .toggle-btn i,
+.view-toggle .toggle-btn svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Esconde somente os textos no celular */
+.view-toggle .toggle-btn span {
+    display: none;
+}
+
+/* Topo responsivo */
+.topo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+/* Evita que o título force o layout a ultrapassar a tela */
+.topo .header-texto {
+    flex: 1;
+    min-width: 0;
+}
+
+.topo .header-texto h1 {
+    overflow-wrap: break-word;
+}
+
 /* =========================
    BADGES DE STATUS
 ========================= */
@@ -52,6 +114,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: var(--space-sm);
     margin: var(--space-md) 0;
     padding: var(--space-sm);
     background-color: var(--bg-color);
@@ -170,6 +233,7 @@
    Mesma altura, cantos e fonte para Detalhes, Avaliar,
    Aceitar/Recusar/Cancelar e lixeira
 ========================= */
+
 /* Detalhes sempre na linha de cima; quando existe uma ação,
    ela fica embaixo, lado a lado com Recusar/Cancelar/lixeira */
 .card-actions {
@@ -179,10 +243,10 @@
 .linha-acoes {
     display: flex;
     gap: var(--space-sm);
+    min-width: 0;
 }
 
 .linha-acoes > button {
-    /* Altura fixa (com borda incluída) para todos ficarem iguais */
     box-sizing: border-box;
     height: 2.5rem;
     border-radius: clamp(0.8rem, 1vw, 1.25rem);
@@ -191,7 +255,7 @@
     white-space: nowrap;
 }
 
-/* Detalhes com contorno: a ação colorida fica em destaque */
+/* Detalhes com contorno */
 .card-actions .btn-details {
     background-color: transparent;
     color: var(--cor-primaria);
@@ -230,7 +294,9 @@
     box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
 }
 
-/* Botão principal = próxima ação (Aceitar, Confirmar entrega/recebimento) */
+/* =========================
+   BOTÃO DE AÇÃO PRINCIPAL
+========================= */
 .btn-acao-principal {
     flex: 1;
     display: flex;
@@ -253,7 +319,7 @@
     box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
 }
 
-/* Botão verde no modal de confirmação ao aceitar pedido */
+/* Botão verde no modal de confirmação */
 .btn-confirmar-exclusao.confirmar-positivo {
     background: var(--cor-primaria);
 }
@@ -266,7 +332,7 @@
     padding: var(--space-sm);
 }
 
-/* Lixeira: quadrada, mesma altura dos outros botões */
+/* Lixeira quadrada */
 .linha-acoes > .btn-delete {
     flex: 0 0 2.5rem;
     width: 2.5rem;
@@ -277,6 +343,18 @@
    TABLET
 ========================= */
 @media (min-width: 768px) {
+    /* Restaura os textos dos botões de visualização */
+    .view-toggle .toggle-btn span {
+        display: inline;
+    }
+
+    .view-toggle .toggle-btn {
+        width: auto;
+        min-width: 0;
+        min-height: 0;
+        padding: var(--space-sm) var(--space-md);
+    }
+
     .badge {
         padding: var(--space-xs) var(--space-md);
     }
@@ -300,5 +378,31 @@
 
     .price-row {
         margin: var(--space-lg) 0;
+    }
+}
+
+/* =========================
+   CELULARES MUITO ESTREITOS
+========================= */
+@media (max-width: 360px) {
+    .topo {
+        gap: 0.5rem;
+    }
+
+    .view-toggle {
+        gap: 0.15rem;
+        padding: 0.2rem;
+    }
+
+    .view-toggle .toggle-btn {
+        min-width: 2.2rem;
+        min-height: 2.2rem;
+        padding: 0.4rem;
+    }
+
+    .view-toggle .toggle-btn i,
+    .view-toggle .toggle-btn svg {
+        width: 1.1rem;
+        height: 1.1rem;
     }
 }
