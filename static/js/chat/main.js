@@ -6,8 +6,8 @@ import {
 
 import { API } from "./api.js";
 import { conectarWebSocketGeral } from "./websocket.js";
-import { inicializarListaConversas, atualizarConversaRecebida } from "./lista-conversas.js";
-import { atualizarMensagensLidas, confirmarMensagemEnviada } from "./mensagens.js";
+import { atualizarConversaRecebida, zerarContadorConversa} from "./lista-conversas.js";
+import { atualizarMensagensLidas } from "./mensagens.js";
 
 const campoPesquisa = document.getElementById("chatSearch");
 const listaConversasElemento = document.getElementById("listaConversas");
@@ -133,22 +133,19 @@ campoPesquisa?.addEventListener("input", aplicarPesquisa);
 const parametros = new URLSearchParams(window.location.search);
 const negociacaoUrl = parametros.get("negociacao");
 
-// Inicializa a lista de conversas injetando os callbacks de ação
-inicializarListaConversas({
-    elementoLista: listaConversasElemento,
-    abrirConversa,
-    atualizarContadorArquivadas: () => {
-        // Função vazia ou tratada pelo conversas-arquivadas se necessário
-    }
-});
 
 // Inicializa o WebSocket geral injetando as funções de callback diretamente
 conectarWebSocketGeral({
     onNovaMensagem: (notificacao) => {
         atualizarConversaRecebida(notificacao);
     },
+
     onMensagensLidas: (notificacao) => {
         atualizarMensagensLidas(notificacao);
+
+        if (notificacao.negociacao_id) {
+            zerarContadorConversa(notificacao.negociacao_id);
+        }
     }
 });
 

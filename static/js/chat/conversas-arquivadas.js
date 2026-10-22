@@ -72,7 +72,8 @@ export function montarSecoesConversas(listaConversas) {
 }
 
 /* =========================================================
-   ATUALIZAÇÃO DO CONTADOR DE MENSAGENS NÃO LIDAS NAS CONVERSAS ARQUIVADAS
+   ATUALIZAÇÃO DO CONTADOR DE MENSAGENS NÃO LIDAS
+   NAS CONVERSAS ARQUIVADAS
 ========================================================= */
 export function atualizarContadorArquivadas({
     listaArquivadas,
@@ -85,10 +86,15 @@ export function atualizarContadorArquivadas({
 
     const itens = listaArquivadas.querySelectorAll(".conversa-item");
 
-    const totalNaoLidas = Array.from(itens).reduce(
-        (total, item) => total + Number(item.dataset.naoLidas || 0),
-        0
-    );
+    const totalNaoLidas = Array.from(itens).reduce((total, item) => {
+        const quantidade = Number(item.dataset.naoLidas);
+
+        return total + (
+            Number.isFinite(quantidade) && quantidade > 0
+                ? quantidade
+                : 0
+        );
+    }, 0);
 
     contadorArquivadas.textContent = String(totalNaoLidas);
     contadorArquivadas.hidden = totalNaoLidas === 0;
@@ -96,7 +102,10 @@ export function atualizarContadorArquivadas({
     const campoPesquisa = document.getElementById("chatSearch");
     const pesquisaAtiva = Boolean(campoPesquisa?.value.trim());
 
-    if (!pesquisaAtiva && secaoArquivadas) {
-        secaoArquivadas.hidden = itens.length === 0;
+    if (secaoArquivadas) {
+        // Durante a pesquisa, a visibilidade fica sob controle do filtro.
+        if (!pesquisaAtiva) {
+            secaoArquivadas.hidden = itens.length === 0;
+        }
     }
 }

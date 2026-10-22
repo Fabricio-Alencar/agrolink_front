@@ -1,4 +1,8 @@
-import { formatarHorarioMensagem, obterDataUltimaMensagem, conversaEstaArquivada } from "./utils.js";
+import {
+    formatarHorarioMensagem,
+    obterDataUltimaMensagem,
+    conversaEstaArquivada
+} from "./utils.js";
 
 const FOTO_GENERICA = "../static/assets/user.png";
 
@@ -24,7 +28,11 @@ export function inicializarListaConversas({
  */
 export function atualizarConversaEnviada(mensagem) {
     if (mensagem) {
-        atualizarConversaNaLista(mensagem.negociacao_id, mensagem, false);
+        atualizarConversaNaLista(
+            mensagem.negociacao_id,
+            mensagem,
+            false
+        );
     }
 }
 
@@ -33,7 +41,11 @@ export function atualizarConversaEnviada(mensagem) {
  */
 export function atualizarConversaRecebida(notificacao) {
     if (notificacao) {
-        atualizarConversaNaLista(notificacao.negociacao_id, notificacao, true);
+        atualizarConversaNaLista(
+            notificacao.negociacao_id,
+            notificacao,
+            true
+        );
     }
 }
 
@@ -84,6 +96,7 @@ export function atualizarContadorItem(item, quantidade) {
     }
 
     const total = Math.max(0, Number(quantidade) || 0);
+
     item.dataset.naoLidas = String(total);
 
     let contador = item.querySelector(".conversa-nao-lidas");
@@ -96,6 +109,7 @@ export function atualizarContadorItem(item, quantidade) {
         }
 
         contador.textContent = String(total);
+
         contador.setAttribute(
             "aria-label",
             `${total} mensagens não lidas`
@@ -105,6 +119,19 @@ export function atualizarContadorItem(item, quantidade) {
     }
 
     atualizarContadorArquivadasCallback?.();
+}
+
+/* =========================================================
+   ZERA O CONTADOR DE MENSAGENS NÃO LIDAS DE UMA CONVERSA
+========================================================= */
+export function zerarContadorConversa(negociacaoId) {
+    const item = localizarItemConversa(negociacaoId);
+
+    if (!item) {
+        return;
+    }
+
+    atualizarContadorItem(item, 0);
 }
 
 /* =========================================================
@@ -156,8 +183,12 @@ function atualizarConversaNaLista(
         hora.textContent = formatarHorarioMensagem(dataMensagem);
     }
 
-    if (mensagemRecebida && !item.classList.contains("ativa")) {
+    if (
+        mensagemRecebida &&
+        !item.classList.contains("ativa")
+    ) {
         const naoLidas = Number(item.dataset.naoLidas || 0);
+
         atualizarContadorItem(item, naoLidas + 1);
     }
 
@@ -177,7 +208,9 @@ export function criarItemConversa(conversa) {
     item.type = "button";
     item.className = "conversa-item";
     item.dataset.negociacaoId = conversa.negociacao_id;
-    item.dataset.arquivada = String(conversaEstaArquivada(conversa));
+    item.dataset.arquivada = String(
+        conversaEstaArquivada(conversa)
+    );
 
     const avatar = document.createElement("div");
     avatar.className = "conversa-avatar";
@@ -209,13 +242,16 @@ export function criarItemConversa(conversa) {
     const hora = document.createElement("span");
     hora.className = "conversa-hora";
 
-    const dataUltimaMensagem = obterDataUltimaMensagem(conversa);
+    const dataUltimaMensagem =
+        obterDataUltimaMensagem(conversa);
 
     if (dataUltimaMensagem) {
         item.dataset.dataUltimaMensagem = dataUltimaMensagem;
     }
 
-    hora.textContent = formatarHorarioMensagem(dataUltimaMensagem);
+    hora.textContent = formatarHorarioMensagem(
+        dataUltimaMensagem
+    );
 
     cabecalho.append(nome, hora);
 
@@ -245,11 +281,17 @@ export function criarItemConversa(conversa) {
     item.addEventListener("click", async () => {
         try {
             if (abrirConversaCallback) {
-                await abrirConversaCallback(conversa.negociacao_id);
+                await abrirConversaCallback(
+                    conversa.negociacao_id
+                );
             }
         } catch (error) {
             console.error("Erro ao abrir conversa:", error);
-            alert(error.message || "Não foi possível abrir a conversa.");
+
+            alert(
+                error.message ||
+                "Não foi possível abrir a conversa."
+            );
         }
     });
 

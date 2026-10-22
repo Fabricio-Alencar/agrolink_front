@@ -19,6 +19,10 @@ const infoNegociante = document.getElementById("infoNegociante");
 
 let negociacaoDetalhesAtual = null;
 
+/* =========================================================
+   FORMATAÇÃO DE PREÇO
+========================================================= */
+
 function formatarPreco(valor) {
     if (valor === null || valor === undefined || valor === "") {
         return "-";
@@ -35,6 +39,10 @@ function formatarPreco(valor) {
         currency: "BRL"
     });
 }
+
+/* =========================================================
+   FORMATAÇÃO DE DATA
+========================================================= */
 
 function formatarData(data) {
     if (!data) {
@@ -59,6 +67,47 @@ function formatarData(data) {
     return dataConvertida.toLocaleDateString("pt-BR");
 }
 
+/* =========================================================
+   FORMATAÇÃO DE TELEFONE
+========================================================= */
+
+function formatarTelefone(telefone) {
+    if (
+        telefone === null ||
+        telefone === undefined ||
+        String(telefone).trim() === ""
+    ) {
+        return "-";
+    }
+
+    const telefoneOriginal = String(telefone).trim();
+    const numeros = telefoneOriginal.replace(/\D/g, "");
+
+    // Celular brasileiro: (DD) 99999-9999
+    if (numeros.length === 11) {
+        return numeros.replace(
+            /^(\d{2})(\d{5})(\d{4})$/,
+            "($1) $2-$3"
+        );
+    }
+
+    // Telefone fixo brasileiro: (DD) 3333-4444
+    if (numeros.length === 10) {
+        return numeros.replace(
+            /^(\d{2})(\d{4})(\d{4})$/,
+            "($1) $2-$3"
+        );
+    }
+
+    // Mantém o valor original se não corresponder
+    // a um telefone brasileiro de 10 ou 11 dígitos.
+    return telefoneOriginal;
+}
+
+/* =========================================================
+   FORMATAÇÃO DE STATUS
+========================================================= */
+
 function formatarStatus(status) {
     if (!status) {
         return "-";
@@ -80,6 +129,10 @@ function formatarStatus(status) {
     return statusFormatado[chave] ||
         chave.charAt(0).toUpperCase() + chave.slice(1).replaceAll("_", " ");
 }
+
+/* =========================================================
+   IMAGEM DO PRODUTO
+========================================================= */
 
 function preencherImagemProduto(url) {
     if (!infoProdutoFoto) {
@@ -120,6 +173,10 @@ function preencherImagemProduto(url) {
     infoProdutoFoto.src = url;
 }
 
+/* =========================================================
+   PREENCHIMENTO DOS DETALHES DA NEGOCIAÇÃO
+========================================================= */
+
 function preencherDetalhesNegociacao(detalhes) {
     if (!detalhes) {
         return;
@@ -148,6 +205,7 @@ function preencherDetalhesNegociacao(detalhes) {
 
     // Quantidade
     const quantidade = Number(detalhes.quantidade);
+
     const quantidadeValida =
         detalhes.quantidade !== null &&
         detalhes.quantidade !== undefined &&
@@ -208,17 +266,23 @@ function preencherDetalhesNegociacao(detalhes) {
             "-";
     }
 
+    // Telefone formatado
     if (infoTelefone) {
-        infoTelefone.textContent = detalhes.negociante_telefone || "-";
+        infoTelefone.textContent = formatarTelefone(
+            detalhes.negociante_telefone
+        );
     }
 
+    // E-mail
     if (infoEmail) {
         infoEmail.textContent = detalhes.negociante_email || "-";
     }
 
     // Status do pedido
     if (infoStatus) {
-        const statusOriginal = String(detalhes.status || "").toLowerCase();
+        const statusOriginal = String(
+            detalhes.status || ""
+        ).trim().toLowerCase();
 
         infoStatus.textContent = formatarStatus(detalhes.status);
 
@@ -249,16 +313,26 @@ function preencherDetalhesNegociacao(detalhes) {
 
     // Descrição opcional
     if (infoDescricao && infoDescricaoContainer) {
-        const descricao = String(detalhes.descricao || "").trim();
+        const descricao = String(
+            detalhes.descricao || ""
+        ).trim();
 
         infoDescricao.textContent = descricao;
         infoDescricaoContainer.hidden = !descricao;
     }
 }
 
+/* =========================================================
+   ATUALIZA OS DADOS DA NEGOCIAÇÃO
+========================================================= */
+
 export function atualizarInfoNegociacao(detalhes) {
     negociacaoDetalhesAtual = detalhes;
 }
+
+/* =========================================================
+   ABRIR MODAL
+========================================================= */
 
 export function abrirModalInfo() {
     if (!negociacaoDetalhesAtual || !modalInfoNegociacao) {
@@ -272,6 +346,10 @@ export function abrirModalInfo() {
 
     btnFecharInfo?.focus();
 }
+
+/* =========================================================
+   FECHAR MODAL
+========================================================= */
 
 export function fecharModalInfo() {
     if (!modalInfoNegociacao) {
@@ -290,6 +368,10 @@ export function fecharModalInfo() {
     // Devolve o foco ao botão que abriu o modal.
     btnInfoChat?.focus();
 }
+
+/* =========================================================
+   EVENTOS DO MODAL
+========================================================= */
 
 btnInfoChat?.addEventListener("click", abrirModalInfo);
 btnFecharInfo?.addEventListener("click", fecharModalInfo);

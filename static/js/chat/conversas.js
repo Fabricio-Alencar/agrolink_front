@@ -1,12 +1,29 @@
-
 import { API } from "./api.js";
 import { setNegociacaoAtual, setNegociacaoInfo } from "./estado.js";
 import { conectarWebSocket } from "./websocket.js";
-import { renderizarMensagens } from "./mensagens.js";
-import { atualizarInfoNegociacao, fecharModalInfo } from "./info-negociacao.js";
-import { montarSecoesConversas, atualizarContadorArquivadas as atualizarContadorArquivadasModulo} from "./conversas-arquivadas.js";
-import { inicializarListaConversas, criarItemConversa,localizarItemConversa, atualizarContadorItem} from "./lista-conversas.js";
-import { obterDataUltimaMensagem, obterDataValida, conversaEstaArquivada} from "./utils.js";
+import {
+    renderizarMensagens,
+    confirmarMensagemEnviada
+} from "./mensagens.js";
+import {
+    atualizarInfoNegociacao,
+    fecharModalInfo
+} from "./info-negociacao.js";
+import {
+    montarSecoesConversas,
+    atualizarContadorArquivadas as atualizarContadorArquivadasModulo
+} from "./conversas-arquivadas.js";
+import {
+    inicializarListaConversas,
+    criarItemConversa,
+    localizarItemConversa,
+    atualizarContadorItem
+} from "./lista-conversas.js";
+import {
+    obterDataUltimaMensagem,
+    obterDataValida,
+    conversaEstaArquivada
+} from "./utils.js";
 
 const chatContainer = document.querySelector(".chat-container");
 const listaConversas = document.getElementById("listaConversas");
@@ -240,7 +257,9 @@ export async function abrirConversa(negociacaoId) {
 
     zerarContadorNaoLidas(id);
 
-    conectarWebSocket(id);
+    conectarWebSocket(id, {
+        onMensagemConfirmada: confirmarMensagemEnviada
+    });
 
     document.querySelectorAll(".conversa-item").forEach(item => {
         item.classList.toggle(

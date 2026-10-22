@@ -1,4 +1,3 @@
-
 .conversas-header {
     padding: 22px 20px 15px;
 }
@@ -52,7 +51,9 @@
     display: none !important;
 }
 
-/* Seção de conversas arquivadas */
+/* =========================================================
+   SEÇÃO DE CONVERSAS ARQUIVADAS
+========================================================= */
 
 .conversas-arquivadas {
     border-bottom: 1px solid #eeeeee;
@@ -71,7 +72,10 @@
     color: #386b3b;
     text-align: left;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
 .conversas-arquivadas-toggle:hover {
@@ -115,7 +119,9 @@
     height: 16px;
     flex-shrink: 0;
     color: #789078;
-    transition: transform 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
 }
 
 .conversas-arquivadas.expandida .conversas-arquivadas-seta {
@@ -138,7 +144,40 @@
     color: #6b806b;
 }
 
-/* Itens da conversa */
+/* =========================================================
+   SEÇÃO DE ARQUIVADOS EXPANDIDA
+========================================================= */
+
+.conversas-arquivadas.expandida .conversas-arquivadas-toggle {
+    background: #dcefdc;
+    color: #1b5e20;
+    box-shadow: inset 4px 0 0 #2e7d32;
+}
+
+.conversas-arquivadas.expandida .conversas-arquivadas-toggle:hover {
+    background: #cce5cc;
+}
+
+.conversas-arquivadas.expandida .conversas-arquivadas-titulo {
+    color: #1b5e20;
+}
+
+.conversas-arquivadas.expandida .conversas-arquivadas-titulo svg {
+    color: #2e7d32;
+}
+
+.conversas-arquivadas.expandida .contador-arquivadas {
+    background: #1b5e20;
+    color: #fff;
+}
+
+.conversas-arquivadas.expandida .conversas-arquivadas-seta {
+    color: #1b5e20;
+}
+
+/* =========================================================
+   ITENS DA CONVERSA
+========================================================= */
 
 .conversa-item {
     width: 100%;
@@ -277,7 +316,9 @@
     text-align: center;
 }
 
-/* Tablets e celulares */
+/* =========================================================
+   TABLETS E CELULARES
+========================================================= */
 
 @media (max-width: 768px) {
     .conversa-item,
@@ -305,9 +346,20 @@
     .conversas-arquivadas-toggle {
         -webkit-tap-highlight-color: transparent;
     }
+
+    .conversas-arquivadas.expandida .conversas-arquivadas-toggle {
+        background: #dcefdc;
+        box-shadow: inset 4px 0 0 #2e7d32;
+    }
+
+    .conversas-arquivadas.expandida .conversas-arquivadas-toggle:hover {
+        background: #cce5cc;
+    }
 }
 
-/* Celulares pequenos */
+/* =========================================================
+   CELULARES PEQUENOS
+========================================================= */
 
 @media (max-width: 450px) {
     .conversas-header {
