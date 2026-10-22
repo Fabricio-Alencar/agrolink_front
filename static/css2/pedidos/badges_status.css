@@ -1,0 +1,408 @@
+
+/* =========================
+   ALTERNÂNCIA DE VISUALIZAÇÃO
+   MOBILE FIRST
+========================= */
+.view-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    background-color: var(--cor-barra-pesquisa);
+    border: 0.125rem solid var(--cor-borda);
+    border-radius: clamp(0.8rem, 1.5vw, 1.2rem);
+}
+
+/* Botões de visualização */
+.view-toggle .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.5rem;
+    flex-shrink: 0;
+}
+
+/* Ícones */
+.view-toggle .toggle-btn i,
+.view-toggle .toggle-btn svg {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+}
+
+/* Esconde somente os textos no celular */
+.view-toggle .toggle-btn span {
+    display: none;
+}
+
+/* Topo responsivo */
+.topo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+/* Evita que o título force o layout a ultrapassar a tela */
+.topo .header-texto {
+    flex: 1;
+    min-width: 0;
+}
+
+.topo .header-texto h1 {
+    overflow-wrap: break-word;
+}
+
+/* =========================
+   BADGES DE STATUS
+========================= */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: clamp(0.6rem, 1vw, 0.75rem);
+    color: var(--cor-branco);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+    font-weight: 600;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.badge.pendente {
+    background-color: var(--status-orange);
+}
+
+.badge.aceito {
+    background-color: var(--status-blue);
+}
+
+.badge.recusado {
+    background-color: var(--status-red);
+}
+
+.badge.cancelado {
+    background-color: var(--status-black);
+}
+
+.badge.entregue {
+    background-color: var(--status-green);
+}
+
+.badge.finalizado {
+    background-color: var(--status-gray);
+}
+
+/* =========================
+   CORPO DO CARD
+========================= */
+.card-body {
+    flex-grow: 1;
+}
+
+/* =========================
+   LINHA DE PREÇO E QUANTIDADE
+========================= */
+.price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin: var(--space-md) 0;
+    padding: var(--space-sm);
+    background-color: var(--bg-color);
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+}
+
+/* =========================
+   QUANTIDADE
+========================= */
+.qty {
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.8rem, 1vw, 0.95rem);
+}
+
+/* =========================
+   PREÇO
+========================= */
+.price {
+    color: var(--cor-primaria);
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* =========================
+   DESCRIÇÃO
+========================= */
+.desc {
+    display: -webkit-box;
+    margin-bottom: var(--space-md);
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
+    line-height: 1.4;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+/* =========================
+   LINHA DE INFORMAÇÕES
+========================= */
+.info-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.75rem, 1vw, 0.85rem);
+}
+
+/* =========================
+   AÇÕES DO CARD
+========================= */
+.card-actions {
+    display: flex;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+/* =========================
+   BOTÃO DETALHES
+========================= */
+.btn-details {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm);
+    background-color: var(--cor-primaria);
+    color: var(--cor-branco);
+    border: none;
+    border-radius: clamp(0.8rem, 1vw, 1.25rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-details:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   BOTÃO DELETAR
+========================= */
+.btn-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2.5rem, 4vw, 2.75rem);
+    padding: var(--space-sm);
+    background-color: var(--status-red);
+    color: var(--cor-branco);
+    border: none;
+    border-radius: clamp(0.5rem, 1vw, 0.75rem);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-delete:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   BOTÕES DO CARD UNIFORMES
+   Mesma altura, cantos e fonte para Detalhes, Avaliar,
+   Aceitar/Recusar/Cancelar e lixeira
+========================= */
+
+/* Detalhes sempre na linha de cima; quando existe uma ação,
+   ela fica embaixo, lado a lado com Recusar/Cancelar/lixeira */
+.card-actions {
+    flex-direction: column;
+}
+
+.linha-acoes {
+    display: flex;
+    gap: var(--space-sm);
+    min-width: 0;
+}
+
+.linha-acoes > button {
+    box-sizing: border-box;
+    height: 2.5rem;
+    border-radius: clamp(0.8rem, 1vw, 1.25rem);
+    font-size: clamp(0.85rem, 1vw, 0.95rem);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Detalhes com contorno */
+.card-actions .btn-details {
+    background-color: transparent;
+    color: var(--cor-primaria);
+    border: 2px solid var(--cor-primaria);
+}
+
+.card-actions .btn-details:hover {
+    background-color: var(--verde-menta-claro);
+}
+
+.btn-acao-secundaria,
+.btn-avaliar-card {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: var(--space-sm);
+    border: none;
+    color: var(--cor-branco);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-acao-secundaria {
+    background-color: var(--status-red);
+}
+
+.btn-acao-secundaria:hover,
+.btn-avaliar-card:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* =========================
+   BOTÃO DE AÇÃO PRINCIPAL
+========================= */
+.btn-acao-principal {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-sm);
+    border: none;
+    background-color: var(--verde-oliva, #558B2F);
+    color: var(--cor-branco);
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.btn-acao-principal:hover {
+    opacity: 0.9;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.12);
+}
+
+/* Botão verde no modal de confirmação */
+.btn-confirmar-exclusao.confirmar-positivo {
+    background: var(--cor-primaria);
+}
+
+.btn-confirmar-exclusao.confirmar-positivo:hover {
+    background: var(--cor-primaria-hover);
+}
+
+.linha-acoes > .btn-avaliar-card {
+    padding: var(--space-sm);
+}
+
+/* Lixeira quadrada */
+.linha-acoes > .btn-delete {
+    flex: 0 0 2.5rem;
+    width: 2.5rem;
+    padding: 0;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+    /* Restaura os textos dos botões de visualização */
+    .view-toggle .toggle-btn span {
+        display: inline;
+    }
+
+    .view-toggle .toggle-btn {
+        width: auto;
+        min-width: 0;
+        min-height: 0;
+        padding: var(--space-sm) var(--space-md);
+    }
+
+    .badge {
+        padding: var(--space-xs) var(--space-md);
+    }
+
+    .price-row {
+        padding: var(--space-md);
+    }
+
+    .card-actions {
+        gap: var(--space-md);
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+    .badge {
+        font-size: clamp(0.75rem, 0.9vw, 0.85rem);
+    }
+
+    .price-row {
+        margin: var(--space-lg) 0;
+    }
+}
+
+/* =========================
+   CELULARES MUITO ESTREITOS
+========================= */
+@media (max-width: 360px) {
+    .topo {
+        gap: 0.5rem;
+    }
+
+    .view-toggle {
+        gap: 0.15rem;
+        padding: 0.2rem;
+    }
+
+    .view-toggle .toggle-btn {
+        min-width: 2.2rem;
+        min-height: 2.2rem;
+        padding: 0.4rem;
+    }
+
+    .view-toggle .toggle-btn i,
+    .view-toggle .toggle-btn svg {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+}

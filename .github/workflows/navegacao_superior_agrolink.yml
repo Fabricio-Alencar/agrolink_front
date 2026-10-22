@@ -2,12 +2,12 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - Agro-Link
+name: Build and deploy Python app to Azure Web App - AgroLink
 
 on:
   push:
     branches:
-      - main
+      - 'navegacao_superior'
   workflow_dispatch:
 
 jobs:
@@ -63,14 +63,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_3D7A5535D1D742C8AA514B4F39443AA4 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_FA6C8E00376F4288AD96ACCE0F2BC650 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CF5A4D3F71B84C11AA6660DD45E4ABE5 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F5B7C68408524874918D5BF965BCC04E }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_7A03D52605BB4D458CABFE4E9DE8BBE4 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_94439308467B4D2596A540A022F52E8D }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'Agro-Link'
+          app-name: 'AgroLink'
           slot-name: 'Production'
           

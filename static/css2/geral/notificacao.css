@@ -1,0 +1,73 @@
+/* Container fixo */
+.toast-container {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Base comum para todas as notificações */
+.notificacao-base {
+    border: white solid 2px;
+    min-width: 280px;
+    max-width: 400px;
+    padding: 14px 20px;
+    border-radius: 12px;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    animation: deslizarEntrada 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.5s ease;
+}
+
+/* Cores específicas */
+.notificacao-sucesso { background-color: #00C853; } /* Verde */
+.notificacao-edicao { background-color: #2979FF; }  /* Azul */
+.notificacao-exclusao { background-color: #FF1744; } /* Vermelho */
+.notificacao-planilha { background-color: #115708; } /* Verde Escuro */
+.notificacao-erro { background-color: #000000; } /* Preto */
+.notificacao-generica { background-color: #7c7575; } /* Preto */
+
+
+.notificacao-icone {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.notificacao-texto {
+    flex: 1;
+}
+
+/* Animações */
+@keyframes deslizarEntrada {
+    from { transform: translateX(110%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.notificacao-base.saindo {
+    opacity: 0;
+    transform: scale(0.9);
+    pointer-events: none;
+}
+
+/* Responsividade para celulares */
+@media (max-width: 480px) {
+    .toast-container {
+        right: 15px;
+        left: 15px;
+        top: 15px;
+    }
+    .notificacao-base {
+        min-width: auto;
+        max-width: none;
+    }
+}

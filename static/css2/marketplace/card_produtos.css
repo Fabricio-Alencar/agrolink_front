@@ -1,0 +1,223 @@
+/* ==========================================================
+   PRODUTOS (GRID + CARD) - MOBILE FIRST
+========================================================== */
+
+/* =========================
+   GRID
+========================= */
+
+.grade-produtos {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    flex: 1;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+
+    background: var(--cor-branco);
+    border: 1px solid var(--cor-borda);
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .12);
+
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, .15);
+}
+
+.product-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.product-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: var(--space-md);
+}
+
+.product-title {
+    margin-bottom: .5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--cor-texto-principal);
+}
+
+/* DESCRIÇÃO */
+
+.product-desc {
+    margin-bottom: var(--space-md);
+
+    font-size: .9rem;
+    line-height: 1.5;
+
+    color: var(--cor-texto-secundario);
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+}
+
+/* PREÇO */
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
+
+    border-bottom: 1px solid var(--cor-borda);
+}
+
+.price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+}
+
+.price span {
+    font-size: .8rem;
+    font-weight: 400;
+    color: var(--cor-texto-secundario);
+}
+
+.stock {
+    font-size: .85rem;
+    color: var(--cor-texto-principal);
+}
+
+/* PRODUTOR */
+
+.producer-info {
+    margin-bottom: .35rem;
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--cor-texto-principal);
+}
+
+/* AVALIAÇÃO */
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+
+    margin-bottom: .5rem;
+
+    color: #f4b400;
+}
+
+.rating span {
+    color: var(--cor-texto-secundario);
+    font-size: .8rem;
+}
+
+/* LOCALIZAÇÃO */
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: .35rem;
+
+    margin-bottom: var(--space-md);
+
+    color: var(--cor-texto-secundario);
+    font-size: .8rem;
+}
+
+.location svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+/* BOTÃO */
+
+.btn-negociar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    width: 100%;
+
+    margin-top: auto;
+
+    padding: .65rem;
+
+    border: none;
+    border-radius: 999px;
+
+    background: var(--cor-primaria);
+    color: var(--cor-branco);
+
+    font-size: .95rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: background .2s;
+}
+
+.btn-negociar:hover {
+    background: var(--cor-primaria-hover);
+}
+
+.btn-negociar svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (min-width: 768px) {
+
+    .grade-produtos {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    .product-info {
+        padding: var(--space-lg);
+    }
+
+    .product-img {
+        height: 190px;
+    }
+
+}
+
+/* =========================
+   DESKTOP
+========================= */
+
+@media (min-width: 1024px) {
+
+    .grade-produtos {
+        grid-template-columns: repeat(3, minmax(280px, 1fr));
+    }
+
+    .product-img {
+        height: 210px;
+    }
+
+}

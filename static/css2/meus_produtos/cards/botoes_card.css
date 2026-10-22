@@ -1,0 +1,158 @@
+/* =========================
+   BOTÕES DO CARD
+========================= */
+.botoes-card {
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-sm);
+
+    height: 3rem;
+
+    margin-top: auto;
+}
+
+
+/* =========================
+   BOTÃO EDITAR
+========================= */
+.editar-card-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-sm);
+
+    flex: 1;
+
+    font-family: inherit;
+    font-size: var(--fs-small);
+
+    color: var(--cor-texto-principal);
+    background-color: var(--cor-branco);
+
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: 0.5rem;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.15s ease;
+}
+
+
+/* =========================
+   ÍCONE EDITAR
+========================= */
+[data-lucide="square-pen"] {
+    width: 1.35rem;
+    height: 1.35rem;
+
+    color: var(--cor-texto-principal);
+
+    stroke-width: 2;
+}
+
+
+/* =========================
+   BOTÃO EXCLUIR
+========================= */
+.excluir-card-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    aspect-ratio: 1;
+    height: 100%;
+
+    flex-shrink: 0;
+
+    background-color: red;
+
+    border: 0.1rem solid var(--cor-borda-cards);
+    border-radius: 0.5rem;
+
+    cursor: pointer;
+
+    transition: background-color 0.2s ease,
+                transform 0.15s ease;
+}
+
+
+/* =========================
+   ÍCONE LIXEIRA
+========================= */
+[data-lucide="trash-2"] {
+    width: 1.35rem;
+    height: 1.35rem;
+
+    color: var(--cor-branco);
+
+    stroke-width: 2.2;
+}
+
+
+/* =========================
+   HOVER
+========================= */
+.editar-card-btn:hover {
+    background-color: #dfa232;
+
+    border-color: var(--cor-texto-principal);
+
+    transform: scale(1.02);
+}
+
+.excluir-card-btn:hover {
+    background-color: var(--cor-texto-principal);
+
+    transform: scale(1.05);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .botoes-card {
+        height: 2.75rem;
+        gap: var(--space-md);
+    }
+
+    .editar-card-btn {
+        gap: var(--space-md);
+        font-size: var(--fs-body);
+    }
+
+    [data-lucide="square-pen"] {
+        width: 1.35rem;
+        height: 1.35rem;
+    }
+
+    [data-lucide="trash-2"] {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+}
+
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .botoes-card {
+        height: 3rem;
+    }
+
+    [data-lucide="square-pen"] {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    [data-lucide="trash-2"] {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+}

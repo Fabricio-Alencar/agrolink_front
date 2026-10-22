@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Produtor | AgroLink</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../static/css2/geral/global.css">
+    <link rel="stylesheet" href="../../static/css2/geral/base.css">
+    <link rel="stylesheet" href="../../static/css2/geral/header.css">
+    <link rel="stylesheet" href="../../static/css2/geral/layout.css">
+    <link rel="stylesheet" href="../../static/css2/geral/drawer.css">
+    <link rel="stylesheet" href="../../static/css2/geral/notificacao.css">
+    <link rel="stylesheet" href="../../static/css2/geral/sem_produto.css">
+    <link rel="stylesheet" href="../../static/css2/geral/avaliacoes.css">
+    <link rel="stylesheet" href="../../static/css2/perfil/perfil_produtor.css">
+
+    <link rel="icon" type="image/png" href="../../static/assets/login/minhoca_pequena.png">
+</head>
+
+<body>
+
+<header class="header">
+    <button class="btn-menu-hamburger" id="botaoAbrirMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">🌱 AgroLink</div>
+</header>
+
+<!-- =========================
+     MENU LATERAL
+========================= -->
+<aside class="painel-lateral" id="painelLateral">
+
+    <div class="painel-cabecalho-verde">
+        <h1 class="painel-logo-drawer">AgroLink</h1>
+        <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
+    </div>
+
+    <div class="painel-conteudo">
+
+        <div class="cartao-usuario">
+            <img src="../../static/assets/login/minhoca_pequena.png" alt="Foto de Perfil" class="usuario-foto">
+            <div class="usuario-dados">
+                <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
+                <span class="usuario-tipo" id="usuarioTipo">...</span>
+            </div>
+        </div>
+
+        <nav class="painel-navegacao">
+            <!-- O drawer.js coloca os links aqui -->
+        </nav>
+
+        <footer class="painel-rodape">
+            <button class="botao-logout" onclick="Auth.logout()">
+                <span class="icone-box"><i data-lucide="log-out"></i></span>
+                Sair da Conta
+            </button>
+        </footer>
+
+    </div>
+</aside>
+
+<div id="mascaraMenu" class="mascara-menu"></div>
+
+
+<!-- =========================
+     CONTEÚDO
+========================= -->
+<main class="perfil-produtor">
+
+    <button class="btn-voltar" type="button" onclick="history.length > 1 ? history.back() : (location.href = '/marketplace')">
+        <i data-lucide="arrow-left"></i>
+        Voltar
+    </button>
+
+    <div id="conteudoPerfilProdutor">
+        <div class="carregando-produtos">
+            <div class="spinner-produtos"></div>
+            <p>Carregando perfil do produtor...</p>
+        </div>
+    </div>
+
+</main>
+
+<guia-passos
+    titulo="Como visualizar o Perfil do Produtor"
+    subtitulo="Conheça as informações do produtor, consulte seus produtos e confira as avaliações antes de negociar."
+    imagem="../../static/assets/login/minhoca_pequena.png"
+    passos='[
+        {"numero": 1, "titulo": "Conheça o produtor", "descricao": "Confira as informações do produtor, como nome, localização e outros dados disponibilizados no perfil."},
+        {"numero": 2, "titulo": "Consulte os produtos", "descricao": "Visualize os produtos disponibilizados pelo produtor para conhecer as opções oferecidas."},
+        {"numero": 3, "titulo": "Confira as avaliações", "descricao": "Consulte as avaliações e opiniões de outros usuários para conhecer as experiências com o produtor."},
+        {"numero": 4, "titulo": "Volte ao Marketplace", "descricao": "Clique no botão Voltar para retornar à página anterior e continuar explorando os produtos disponíveis."}
+    ]'
+></guia-passos>
+
+<script src="../../static/js/guia-passos.js" defer></script>
+
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+
+<script src="../../static/js/config.js"></script>
+<script src="../../static/js/auth.js"></script>
+<script src="../../static/js/avaliacoes.js"></script>
+<script src="../../static/js/drawer.js"></script>
+<script src="../../static/js/notificacao.js"></script>
+<script type="module" src="../../static/js/perfil_produtor/main.js"></script>
+
+</body>
+</html>

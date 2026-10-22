@@ -1,4 +1,4 @@
-const API_URL = "https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net/";
+const API_URL = CONFIG.API_URL;
 
 export const API = {
     async obterPerfil() {

@@ -1,0 +1,200 @@
+/* =========================================================
+   MODAL BASE (MOBILE FIRST)
+========================================================= */
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+
+    justify-content: center;
+    align-items: flex-start;
+
+    padding: 1rem;
+
+    overflow-y: auto;
+
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modal.active {
+    display: flex;
+}
+
+/* =========================================================
+   CONTEÚDO
+========================================================= */
+
+.modal-content {
+    position: relative;
+
+    width: 100%;
+    max-width: 100%;
+
+    background: #fff;
+
+    border-radius: 1rem;
+
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* =========================================================
+   TÍTULO
+========================================================= */
+
+.titulo-modal {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    font-family: 'Fredoka', sans-serif;
+}
+
+.titulo-modal img {
+    width: 2.2rem;
+    height: 2.2rem;
+    object-fit: contain;
+}
+
+.titulo-modal h2 {
+    margin: 0;
+
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+/* =========================================================
+   BOTÃO FECHAR
+========================================================= */
+
+.btn-fechar {
+    position: absolute;
+
+    top: .75rem;
+    right: .75rem;
+
+    width: 2rem;
+    height: 2rem;
+
+    border: none;
+    border-radius: 50%;
+
+    background-color: #746969;
+    background-image: url("../../../assets/fechar.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 230%;
+
+    cursor: pointer;
+
+    transition: background-color .2s;
+}
+
+.btn-fechar:hover {
+    background-color: #912121;
+}
+
+/* =========================================================
+   CAMPOS
+========================================================= */
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+}
+
+.campo label {
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+input,
+select {
+    width: 100%;
+
+    padding: .9rem;
+
+    border: 1px solid #433838;
+    border-radius: .5rem;
+
+    background: #F0FFC0;
+
+    font-size: .95rem;
+}
+
+/* =========================================================
+   LINHAS
+========================================================= */
+
+.linha-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.linha-form .campo {
+    flex: 1;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (min-width: 768px) {
+
+    .modal {
+        padding: 2rem;
+        align-items: center;
+    }
+
+    .modal-content {
+        width: 90%;
+
+        padding: 2rem;
+    }
+
+    .titulo-modal img {
+        width: 2.7rem;
+        height: 2.7rem;
+    }
+
+    .titulo-modal h2 {
+        font-size: 1.8rem;
+    }
+
+    .btn-fechar {
+        width: 2.2rem;
+        height: 2.2rem;
+    }
+
+    .linha-form {
+        flex-direction: row;
+    }
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 1024px) {
+
+    .modal-content {
+        width: min(95%, 1020px);
+        padding: 2rem;
+    }
+
+    .titulo-modal img {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .titulo-modal h2 {
+        font-size: 2rem;
+    }
+}

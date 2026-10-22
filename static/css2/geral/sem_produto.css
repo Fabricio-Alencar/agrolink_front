@@ -1,0 +1,100 @@
+
+/* =========================
+   ESTADO SEM PRODUTOS
+========================= */
+
+.sem-produtos {
+    grid-column: 1 / -1;
+
+    width: 100%;
+    min-height: 300px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-md);
+
+    padding: var(--space-xl);
+
+    text-align: center;
+
+    background: #dddddd86;
+    border: 0.0625rem solid #e1e5d8;
+    border-radius: 1rem;
+
+    color: var(--cor-texto-secundario);
+}
+
+
+/* =========================
+   ÍCONE
+========================= */
+
+.sem-produtos svg {
+    width: 4rem;
+    height: 4rem;
+
+    color: var(--cor-primaria);
+
+    margin-bottom: var(--space-sm);
+}
+
+
+/* =========================
+   TÍTULO
+========================= */
+
+.sem-produtos h2 {
+    margin: 0;
+
+    color: var(--cor-texto-principal);
+
+    font-size: var(--fs-h3);
+    font-weight: 600;
+}
+
+
+/* =========================
+   TEXTO
+========================= */
+
+.sem-produtos p {
+    max-width: 35rem;
+
+    margin: 0;
+
+    color: var(--cor-texto-secundario);
+
+    font-size: var(--fs-body);
+    line-height: 1.5;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 767px) {
+
+    .sem-produtos {
+        min-height: 250px;
+
+        padding: var(--space-lg);
+    }
+
+    .sem-produtos svg {
+        width: 3.5rem;
+        height: 3.5rem;
+    }
+
+    .sem-produtos h2 {
+        font-size: var(--fs-h4);
+    }
+
+    .sem-produtos p {
+        font-size: var(--fs-small);
+    }
+}
+

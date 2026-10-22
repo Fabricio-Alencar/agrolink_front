@@ -30,17 +30,27 @@ def meus_produtos():
 # 🔹 Página de Negociação (Produtor)
 @app.route('/negociacoes_produtor')
 def negociacao_produtor():
-    return render_template('negociacoes_produtor.html')
+    return render_template('pedidos.html')
 
 # 🔹 Página de Negociação (Estabelecimento)
 @app.route('/negociacoes_estabelecimento')
 def negociacao_estabelecimento():
-    return render_template('negociacoes_estabelecimento.html')
+    return render_template('pedidos.html')
 
 # 🔹 Página de Perfil
 @app.route('/perfil')
 def perfil():
     return render_template('perfil.html')
+
+# 🔹 Página de Chat
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+# 🔹 Perfil público do produtor (dados, avaliações e produtos)
+@app.route('/produtor/<int:produtor_id>')
+def perfil_produtor(produtor_id):
+    return render_template('perfil_produtor.html')
 
 if __name__ == "__main__":
    print("🚀 Servidor Flask rodando em modo DEBUG...")

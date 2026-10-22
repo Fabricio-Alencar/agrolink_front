@@ -3,280 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil do Produtor</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>Perfil | AgroLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Fredoka:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="../static/css/base.css">
-    <link rel="stylesheet" href="../static/css/drawer.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_layout.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_foto.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_formulario.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_botoes.css">
-    <link rel="stylesheet" href="../static/css/perfil/perfil_modal.css">
+    <link rel="stylesheet" href="../static/css2/geral/global.css">
+    <link rel="stylesheet" href="../static/css2/geral/base.css">
+    <link rel="stylesheet" href="../static/css2/geral/header.css">
+    <link rel="stylesheet" href="../static/css2/geral/layout.css">
+    <link rel="stylesheet" href="../static/css2/geral/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
+    <link rel="stylesheet" href="../static/css2/perfil/layout.css">
+    <link rel="stylesheet" href="../static/css2/perfil/foto.css">
+    <link rel="stylesheet" href="../static/css2/perfil/formulario.css">
+    <link rel="stylesheet" href="../static/css2/perfil/botoes.css">
+    <link rel="stylesheet" href="../static/css2/perfil/modal.css">
+    <link rel="stylesheet" href="../static/css2/geral/avaliacoes.css">
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
 </head>
 <body>
-
     <header class="header">
-        <div class="cabecalho-esquerda">
-            <button class="menu-hamburger" id="botaoAbrirMenu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
-            <div class="logo">🌱 AgroLink</div>
+        <button class="btn-menu-hamburger" id="botaoAbrirMenu" type="button">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo">
+            🌱 AgroLink
         </div>
     </header>
-    
-    <div class="camada-overlay" id="mascaraMenu"></div>
-
+    <barra-navegacao pagina="perfil"></barra-navegacao>
     <aside class="painel-lateral" id="painelLateral">
-        
         <div class="painel-cabecalho-verde">
-            <h1 class="painel-logo-drawer">AgroLink</h1>
-
-            <button class="botao-fechar-drawer" id="botaoFecharMenu">
+            <h1 class="painel-logo-drawer">
+                AgroLink
+            </h1>
+            <button class="botao-fechar-drawer" id="botaoFecharMenu" type="button">
                 &times;
             </button>
         </div>
-    
         <div class="painel-conteudo">
-            
             <div class="cartao-usuario">
-                <img 
-                    src="../static/uploads/perfis/user.webp" 
-                    alt="Foto de Perfil" 
-                    class="usuario-foto"
-                >
-
+                <img src="../static/assets/login/minhoca_pequena.png" alt="Foto de Perfil" class="usuario-foto">
                 <div class="usuario-dados">
                     <strong class="usuario-nome" id="usuarioNome">
                         Carregando...
                     </strong>
-
                     <span class="usuario-tipo" id="usuarioTipo">
-                        Buscando informações...
+                        ...
                     </span>
                 </div>
             </div>
-    
-            <nav class="painel-navegacao">
-            </nav>
-    
+            <nav class="painel-navegacao"></nav>
             <footer class="painel-rodape">
-                <button class="botao-logout" onclick="Auth.logout()">
-
+                <button class="botao-logout" type="button" onclick="Auth.logout()">
                     <span class="icone-box">
                         <i data-lucide="log-out"></i>
                     </span>
-
                     Sair da Conta
                 </button>
             </footer>
         </div>
     </aside>
-
-    <main class="profile-container">
-        
-        <aside class="profile-sidebar">
-
-            <img 
-                src="../static/assets/login/minhoca_grande.png" 
-                alt="Mascote" 
-                class="mascot-img"
-                onerror="this.style.display='none'"
-            >
-            
-            <div class="profile-upload-zone" id="profile-upload-zone">
-
-                <img 
-                    src="../static/assets/user.webp" 
-                    alt="Foto de Perfil" 
-                    class="profile-img" 
-                    id="profile-img"
-                >
-
-                <div class="upload-overlay">
-                    <i class="fa-solid fa-camera"></i>
-                    <span>Alterar Foto</span>
-                </div>
-
-                <input 
-                    type="file" 
-                    id="file-input" 
-                    accept="image/*" 
-                    hidden
-                >
+    <div id="mascaraMenu" class="mascara-menu"></div>
+    <main class="main">
+        <section class="topo">
+            <div class="header-texto">
+                <h1>Meu Perfil</h1>
+                <p class="subtitulo">
+                    Mantenha seus dados atualizados para facilitar novas negociações.
+                </p>
             </div>
-
-            <button class="btn-delete" id="btn-delete-account">
-                Excluir Conta
-            </button>
-
-        </aside>
-
-        <section class="profile-content">
-
-            <div class="profile-header">
-
-                <h1 class="user-name">
-                    Carregando perfil...
-                </h1>
-
-                <h2 class="user-role">
-                    Buscando dados do usuário...
-                </h2>
-
-            </div>
-            
-            <hr class="divider">
-
-            <form 
-                class="user-info-form" 
-                id="user-form" 
-                onsubmit="event.preventDefault();"
-            >
-                
-                <div class="form-group">
-
-                    <label>Nome completo</label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-user field-icon"></i>
-
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
-
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                    <label>E-mail</label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-envelope field-icon"></i>
-
-                        <input 
-                            type="email" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
-
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                    <label>Telefone</label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-phone field-icon"></i>
-
-                        <input 
-                            type="tel" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
-
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                    <label>Localização</label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-location-dot field-icon"></i>
-
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
-
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-
-                    </div>
-                </div>
-
-                <div class="form-group">
-
-                    <label>Senha</label>
-
-                    <div class="input-wrapper">
-
-                        <i class="fa-solid fa-lock field-icon"></i>
-
-                        <input 
-                            type="password" 
-                            class="form-control" 
-                            value="Carregando..."
-                            readonly
-                        >
-
-                        <i class="fa-solid fa-pen-to-square edit-icon"></i>
-
-                    </div>
-                </div>
-
-            </form>
-
         </section>
+        <div class="profile-container">
+            <section class="profile-sidebar">
+                <div class="profile-user-card-mini">
+                    <div class="profile-upload-zone" id="profile-upload-zone">
+                        <img class="profile-img" id="profile-img" src="../static/assets/user.webp" alt="Foto de perfil">
+                        <div class="upload-overlay">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Alterar Foto</span>
+                        </div>
+                    </div>
+                    <div class="profile-user-mini-info">
+                        <h3 class="user-mini-name" id="userMiniName"></h3>
+                        <span class="user-mini-role" id="userMiniRole"></span>
+                        <p class="user-mini-member" id="userMiniMember">
+                            Conectando pessoas e oportunidades no campo
+                        </p>
+                    </div>
+                </div>
+                <input type="file" id="file-input" accept="image/*" hidden>
+            </section>
+            <section class="profile-content">
+                <div class="profile-header-box">
+                    <h2 class="section-title">
+                        Informações pessoais
+                    </h2>
+                    <p class="section-desc">
+                        Dados usados na sua identificação e nas negociações.
+                    </p>
+                </div>
+                <form class="user-info-form" id="user-form">
+                    <div class="form-group full-width">
+                        <label for="profile-name">
+                            Nome completo
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user field-icon"></i>
+                            <input id="profile-name" class="form-control" type="text" readonly>
+                            <i class="fa-solid fa-pen edit-icon" data-target="profile-name" title="Editar" role="button" tabindex="0" aria-label="Editar nome"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">
+                            E-mail
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope field-icon"></i>
+                            <input id="profile-email" class="form-control" type="email" readonly>
+                            <i class="fa-solid fa-pen edit-icon" data-target="profile-email" title="Editar" role="button" tabindex="0" aria-label="Editar e-mail"></i>
+                        </div>
+                    </div>
 
+                    <div class="form-group">
+                        <label for="profile-phone">
+                            Telefone
+                        </label>
+
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-phone field-icon"></i>
+
+                            <input
+                                id="profile-phone"
+                                class="form-control"
+                                type="tel"
+                                inputmode="numeric"
+                                autocomplete="tel"
+                                maxlength="15"
+                                placeholder="(11) 99999-9999"
+                                readonly
+                            >
+
+                            <i
+                                class="fa-solid fa-pen edit-icon"
+                                data-target="profile-phone"
+                                title="Editar"
+                                role="button"
+                                tabindex="0"
+                                aria-label="Editar telefone"
+                            ></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="profile-state">
+                            Estado
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-map field-icon"></i>
+                            <select id="profile-state" class="form-control" disabled>
+                                <option value="">
+                                    Selecione o estado
+                                </option>
+                            </select>
+                            <i class="fa-solid fa-pen edit-icon" data-target="profile-state" title="Editar" role="button" tabindex="0" aria-label="Editar estado"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-city">
+                            Cidade
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-city field-icon"></i>
+                            <select id="profile-city" class="form-control" disabled>
+                                <option value="">
+                                    Selecione o estado primeiro
+                                </option>
+                            </select>
+                            <i class="fa-solid fa-pen edit-icon" data-target="profile-city" title="Editar" role="button" tabindex="0" aria-label="Editar cidade"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-password">
+                            Senha
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock field-icon"></i>
+                            <input id="profile-password" class="form-control" type="password" value="••••••••" readonly autocomplete="new-password">
+                            <i class="fa-solid fa-eye toggle-password" data-target="profile-password" hidden title="Mostrar senha" role="button" tabindex="0" aria-label="Mostrar senha"></i>
+                            <i class="fa-solid fa-pen edit-icon" data-target="profile-password" title="Editar senha" role="button" tabindex="0" aria-label="Editar senha"></i>
+                        </div>
+                    </div>
+                    <div class="form-group" id="profile-confirm-password-group" hidden>
+                        <label for="profile-confirm-password">
+                            Confirmar senha
+                        </label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock field-icon"></i>
+                            <input id="profile-confirm-password" class="form-control" type="password" value="" readonly autocomplete="new-password">
+                            <i class="fa-solid fa-eye toggle-password" data-target="profile-confirm-password" hidden title="Mostrar senha" role="button" tabindex="0" aria-label="Mostrar senha"></i>
+                            <i class="fa-solid fa-pen edit-icon" data-target="profile-confirm-password" title="Editar confirmação da senha" role="button" tabindex="0" aria-label="Editar confirmação da senha"></i>
+                        </div>
+                    </div>
+                    <div class="form-actions full-width">
+                        <button type="submit" class="btn-save-changes">
+                            <i class="fa-solid fa-check"></i>
+                            Salvar alterações
+                        </button>
+                    </div>
+                </form>
+                <div class="delete-account-section">
+                    <div class="delete-account-text">
+                        <strong>Excluir minha conta</strong>
+                        <p>
+                            Todos os seus dados, produtos e conversas serão removidos.
+                        </p>
+                    </div>
+                    <button class="btn-delete" id="btn-delete-account" type="button">
+                        <i class="fa-solid fa-trash"></i>
+                        Excluir conta
+                    </button>
+                </div>
+            </section>
+        </div>
     </main>
-
     <div class="modal-overlay" id="delete-modal">
-
         <div class="modal-content">
-
-            <h2>Excluir Conta</h2>
-
+            <h2>Excluir conta?</h2>
             <p>
                 Tem certeza de que deseja excluir sua conta?
-                Esta ação não pode ser desfeita e todos os seus
-                dados serão apagados.
+                Esta ação não poderá ser desfeita.
             </p>
-
             <div class="modal-actions">
-
-                <button class="btn-cancel" id="btn-cancel-delete">
+                <button class="btn-cancel" id="btn-cancel-delete" type="button">
                     Cancelar
                 </button>
-
-                <button class="btn-confirm-delete" id="btn-confirm-delete">
-                    Sim, Excluir
+                <button class="btn-confirm-delete" id="btn-confirm-delete" type="button">
+                    Excluir conta
                 </button>
-
             </div>
         </div>
     </div>
-
+    <guia-passos
+        titulo="Como gerenciar seu Perfil"
+        subtitulo="Visualize e atualize suas informações pessoais e mantenha sua conta sempre atualizada."
+        imagem="../static/assets/login/minhoca_pequena.png"
+        passos='[
+            {"numero": 1, "titulo": "Confira seus dados", "descricao": "Visualize seu nome completo, e-mail, telefone e localização cadastrados na sua conta."},
+            {"numero": 2, "titulo": "Edite suas informações", "descricao": "Clique no ícone de lápis ao lado dos campos disponíveis para alterar seus dados pessoais."},
+            {"numero": 3, "titulo": "Atualize sua foto", "descricao": "Clique na área da foto de perfil para selecionar uma nova imagem do seu dispositivo."},
+            {"numero": 4, "titulo": "Gerencie sua conta", "descricao": "Utilize a opção Excluir conta somente se desejar encerrar sua conta permanentemente."}
+        ]'>
+    </guia-passos>
+    <script src="../static/js/barra-navegacao.js" defer></script>
+    <script src="../static/js/guia-passos.js" defer></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="../static/js/config.js"></script>
     <script src="../static/js/auth.js"></script>
+    <script src="../static/js/avaliacoes.js"></script>
     <script src="../static/js/drawer.js"></script>
     <script type="module" src="../static/js/perfil/main.js"></script>
     <script src="../static/js/notificacao.js"></script>
-    
 </body>
 </html>

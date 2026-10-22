@@ -13,13 +13,18 @@ function normalizar(str) {
         .toLowerCase()
         .trim()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, ""); // remove acentos
+        .replace(/[\u0300-\u036f]/g, "");
 }
 
 // ===============================
 // CACHE LOCAL (evita múltiplas chamadas)
 // ===============================
 let cacheProdutos = null;
+
+// ===============================
+// BOTÃO LIMPAR FILTROS
+// ===============================
+const btnLimparFiltros = document.getElementById('btnLimparFiltros');
 
 // ===============================
 // PEGAR FILTROS
@@ -45,8 +50,7 @@ function filtrar(lista, filtros) {
     const estadoFiltro = normalizar(filtros.estado);
     const cidadeFiltro = normalizar(filtros.cidade);
 
-    const resultado = lista.filter(p => {
-
+    return lista.filter(p => {
         const nome = normalizar(p.nome);
         const produtor = normalizar(p.produtor_nome);
 
@@ -55,15 +59,12 @@ function filtrar(lista, filtros) {
 
         return (
             (nome.includes(termo) || produtor.includes(termo)) &&
-
-            (filtros.categoria === 'Todos' || p.categoria === filtros.categoria) &&
-
+            (filtros.categoria === 'Todos' ||
+                p.categoria === filtros.categoria) &&
             (estadoFiltro === '' || estado === estadoFiltro) &&
             (cidadeFiltro === '' || cidade === cidadeFiltro)
         );
     });
-
-    return resultado;
 }
 
 // ===============================
@@ -71,7 +72,7 @@ function filtrar(lista, filtros) {
 // ===============================
 export async function aplicarFiltros() {
     try {
-        // usa cache
+        // Usa cache
         if (!cacheProdutos) {
             console.log("🔄 Buscando API...");
             cacheProdutos = await API.listarProdutos();
@@ -90,15 +91,31 @@ export async function aplicarFiltros() {
 }
 
 // ===============================
+// LIMPAR TODOS OS FILTROS
+// ===============================
+function limparFiltros() {
+    DOM.searchInput.value = '';
+    DOM.filterCat.value = 'Todos';
+    DOM.filterEstado.value = '';
+    DOM.filterCidade.value = '';
+
+    // Reaplica os filtros sem fazer outra chamada à API
+    aplicarFiltros();
+}
+
+// ===============================
 // EVENTOS
 // ===============================
 DOM.searchInput.addEventListener('input', aplicarFiltros);
 DOM.filterCat.addEventListener('change', aplicarFiltros);
 
-// 🔥 IMPORTANTE: resetar cidade ao trocar estado
+// Reseta a cidade ao trocar o estado
 DOM.filterEstado.addEventListener('change', () => {
     DOM.filterCidade.value = '';
     aplicarFiltros();
 });
 
 DOM.filterCidade.addEventListener('change', aplicarFiltros);
+
+// Botão para limpar todos os filtros
+btnLimparFiltros?.addEventListener('click', limparFiltros);

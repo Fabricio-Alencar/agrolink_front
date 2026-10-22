@@ -1,0 +1,64 @@
+/* ==========================================================================
+   SETTINGS / CONFIGURAÇÕES (Variáveis e Escalas)
+   ========================================================================== */
+:root {
+    /* Cores ajustadas para Contraste AA */
+    --cor-primaria: #2e7d32;
+    --cor-primaria-hover: #0e5e58;
+    --cor-primaria-variacao: #5cb85c;
+    --cor-barra-pesquisa: #F0FFC0;
+    --cor-texto-principal: #222222;
+    --cor-texto-secundario: #666666;
+    --cor-texto-escuro: #333333;
+    --cor-borda: #dddddd;
+    --cor-borda-cards: #A19D9D;
+    --cor-fundo-claro: #f9f9f9;
+    --cor-branco: #ffffff;
+    --cor-fundo: #fafafa;
+
+    --cor-borda-filtro: #3f3f3f7c;
+
+    --verde-oliva: #558B2F;
+    --verde-menta-claro: #D1FFDA;
+    --verde-texto-ativo: #008137;
+    --cinza-texto: #4A4A68;
+    --vermelho-suave: #FFF0F0;
+    --vermelho-texto: #D32F2F;
+
+    --primary:#2e7d32;              /* Cor principal (ações e destaques) */
+    --primary-light: #DCE8B5;        /* Variação clara (inputs, fundos leves) */
+    --status-blue: #4A90E2;          /* Status: Aceito */
+    --status-orange: #F5A623;        /* Status: Pendente */
+    --status-gray: #888888;          /* Status: Finalizado */
+    --status-green: #27AE60;         /* Status: Entregue */
+    --status-red: #E74C3C;           /* Status: Recusado / Ações destrutivas */
+    --status-black: #000000;        /* Status: Cancelado */
+    --bg-color: #F5F5F5;             /* Fundo geral da aplicação */
+    --text-main: #333333;            /* Texto principal */
+    --text-muted: #777777;           /* Texto secundário */
+    --border-radius: 12px;           /* Arredondamento padrão */
+    --shadow: 0 4px 12px rgba(0,0,0,0.05); /* Sombra padrão */
+
+
+    /* Escala de Espaçamento (Rem) */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-xll: 3rem;
+
+
+    /* Escala Tipográfica */
+    --fs-h1: 2.5rem;
+    --fs-h2: 2rem;
+    --fs-h3: 1.5rem;
+    --fs-h4: 1.25rem;
+    --fs-body: 1rem;
+    --fs-small: 0.875rem;
+
+    /* Tamanho Telas */
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1024px;
+    --container-width: 1400px;
+}

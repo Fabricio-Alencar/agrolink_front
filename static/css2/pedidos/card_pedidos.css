@@ -1,0 +1,95 @@
+/* =========================
+   GRID DE CARDS
+========================= */
+.orders-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+}
+
+/* =========================
+   CARD DE PEDIDO
+========================= */
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(0.8rem, 1.5vw, 1.2rem);
+    background-color: var(--cor-branco);
+    border: 0.1rem solid var(--cor-borda);
+    border-radius: clamp(0.6rem, 1vw, 1rem);
+    box-shadow: 0 0.3rem 0.8rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-0.3rem);
+}
+
+/* =========================
+   CABEÇALHO DO CARD
+========================= */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--space-sm);
+}
+
+/* =========================
+   NOME DO PRODUTOR
+========================= */
+.producer-name {
+    font-size: clamp(1rem, 1.2vw, 1.2rem);
+    font-weight: 600;
+    color: var(--cor-texto-principal);
+}
+
+/* =========================
+   NOME DO PRODUTO
+========================= */
+.product-name {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-top: var(--space-xs);
+    color: var(--cor-texto-secundario);
+    font-size: clamp(0.85rem, 1vw, 1rem);
+    overflow-wrap: break-word;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+    .orders-grid {
+        grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+        gap: var(--space-lg);
+    }
+
+    .card {
+        padding: var(--space-lg);
+    }
+
+    .producer-name {
+        font-size: clamp(1rem, 1.3vw, 1.25rem);
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+    .orders-grid {
+        grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+        gap: var(--space-lg);
+    }
+
+    .card {
+        padding: var(--space-lg);
+    }
+
+    .producer-name {
+        font-size: clamp(1.1rem, 1.2vw, 1.3rem);
+    }
+}

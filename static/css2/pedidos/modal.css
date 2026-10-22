@@ -1,0 +1,57 @@
+/* =========================
+   MODAL
+========================= */
+.modal {
+    display: none;
+
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--space-md);
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+/* =========================
+   MODAL ATIVO
+========================= */
+.modal.active {
+    display: flex;
+}
+
+
+/* =========================
+   CONTEÚDO
+========================= */
+.modal-content {
+    width: 100%;
+    max-width: 40rem;
+
+    background: var(--cor-branco);
+
+    border-radius: 0.75rem;
+
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================
+   TÍTULO
+========================= */
+.titulo-modal {
+    margin-bottom: var(--space-md);
+}
+
+.titulo-modal h2 {
+    margin: 0;
+
+    color: var(--cor-texto-principal);
+
+    font-size: var(--fs-h3);
+}

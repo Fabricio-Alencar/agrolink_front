@@ -1,0 +1,49 @@
+/* =========================================================
+   BOTÕES DO PERFIL
+   ========================================================= */
+
+.btn-save-changes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 165px;
+    padding: 10px 17px;
+    border: 0;
+    border-radius: 6px;
+    background: #005b3a;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 61, 39, .15);
+    transition: background .2s ease, transform .2s ease;
+}
+.btn-save-changes:hover { background: #007047; }
+.btn-save-changes:active { transform: translateY(1px); }
+
+.btn-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex: 0 0 auto;
+    padding: 9px 15px;
+    border: 0;
+    border-radius: 6px;
+    background: #d90e35;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: .74rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.btn-delete:hover { background: #b90c2d; }
+
+@media (max-width: 480px) {
+    .form-actions.full-width { justify-content: stretch; }
+    .btn-save-changes { width: 100%; min-height: 42px; font-size: .82rem; }
+    .btn-delete { padding: 9px 11px; font-size: .72rem; }
+}

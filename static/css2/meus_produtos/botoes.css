@@ -1,0 +1,256 @@
+
+/* =========================
+   AÇÕES
+========================= */
+.acoes {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: var(--space-sm);
+
+    width: auto;
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+.acao-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: var(--space-sm);
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    padding: var(--space-sm) var(--space-md);
+
+    min-height: 3rem;
+
+    border: 0.0625rem solid var(--cor-borda);
+    border-radius: 0.75rem;
+
+    background: var(--cor-branco);
+    color: var(--cor-texto-principal);
+
+    font-size: var(--fs-body);
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+/* =========================
+   BOTÕES DE PLANILHA
+========================= */
+.acoes .acao-btn {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 0;
+}
+
+/* =========================
+   ADICIONAR PRODUTO
+========================= */
+.btn-add {
+    background: #000;
+    color: var(--cor-branco);
+    border-color: #000;
+
+    /* Botão flutuante no celular */
+    position: fixed;
+    bottom: 5rem;
+    right: 2rem;
+
+    width: 3.5rem;
+    height: 3.5rem;
+    min-height: auto;
+
+    border-radius: 20%;
+    padding: 0;
+
+    box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+/* Esconde o texto no celular */
+.btn-add span {
+    display: none;
+}
+
+.btn-add:hover {
+    background: #2b3c26;
+}
+
+/* =========================
+   ÍCONES
+========================= */
+[data-lucide="plus"],
+[data-lucide="upload"],
+[data-lucide="download"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+}
+
+[data-lucide="plus"] {
+    color: var(--cor-branco);
+    stroke-width: 2.5;
+}
+
+[data-lucide="upload"],
+[data-lucide="download"] {
+    color: var(--cor-texto-principal);
+    stroke-width: 2;
+}
+
+/* =========================
+   TEXTO
+========================= */
+.acao-btn span {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
+/* =========================
+   HOVER
+========================= */
+.acao-btn:hover {
+    background: #ececec;
+    border-color: #999;
+}
+
+.btn-add:hover {
+    background: #559b3f;
+    border-color: #ececec;
+}
+
+/* =========================
+   BUSCA + AÇÕES
+========================= */
+.busca-acoes {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-md);
+
+    width: 100%;
+    min-width: 0;
+    margin-bottom: var(--space-xl);
+}
+
+/* A busca ocupa todo o espaço restante */
+.busca-acoes > .busca {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+    margin-bottom: 0;
+}
+
+/* Os botões ocupam somente o espaço necessário */
+.busca-acoes > .acoes {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 0;
+}
+
+/* =========================
+   TABLET
+========================= */
+@media (min-width: 768px) {
+
+    .acoes {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: var(--space-sm);
+    }
+
+    .acoes .acao-btn {
+        flex: 0 0 auto;
+        width: auto;
+
+        justify-content: flex-start;
+        padding: var(--space-sm) var(--space-md);
+
+        white-space: nowrap;
+    }
+
+    /* Restaura o botão Adicionar Produto */
+    .btn-add {
+        position: static;
+
+        width: auto;
+        height: auto;
+        min-height: 3rem;
+
+        border-radius: 0.75rem;
+        padding: var(--space-sm) var(--space-md);
+
+        box-shadow: none;
+    }
+
+    /* Mostra o texto novamente */
+    .btn-add span {
+        display: inline;
+    }
+}
+
+/* =========================
+   DESKTOP
+========================= */
+@media (min-width: 1024px) {
+
+    .acao-btn {
+        font-size: 1.05rem;
+        min-height: 3.25rem;
+    }
+
+    [data-lucide="plus"],
+    [data-lucide="upload"],
+    [data-lucide="download"] {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+}
+
+/* =========================
+   CELULAR
+========================= */
+@media (max-width: 767px) {
+
+    .busca-acoes {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-md);
+    }
+
+    .busca-acoes > .busca {
+        width: 100%;
+        flex: 0 0 auto;
+    }
+
+    .busca-acoes > .acoes {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+
+        width: 100%;
+        flex: 0 0 auto;
+        gap: var(--space-sm);
+    }
+
+    .acoes .acao-btn {
+        flex: 1 1 0;
+        width: 0;
+        min-width: 0;
+
+        justify-content: center;
+        padding: var(--space-sm);
+
+        font-size: 0.85rem;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}

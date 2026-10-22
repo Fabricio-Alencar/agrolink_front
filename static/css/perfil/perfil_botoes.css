@@ -1,18 +1,40 @@
 /* =========================
    BOTÕES DO PERFIL
 ========================= */
-.btn-delete {
-    background-color: #5a8553; 
+.btn-save-changes {
+    background-color: #0b4f23; 
     color: #ffffff;
     border: none;
-    padding: 14px 28px; 
-    border-radius: 4px; 
+    padding: 12px 24px; 
+    border-radius: 8px; 
     font-family: 'Inter', sans-serif;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: filter 0.2s ease;
+}
+
+.btn-save-changes:hover {
+    filter: brightness(1.1);
+}
+
+.btn-delete {
+    background-color: #d32f2f; 
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px; 
+    border-radius: 8px; 
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     width: fit-content;
-    margin: 20px auto 0 auto; 
     transition: filter 0.2s ease;
 }
 

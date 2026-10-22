@@ -1,0 +1,190 @@
+
+/* =========================
+   CONTAINER DA BUSCA
+========================= */
+.busca {
+    flex: 1 1 0;
+    width: 100%;
+    min-width: 0;
+    margin-bottom: var(--space-md);
+
+    display: flex;
+    gap: var(--space-md);
+    align-items: center;
+}
+
+/* =========================
+   BARRA DE BUSCA
+========================= */
+.barra-busca {
+    position: relative;
+    width: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* =========================
+   ÍCONE (LUPA)
+========================= */
+.icone-busca {
+    position: absolute;
+    left: var(--space-md);
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: var(--fs-h3);
+    height: var(--fs-h3);
+
+    pointer-events: none;
+    color: var(--cor-texto-secundario);
+}
+
+/* =========================
+   INPUT
+========================= */
+.busca input {
+    width: 100%;
+    min-width: 0;
+    display: block;
+    box-sizing: border-box;
+
+    background-color: var(--cor-barra-pesquisa);
+
+    padding-left: var(--space-xll);
+    padding-top: clamp(0.6rem, 1.2vw, 1rem);
+    padding-bottom: clamp(0.6rem, 1.2vw, 1rem);
+    padding-right: 1rem;
+
+    border-radius: clamp(1rem, 1.5vw, 1.5rem);
+    border: 0.125rem solid var(--cor-borda);
+
+    font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+
+    outline: none;
+}
+
+.busca input:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0.3rem rgba(46, 125, 50, 0.3);
+}
+
+/* =========================
+   FILTRO DE STATUS
+========================= */
+.filtro-status {
+    flex-shrink: 0;
+    width: clamp(10rem, 18vw, 15rem);
+    box-sizing: border-box;
+
+    padding: clamp(0.6rem, 1.2vw, 1rem) 2.8rem clamp(0.6rem, 1.2vw, 1rem) 1rem;
+
+    border: 0.125rem solid var(--cor-borda);
+    border-radius: clamp(1rem, 1.5vw, 1.5rem);
+
+    background-color: var(--cor-barra-pesquisa);
+    color: var(--cor-texto);
+
+    font-size: clamp(0.9rem, 1.2vw, 1.3rem);
+    font-family: inherit;
+
+    outline: none;
+    cursor: pointer;
+
+    appearance: none;
+
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--cor-texto-secundario) 50%),
+        linear-gradient(135deg, var(--cor-texto-secundario) 50%, transparent 50%);
+
+    background-position:
+        calc(100% - 1.2rem) 50%,
+        calc(100% - 0.8rem) 50%;
+
+    background-size: 0.4rem 0.4rem;
+    background-repeat: no-repeat;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+/* =========================
+   HOVER
+========================= */
+.filtro-status:hover {
+    border-color: var(--cor-primaria);
+}
+
+/* =========================
+   FOCO
+========================= */
+.filtro-status:focus {
+    border-color: var(--cor-primaria);
+    box-shadow: 0 0 0.3rem rgba(46, 125, 50, 0.3);
+}
+
+/* =========================
+   OPÇÕES
+========================= */
+.filtro-status option {
+    background-color: var(--cor-barra-pesquisa);
+    color: var(--cor-texto);
+}
+
+/* =========================
+   TABLET E DESKTOP
+========================= */
+@media (min-width: 768px) {
+    .icone-busca {
+        width: var(--fs-h2);
+        height: var(--fs-h2);
+    }
+
+    .busca input {
+        padding-left: 4rem;
+    }
+
+    .busca {
+        flex-direction: row;
+        margin-bottom: 0;
+    }
+
+    .barra-busca {
+        flex: 1 1 auto;
+        width: auto;
+    }
+
+    .filtro-status {
+        width: clamp(10rem, 18vw, 15rem);
+    }
+}
+
+/* =========================
+   CELULAR
+========================= */
+@media (max-width: 767px) {
+    .busca {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-sm);
+        margin-bottom: 0;
+    }
+
+    .barra-busca {
+        width: 100%;
+        flex: 1 1 auto;
+    }
+
+    .busca input {
+        width: 100%;
+        padding-left: var(--space-xll);
+    }
+
+    .filtro-status {
+        width: 100%;
+        max-width: 100%;
+        flex-shrink: 1;
+    }
+}

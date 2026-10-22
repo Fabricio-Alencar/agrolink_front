@@ -1,0 +1,12 @@
+/* =========================================================
+   CHAT - ARQUIVO PRINCIPAL
+========================================================= */
+
+@import url("./layout.css");
+@import url("./conversas.css");
+@import url("./cabecalho.css");
+@import url("./mensagens.css");
+@import url("./formulario.css");
+@import url("./modal.css");
+@import url("./estados.css");
+@import url("./scrollbar.css");

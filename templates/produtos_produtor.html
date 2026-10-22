@@ -10,134 +10,146 @@
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="../static/css/base.css">
-    <link rel="stylesheet" href="../static/css/notificacao.css">
-    <link rel="stylesheet" href="../static/css/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/global.css">
+    <link rel="stylesheet" href="../static/css2/geral/base.css">
+    <link rel="stylesheet" href="../static/css2/geral/header.css">
+    <link rel="stylesheet" href="../static/css2/geral/layout.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra_busca.css">
+    <link rel="stylesheet" href="../static/css2/geral/categorias.css">
+    <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+    <link rel="stylesheet" href="../static/css2/geral/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/sem_produto.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/botao_ceagesp.css">
+
+
+
+
+    <link rel="stylesheet" href="../static/css2/meus_produtos/botoes.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/grid.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/card.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/botoes_card.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/cards/status.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/exclusao.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/modal.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/botoes_modal.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/formulario/upload_descriacao.css">
+    <link rel="stylesheet" href="../static/css2/meus_produtos/planilha.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
+
 
     <!-- ícone da aba de navegação -->
     <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
-
-
-    
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/botoes.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/grid.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/card.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/botoes_card.css">
-    <link rel="stylesheet" href="../static/css/produtores/meus_produtos/status.css">
-    
-    <link rel="stylesheet" href="../static/css/produtores/formulario/modal.css">
-    <link rel="stylesheet" href="../static/css/produtores/formulario/buttons_modal.css">
-    <link rel="stylesheet" href="../static/css/produtores/formulario/form.css">
-    <link rel="stylesheet" href="../static/css/produtores/formulario/upload_descricao.css">
-    <link rel="stylesheet" href="../static/css/produtores/exclusao.css">
-    <link rel="stylesheet" href="../static/css/produtores/planilha.css">
-
 </head>
 
 <body>
 
 <header class="header">
-    <div class="cabecalho-esquerda">
-        <button class="menu-hamburger" id="botaoAbrirMenu">
+    <button class="btn-menu-hamburger" id="botaoAbrirMenu">
             <span></span>
             <span></span>
             <span></span>
-        </button>
-        <div class="logo">🌱 AgroLink</div>
-    </div>
+    </button>
+    <div class="logo">🌱 AgroLink</div>
+
 </header>
 
+<barra-navegacao pagina="produtos"></barra-navegacao>
+
+
+<!-- =========================
+     MENU LATERAL
+========================= -->
 <aside class="painel-lateral" id="painelLateral">
-    
     <div class="painel-cabecalho-verde">
         <h1 class="painel-logo-drawer">AgroLink</h1>
         <button class="botao-fechar-drawer" id="botaoFecharMenu">&times;</button>
     </div>
 
     <div class="painel-conteudo">
-        
+        <!-- USUÁRIO -->
         <div class="cartao-usuario">
-            <img src=https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?auto=format&fit=crop&q=80&w=150&h=150" alt="Foto de Perfil" class="usuario-foto">
+            <img src="../static/assets/login/minhoca_pequena.png" alt="Foto de Perfil" class="usuario-foto">
             <div class="usuario-dados">
                 <strong class="usuario-nome" id="usuarioNome">Carregando...</strong>
                 <span class="usuario-tipo" id="usuarioTipo">...</span>
             </div>
         </div>
 
+        <!-- NAVEGAÇÃO -->
         <nav class="painel-navegacao">
-        
-            <a href="{{ url_for('meus_produtos') }}"
-               class="item-navegacao {% if request.endpoint == 'meus_produtos' %}ativo{% endif %}">
-                <span class="icone-box">📦</span>
-                Meus Produtos (teste)
-            </a>
-        
-            <a href="{{ url_for('negociacao_produtor') }}"
-               class="item-navegacao {% if request.endpoint == 'negociacao_produtor' %}ativo{% endif %}">
-                <span class="icone-box">🛍️</span>
-                Negociações
-            </a>
-        
-            <a href="{{ url_for('perfil') }}"
-               class="item-navegacao {% if request.endpoint == 'perfil' %}ativo{% endif %}">
-                <span class="icone-box">👤</span>
-                Perfil
-            </a>
-        
+            <!-- O drawer.js coloca os links aqui -->
         </nav>
 
+        <!-- RODAPÉ -->
         <footer class="painel-rodape">
             <button class="botao-logout" onclick="Auth.logout()">
-                    <span class="icone-box">
-                        <i data-lucide="log-out"></i>
-                    </span> Sair da Conta
-                </button>
+                <span class="icone-box">
+                    <i data-lucide="log-out"></i>
+                </span>
+                Sair da Conta
+            </button>
         </footer>
     </div>
 </aside>
 
-<!-- máscara do fundo -->
-<div id="mascaraMenu" class="mascara-menu"></div>
+
+<!-- =========================
+     MÁSCARA
+========================= -->
+
+<div
+    id="mascaraMenu"
+    class="mascara-menu"
+></div>
 
 <main class="main">
     <section class="topo">
-        <h1>Meus Produtos</h1>
-    </section>
-
-    <section class="busca">
-        <div class="input-wrapper">
-            <img src="../static/assets/lupa.png" class="icone-busca" alt="Lupa">
-            <input id="searchInput" type="text" placeholder="Pesquisar Produtos...">
+        <div class="header-texto">
+            <h1>Meus Produtos</h1>
+            <p class="subtitulo">Gerencie seus produtos e mantenha o catálogo sempre atualizado</p>
         </div>
-    </section>
 
-    <section class="acoes">
-
-        <button class="acao-btn" onclick="abrirModalCriar()">
-            <i data-lucide="plus"></i>            
+        <button class="acao-btn btn-add" onclick="abrirModalCriar()">
+            <i data-lucide="plus"></i>
             <span>Adicionar Produto</span>
         </button>
-           
-        <button class="acao-btn" id="btnBaixarTemplate">
-            <i data-lucide="download"></i>            
-            <span>Baixar Template Excel</span>
-        </button>
-
-        <button class="acao-btn" onclick="abrirModalPlanilha()">
-            <i data-lucide="upload"></i>            
-            <span>Enviar Planilha</span>
-        </button>
-
-        
     </section>
 
-<section id="produtosContainer" class="produtores-container">
+    <!-- Busca e ações -->
+    <div class="busca-acoes">
 
-    <p id="mensagemCarregando" class="mensagem-carregando">
-        Buscando produtos...
-    </p>
+        <!-- Busca de produtos -->
+        <section class="busca">
+            <div class="barra-busca destaque-verde">
+                <i data-lucide="search" class="icone-busca"></i>
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Pesquisar Produtos..."
+                >
+            </div>
+        </section>
 
-</section></main>
+        <!-- Ações de planilha -->
+        <section class="acoes">
+            <button class="acao-btn" id="btnBaixarTemplate">
+                <i data-lucide="download"></i>
+                <span>Baixar Template Excel</span>
+            </button>
+
+            <button class="acao-btn" onclick="abrirModalPlanilha()">
+                <i data-lucide="upload"></i>
+                <span>Enviar Planilha</span>
+            </button>
+        </section>
+
+    </div>
+
+    <!-- Lista de produtos -->
+    <section id="produtosContainer" class="produtores-container">
+        <p id="mensagemCarregando" class="mensagem-carregando"></p>
+    </section>
+</main>
 
 
 
@@ -172,11 +184,23 @@
             </select>
         </div>
 
-        <div class="linha-form">
-            <div class="campo">
-                <label id="labelPreco" for="precoProduto">Preço por Unidade (R$)</label>
+<div class="linha-form">
+            <div class="campo campo-preco-ceagesp">
+                <label id="labelPreco" for="precoProduto">Preço por kg</label>
+
+                <!-- Input com o botão da CEAGESP posicionado à direita -->
+                <div class="input-com-botao">
+                    <span class="prefixo-moeda">R$</span>
                     <input type="number" id="precoProduto" placeholder="0,00" step="0.01" min="0">
                     
+                    <button type="button" id="btnCeagesp" class="btn-ceagesp">
+                        <i data-lucide="bar-chart-2"></i>
+                        CEAGESP
+                    </button>
+                </div>
+
+                <!-- Dropdown das cotações -->
+                <div id="dropdownCeagesp" class="dropdown-ceagesp oculto"></div>
             </div>
 
             <div class="campo">
@@ -239,6 +263,20 @@
     </div>
 </div>
 
+<!-- Modal para confirmar exclusão de produto -->
+<div id="modalExcluir" class="modal">
+    <div class="modal-content modal-pequeno">
+        <div class="titulo-modal">
+            <h2>Confirmar Exclusão</h2>
+        </div>
+        <p id="mensagemExcluir" class="texto-modal"></p>
+        <div class="botoes-modal-excluir">
+            <button class="btn-cancelar-exclusao" onclick="fecharModalExcluir()">Cancelar</button>
+            <button id="btnConfirmarExclusao" class="btn-confirmar-exclusao">Excluir</button>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal para Envio de Planilha -->
 <div id="modalPlanilha" class="modal">
@@ -292,27 +330,26 @@
         </div>
     </div>
 </div>
-
-
-<!-- Modal para confirmar exclusão de produto -->
-<div id="modalExcluir" class="modal">
-    <div class="modal-content modal-pequeno">
-        <div class="titulo-modal">
-            <h2>Confirmar Exclusão</h2>
-        </div>
-        <p id="mensagemExcluir" class="texto-modal"></p>
-        <div class="botoes-modal-excluir">
-            <button class="btn-cancelar-exclusao" onclick="fecharModalExcluir()">Cancelar</button>
-            <button id="btnConfirmarExclusao" class="btn-confirmar-exclusao">Excluir</button>
-        </div>
-    </div>
-</div>
-
-
+<!-- Chamada limpa do componente passando os parâmetros  para ajuda passo a passo-->
+<guia-passos 
+    titulo="Como usar esta página" 
+    subtitulo="Veja como manter seu catálogo organizado em poucos passos."
+    imagem="../static/assets/login/minhoca_pequena.png"
+    passos='[
+        {"numero": 1, "titulo": "Cadastre um produto", "descricao": "Clique em Adicionar Produto e preencha nome, categoria, preço e descrição."},
+        {"numero": 2, "titulo": "Importe vários itens", "descricao": "Baixe o modelo, preencha a planilha e use Enviar Planilha para importar."},
+        {"numero": 3, "titulo": "Encontre e atualize", "descricao": "Use a busca para localizar produtos. Depois, edite ou exclua itens desatualizados."},
+        {"numero": 4, "titulo": "Acompanhe sua operação", "descricao": "Use as abas do cabeçalho para acessar o Marketplace, pedidos e conversas."}
+    ]'
+>
+</guia-passos>
+<script src="../static/js/barra-navegacao.js" defer></script>
+<script src="../static/js/guia-passos.js" defer></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
   lucide.createIcons();
 </script>
+<script src="../static/js/config.js"></script>
 <script src="../static/js/auth.js"></script>
 <script src="../static/js/drawer.js"></script>
 
@@ -327,10 +364,11 @@
 
 <script src="../static/js/produtores/renderizar.js"></script>
 
-<script src="../static/js/produtores/planilha.js"></script>
+<script type="module" src="../static/js/produtores/planilha/planilha.js"></script>
+
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
 <script src="../static/js/notificacao.js"></script>
-
+<script src="../static/js/produtores/botao_ceagesp.js"></script>
 </body>
 </html>

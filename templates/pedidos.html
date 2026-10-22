@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroConnect - Pedidos</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../static/css2/geral/global.css">
+    <link rel="stylesheet" href="../static/css2/geral/base.css">
+    <link rel="stylesheet" href="../static/css2/geral/header.css">
+    <link rel="stylesheet" href="../static/css2/geral/layout.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra_busca.css">
+    <link rel="stylesheet" href="../static/css2/geral/categorias.css">
+    <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+    <link rel="stylesheet" href="../static/css2/geral/drawer.css">
+    <link rel="stylesheet" href="../static/css2/geral/sem_produto.css">
+
+    <link rel="stylesheet" href="../static/css2/pedidos/calendario.css">
+    <link rel="stylesheet" href="../static/css2/pedidos/grid.css">
+    <link rel="stylesheet" href="../static/css2/pedidos/card_pedidos.css">
+    <link rel="stylesheet" href="../static/css2/pedidos/badges_status.css">
+    <link rel="stylesheet" href="../static/css2/pedidos/pag_detalhes.css">
+    <link rel="stylesheet" href="../static/css2/pedidos/botao_whatsapp.css">
+    <link rel="stylesheet" href="../static/css2/pedidos/modal.css">
+    <link rel="stylesheet" href="../static/css2/geral/avaliacoes.css">
+    <link rel="stylesheet" href="../static/css2/geral/barra-navegacao.css">
+
+
+    <link rel="stylesheet" href="../static/css2/meus_produtos/exclusao.css">
+    <link rel="stylesheet" href="../static/css2/geral/notificacao.css">
+
+    <!-- Ícone da aba de navegação -->
+    <link rel="icon" type="image/png" href="../static/assets/login/minhoca_pequena.png">
+</head>
+
+<body>
+
+<header class="header">
+    <button class="btn-menu-hamburger" id="botaoAbrirMenu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <div class="logo">🌱 AgroLink</div>
+</header>
+
+<barra-navegacao pagina="pedidos"></barra-navegacao>
+
+<!-- =========================
+     MENU LATERAL
+========================= -->
+<aside class="painel-lateral" id="painelLateral">
+
+    <div class="painel-cabecalho-verde">
+        <h1 class="painel-logo-drawer">AgroLink</h1>
+
+        <button class="botao-fechar-drawer" id="botaoFecharMenu">
+            &times;
+        </button>
+    </div>
+
+    <div class="painel-conteudo">
+
+        <!-- USUÁRIO -->
+        <div class="cartao-usuario">
+
+            <img
+                src="../static/assets/login/minhoca_pequena.png"
+                alt="Foto de Perfil"
+                class="usuario-foto"
+            >
+
+            <div class="usuario-dados">
+
+                <strong
+                    class="usuario-nome"
+                    id="usuarioNome"
+                >
+                    Carregando...
+                </strong>
+
+                <span
+                    class="usuario-tipo"
+                    id="usuarioTipo"
+                >
+                    ...
+                </span>
+
+            </div>
+        </div>
+
+        <!-- NAVEGAÇÃO -->
+        <nav class="painel-navegacao">
+            <!-- O drawer.js coloca os links aqui -->
+        </nav>
+
+        <!-- RODAPÉ -->
+        <footer class="painel-rodape">
+
+            <button
+                class="botao-logout"
+                onclick="Auth.logout()"
+            >
+                <span class="icone-box">
+                    <i data-lucide="log-out"></i>
+                </span>
+
+                Sair da Conta
+            </button>
+
+        </footer>
+
+    </div>
+</aside>
+
+<!-- =========================
+     MÁSCARA
+========================= -->
+<div
+    id="mascaraMenu"
+    class="mascara-menu"
+></div>
+
+
+<!-- =========================
+     VISTA DE LISTA
+========================= -->
+<main
+    id="view-lista"
+    class="main"
+>
+
+    <!-- =========================
+         TOPO
+    ========================= -->
+
+    <section class="topo">
+        <div class="header-texto">
+            <h1>Pedidos</h1>
+            <p class="subtitulo">Organize seus pedidos e acompanhe cada etapa da negociação</p>
+        </div>
+
+                <div class="view-toggle">
+
+            <button
+                class="toggle-btn active"
+                id="btnLista"
+                type="button"
+            >
+                <i data-lucide="list"></i>
+                <span>Lista</span>
+            </button>
+
+            <button
+                class="toggle-btn"
+                id="btnCalendario"
+                type="button"
+            >
+                <i data-lucide="calendar-days"></i>
+                <span>Calendário</span>
+            </button>
+        </div>
+    </section>
+
+
+
+    <!-- =========================
+         BUSCA + FILTRO
+    ========================= -->
+    <section class="busca">
+
+        <div class="barra-busca">
+
+            <i
+                data-lucide="search"
+                class="icone-busca"
+            ></i>
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Buscar produtos ou produtores..."
+            >
+
+        </div>
+
+        <select
+            id="statusFilter"
+            class="filtro-status"
+        >
+            <option value="Todos">Status (Todos)</option>
+            <option value="Pendente">Pendentes</option>
+            <option value="Aceito">Aceitos</option>
+            <option value="Entregue">Entregues</option>
+            <option value="Finalizado">Finalizados</option>
+            <option value="ParaAvaliar" id="opcaoParaAvaliar">Para avaliar</option>
+            <option value="Cancelado">Cancelados</option>
+        </select>
+
+    </section>
+
+
+    <!-- =========================
+         CARDS
+    ========================= -->
+    <div
+        id="orders-grid"
+        class="orders-grid"
+    >
+
+        <div
+            id="mensagemCarregandoPedidos"
+            class="carregando-produtos"
+        >
+
+            <div class="spinner-produtos"></div>
+
+            <p>Buscando pedidos...</p>
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     VISTA DE CALENDÁRIO
+========================= -->
+<main
+    id="view-calendario"
+    class="main"
+    style="display: none;"
+>
+
+    <section class="topo">
+
+        <h1>Pedidos</h1>
+
+        <div class="view-toggle">
+
+            <button
+                class="toggle-btn"
+                id="btnListaCalendario"
+                type="button"
+            >
+                <i data-lucide="list"></i>
+                <span>Lista</span>
+            </button>
+
+            <button
+                class="toggle-btn active"
+                id="btnCalendarioLista"
+                type="button"
+            >
+                <i data-lucide="calendar-days"></i>
+                <span>Calendário</span>
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================
+         CALENDÁRIO
+    ========================= -->
+    <section class="calendar-view">
+
+        <!-- Cabeçalho -->
+        <div class="calendar-header">
+
+            <button
+                id="btnMesAnterior"
+                class="calendar-nav"
+                type="button"
+                aria-label="Mês anterior"
+            >
+                <i data-lucide="chevron-left"></i>
+            </button>
+
+            <h2 id="calendarTitle"></h2>
+
+            <button
+                id="btnProximoMes"
+                class="calendar-nav"
+                type="button"
+                aria-label="Próximo mês"
+            >
+                <i data-lucide="chevron-right"></i>
+            </button>
+
+        </div>
+
+
+        <!-- Voltar para hoje -->
+        <button
+            id="btnHoje"
+            class="calendar-today"
+            type="button"
+        >
+            <i data-lucide="calendar-check"></i>
+            Hoje
+        </button>
+
+
+        <!-- Dias da semana -->
+        <div class="calendar-weekdays">
+
+            <span>Dom</span>
+            <span>Seg</span>
+            <span>Ter</span>
+            <span>Qua</span>
+            <span>Qui</span>
+            <span>Sex</span>
+            <span>Sáb</span>
+
+        </div>
+
+
+        <!-- Dias -->
+        <div
+            id="calendarGrid"
+            class="calendar-grid"
+        ></div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================
+     DETALHES
+========================= -->
+<main
+    id="view-detalhes"
+    class="container"
+    style="display: none;"
+>
+
+    <button
+        onclick="hideDetails()"
+        class="btn-back"
+    >
+        <i data-lucide="arrow-left"></i>
+        Voltar
+    </button>
+
+    <div
+        class="details-card"
+        id="details-content"
+    ></div>
+
+</main>
+
+
+
+<!-- =========================
+     MODAL DE CONFIRMAÇÃO
+========================= -->
+<div id="modalExcluir" class="modal">
+
+    <div class="modal-content modal-pequeno">
+
+        <div class="titulo-modal">
+            <h2 id="tituloModalConfirmacao">
+                Confirmar Ação
+            </h2>
+        </div>
+
+        <p
+            id="mensagemExcluir"
+            class="texto-modal"
+        ></p>
+
+        <div class="botoes-modal-excluir">
+
+            <button
+                type="button"
+                class="btn-cancelar-exclusao"
+                onclick="fecharModalConfirmacao()"
+            >
+                Cancelar
+            </button>
+
+            <button
+                type="button"
+                id="btnConfirmarExclusao"
+                class="btn-confirmar-exclusao"
+            >
+                Confirmar
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<guia-passos 
+    titulo="Como gerenciar seus Pedidos" 
+    subtitulo="Acompanhe, filtre e atualize o andamento das solicitações."
+    imagem="../static/assets/login/minhoca_pequena.png"
+    passos='[
+        {"numero": 1, "titulo": "Alterne entre visualizações", "descricao": "Use os botões no topo para alternar rapidamente entre o formato de Lista e o Calendário."},
+        {"numero": 2, "titulo": "Busque e filtre pedidos", "descricao": "Utilize a barra de pesquisa por nome ou o seletor de status para localizar solicitações específicas."},
+        {"numero": 3, "titulo": "Acompanhe os detalhes", "descricao": "Clique em um pedido para abrir os detalhes completos, verificar o status e interagir."},
+        {"numero": 4, "titulo": "Mantenha o contato", "descricao": "Utilize as ferramentas integradas e o botão do WhatsApp para alinhar a entrega com o cliente."}
+    ]'
+></guia-passos>
+
+
+<script src="../static/js/guia-passos.js" defer></script>
+
+<!-- =========================
+     SCRIPTS
+========================= -->
+
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<script>
+    lucide.createIcons();
+</script>
+
+<script src="../static/js/config.js"></script>
+<script src="../static/js/auth.js"></script>
+<script src="../static/js/avaliacoes.js"></script>
+
+<script src="../static/js/drawer.js"></script>
+
+<!-- Sistema de notificações -->
+<script src="../static/js/notificacao.js"></script>
+
+<!-- Modal de confirmação das negociações -->
+<script
+    type="module"
+    src="../static/js/negociacoes/confirmacao.js"
+></script>
+
+<!-- Sistema principal de negociações -->
+<script
+    type="module"
+    src="../static/js/negociacoes/main.js"
+></script>
+
+<script
+    type="module"
+    src="../static/js/negociacoes/whatsapp.js"
+></script>
+
+<script
+    type="module"
+    src="../static/js/negociacoes/calendario.js"
+></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script src="../static/js/barra-navegacao.js" defer></script>
+</body>
+</html>

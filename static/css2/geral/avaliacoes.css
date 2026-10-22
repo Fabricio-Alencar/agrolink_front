@@ -1,0 +1,443 @@
+/* ============================================================
+   AVALIAÇÕES DE PRODUTORES
+   Estrelas, modal "Avalie este pedido", linha do tempo do pedido
+   e selos de próxima ação. Usado em pedidos, marketplace e perfis.
+   ============================================================ */
+
+/* =========================
+   ESTRELAS / RESUMO
+========================= */
+.estrelas {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    vertical-align: middle;
+}
+
+.avaliacao-resumo {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: var(--fs-small, 0.875rem);
+    color: var(--cor-texto-secundario, #666);
+}
+
+.avaliacao-resumo strong {
+    color: var(--cor-texto-principal, #222);
+}
+
+.avaliacao-resumo.sem-avaliacoes .avaliacao-texto {
+    font-style: italic;
+}
+
+/* Nome do produtor clicável (abre o perfil público) */
+.link-produtor {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--cor-primaria, #2e7d32);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.link-produtor:hover {
+    color: var(--cor-primaria-hover, #0e5e58);
+}
+
+
+/* Card do marketplace aberto a partir do perfil do produtor */
+.product-card.produto-destacado {
+    outline: 3px solid var(--cor-primaria, #2e7d32);
+    outline-offset: 3px;
+    transition: outline-color 0.3s;
+}
+
+
+/* =========================
+   MODAL "AVALIE ESTE PEDIDO"
+========================= */
+.modal-avaliacao {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md, 1rem);
+    background: rgba(0, 0, 0, 0.55);
+}
+
+.modal-avaliacao.ativo {
+    display: flex;
+    animation: avaliacao-surgir 0.2s ease-out;
+}
+
+@keyframes avaliacao-surgir {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-avaliacao-conteudo {
+    position: relative;
+    width: 100%;
+    max-width: 28rem;
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding: var(--space-xl, 2rem) var(--space-lg, 1.5rem) var(--space-lg, 1.5rem);
+    background: var(--cor-branco, #fff);
+    border-radius: 1rem;
+    box-shadow: 0 0.75rem 2.5rem rgba(0, 0, 0, 0.25);
+    text-align: center;
+}
+
+.modal-avaliacao-fechar {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--cor-texto-secundario, #666);
+    cursor: pointer;
+}
+
+.modal-avaliacao-icone {
+    font-size: 2.25rem;
+    margin-bottom: var(--space-xs, 0.25rem);
+}
+
+.modal-avaliacao-conteudo h2 {
+    margin: 0 0 var(--space-xs, 0.25rem);
+    color: var(--cor-texto-principal, #222);
+}
+
+.modal-avaliacao-subtitulo {
+    margin: 0 0 var(--space-lg, 1.5rem);
+    color: var(--cor-texto-secundario, #666);
+}
+
+.seletor-estrelas {
+    display: inline-flex;
+    gap: 6px;
+    padding: 4px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.seletor-estrelas:focus-visible {
+    box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.35);
+}
+
+.seletor-estrela {
+    display: inline-flex;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.seletor-estrela:hover {
+    transform: scale(1.12);
+}
+
+.modal-avaliacao-legenda {
+    min-height: 1.4em;
+    margin: var(--space-sm, 0.5rem) 0 var(--space-lg, 1.5rem);
+    font-weight: 600;
+    color: var(--cor-texto-principal, #222);
+}
+
+.modal-avaliacao-label {
+    display: block;
+    margin-bottom: var(--space-xs, 0.25rem);
+    text-align: left;
+    font-size: var(--fs-small, 0.875rem);
+    font-weight: 600;
+}
+
+.modal-avaliacao-conteudo textarea {
+    width: 100%;
+    min-height: 6rem;
+    padding: 0.75rem;
+    border: 1px solid var(--cor-borda, #ddd);
+    border-radius: 8px;
+    resize: vertical;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+.modal-avaliacao-contador {
+    display: block;
+    text-align: right;
+    font-size: 0.75rem;
+    color: var(--cor-texto-secundario, #666);
+}
+
+.modal-avaliacao-aviso {
+    margin: var(--space-md, 1rem) 0;
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario, #666);
+}
+
+.modal-avaliacao-botoes {
+    display: flex;
+    gap: var(--space-sm, 0.5rem);
+}
+
+.modal-avaliacao-botoes button {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.btn-avaliar-depois {
+    background: var(--cor-branco, #fff);
+    border: 1px solid var(--cor-borda, #ddd);
+    color: var(--cor-texto-escuro, #333);
+}
+
+.btn-enviar-avaliacao {
+    background: var(--cor-primaria, #2e7d32);
+    border: none;
+    color: var(--cor-branco, #fff);
+}
+
+.btn-enviar-avaliacao:disabled {
+    background: #b9c9ba;
+    cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+    .modal-avaliacao-botoes {
+        flex-direction: column-reverse;
+    }
+}
+
+
+/* =========================
+   SELO "PRÓXIMA AÇÃO" NOS CARDS
+========================= */
+/* Faixa de largura total no topo do card: mesma altura em todos os cards */
+.proxima-acao {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 2.25rem;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    border-radius: 10px;
+    border-left: 4px solid currentColor;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.proxima-acao svg {
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+}
+
+.proxima-acao.encerrado {
+    background: var(--vermelho-suave, #FFF0F0);
+    color: var(--vermelho-texto, #D32F2F);
+}
+
+.proxima-acao.minha-vez {
+    background: #fff4dc;
+    color: #8a5a00;
+}
+
+.proxima-acao.aguardando {
+    background: #eef2f7;
+    color: #4a5a6e;
+}
+
+.proxima-acao.concluido {
+    background: var(--verde-menta-claro, #D1FFDA);
+    color: var(--verde-texto-ativo, #008137);
+}
+
+.data-pedido {
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario, #666);
+}
+
+.btn-avaliar-card {
+    background: #f5b301;
+    color: #3d2c00;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+
+/* =========================
+   LINHA DO TEMPO DO PEDIDO
+========================= */
+.linha-do-tempo {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 var(--space-xl, 2rem);
+    padding: 0;
+    list-style: none;
+}
+
+.etapa {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario, #666);
+}
+
+/* Traço entre as bolinhas */
+.etapa:not(:first-child)::before {
+    content: "";
+    position: absolute;
+    top: 13px;
+    right: 50%;
+    width: 100%;
+    height: 3px;
+    background: var(--cor-borda, #ddd);
+    z-index: 0;
+}
+
+.etapa.feita:not(:first-child)::before,
+.etapa.atual:not(:first-child)::before {
+    background: var(--cor-primaria, #2e7d32);
+}
+
+.etapa-bolinha {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--cor-branco, #fff);
+    border: 3px solid var(--cor-borda, #ddd);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.etapa.feita .etapa-bolinha {
+    background: var(--cor-primaria, #2e7d32);
+    border-color: var(--cor-primaria, #2e7d32);
+    color: var(--cor-branco, #fff);
+}
+
+.etapa.atual .etapa-bolinha {
+    border-color: var(--cor-primaria, #2e7d32);
+    color: var(--cor-primaria, #2e7d32);
+}
+
+.etapa.feita,
+.etapa.atual {
+    color: var(--cor-texto-principal, #222);
+    font-weight: 600;
+}
+
+.linha-do-tempo.encerrada .etapa-bolinha {
+    border-color: var(--status-red, #E74C3C);
+}
+
+.aviso-encerrado {
+    margin: -1rem 0 var(--space-lg, 1.5rem);
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: var(--vermelho-suave, #FFF0F0);
+    color: var(--vermelho-texto, #D32F2F);
+    font-weight: 600;
+    text-align: center;
+}
+
+@media (max-width: 560px) {
+    .etapa-nome {
+        font-size: 0.7rem;
+    }
+}
+
+
+/* =========================
+   AVALIAÇÃO NOS DETALHES DO PEDIDO
+========================= */
+.avaliacao-pedido {
+    width: 100%;
+    margin-top: var(--space-md, 1rem);
+    padding: var(--space-md, 1rem) var(--space-lg, 1.5rem);
+    border-radius: 12px;
+    background: #fffaf0;
+    border: 1px solid #f3e2b8;
+    text-align: center;
+}
+
+.avaliacao-pedido h3 {
+    margin: 0 0 var(--space-sm, 0.5rem);
+    font-size: 1rem;
+}
+
+.avaliacao-pedido .comentario {
+    margin: var(--space-sm, 0.5rem) 0 0;
+    color: var(--cor-texto-escuro, #333);
+    font-style: italic;
+    white-space: pre-line;
+}
+
+
+/* =========================
+   LISTA DE AVALIAÇÕES (PERFIL DO PRODUTOR)
+========================= */
+.lista-avaliacoes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md, 1rem);
+}
+
+.item-avaliacao {
+    padding: var(--space-md, 1rem);
+    border: 1px solid var(--cor-borda, #ddd);
+    border-radius: 12px;
+    background: var(--cor-branco, #fff);
+}
+
+.item-avaliacao-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.item-avaliacao-topo strong {
+    color: var(--cor-texto-principal, #222);
+}
+
+.item-avaliacao-data {
+    font-size: 0.8rem;
+    color: var(--cor-texto-secundario, #666);
+}
+
+.item-avaliacao p {
+    margin: 6px 0 0;
+    color: var(--cor-texto-escuro, #333);
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}

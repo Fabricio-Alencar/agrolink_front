@@ -1,0 +1,650 @@
+/* =========================================
+   GUIA DE AJUDA — AGROLINK
+   ========================================= */
+
+/* ---------- Variáveis ---------- */
+
+:host {
+    --verde-escuro: #1b3022;
+    --verde: #2d5a3f;
+    --verde-claro: #eaf3ed;
+    --texto: #666;
+    --borda: #e5ede7;
+    --transicao: 0.2s ease;
+}
+
+/* =========================================
+   MINHOCA FLUTUANTE
+   ========================================= */
+
+.guia-flutuante-container {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Mensagem exibida ao passar o mouse */
+
+.tooltip-ajuda {
+    padding: 8px 14px;
+    border-radius: 12px;
+
+    background: #fff;
+    box-shadow: 0 4px 12px #0000001a;
+
+    color: #2c3e50;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity var(--transicao),
+        transform var(--transicao);
+}
+
+.guia-flutuante-container:hover .tooltip-ajuda {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-4px);
+}
+
+/* Botão da minhoca */
+
+.minhoca-trigger {
+    position: relative;
+
+    display: flex;
+    flex: 0 0 80px;
+    align-items: center;
+    justify-content: center;
+
+    width: 80px;
+    height: 80px;
+
+    cursor: pointer;
+    transition: transform var(--transicao);
+}
+
+.minhoca-trigger:hover {
+    transform: scale(1.05);
+}
+
+.minhoca-trigger img {
+    display: block;
+    width: 95%;
+    height: 95%;
+    object-fit: contain;
+}
+
+/* Indicador de ajuda (?) */
+
+.badge-duvida {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    border: 2px solid #fff;
+    border-radius: 50%;
+
+    background: var(--verde);
+    box-shadow: 0 2px 5px #0003;
+
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* =========================================
+   MODAL DE AJUDA
+   ========================================= */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px;
+
+    background: #0009;
+    backdrop-filter: blur(2px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+.modal-overlay.ativo {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+    width: 90%;
+    max-width: 880px;
+    max-height: 90vh;
+    max-height: 90dvh;
+
+    padding: 32px;
+    overflow-y: auto;
+
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 20px 40px #00000026;
+
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.ativo .modal-card {
+    transform: translateY(0);
+}
+
+/* Cabeçalho do modal */
+
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+
+    border-bottom: 1px solid #eaeaea;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    min-width: 0;
+}
+
+.header-icon {
+    display: flex;
+    flex: 0 0 60px;
+    align-items: center;
+    justify-content: center;
+
+    width: 60px;
+    height: 60px;
+
+    border-radius: 14px;
+    background: var(--verde-claro);
+}
+
+.header-icon img {
+    width: 75%;
+    height: 75%;
+    object-fit: contain;
+}
+
+.header-text {
+    min-width: 0;
+}
+
+.header-text span {
+    color: #4a7c59;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.header-text h2 {
+    margin: 4px 0 2px;
+
+    color: var(--verde-escuro);
+    font-size: 22px;
+}
+
+.header-text p {
+    margin: 0;
+
+    color: var(--texto);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* Botão fechar */
+
+.btn-fechar {
+    display: flex;
+    flex: 0 0 36px;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 50%;
+
+    background: #f7f9f8;
+    cursor: pointer;
+
+    transition: background var(--transicao);
+}
+
+.btn-fechar:hover {
+    background: #edf2ee;
+}
+
+/* =========================================
+   PASSOS DO GUIA
+   ========================================= */
+
+.grid-passos {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(min(100%, 380px), 1fr)
+    );
+
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.card-passo {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+
+    min-width: 0;
+    padding: 20px;
+
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+
+    background: #fff;
+
+    transition: box-shadow var(--transicao);
+}
+
+.card-passo:hover {
+    box-shadow: 0 4px 12px #2d5a3f0f;
+}
+
+.passo-numero {
+    display: flex;
+    flex: 0 0 30px;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+    background: var(--verde);
+
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.passo-conteudo {
+    min-width: 0;
+}
+
+.passo-conteudo h4 {
+    margin: 0 0 6px;
+
+    color: var(--verde-escuro);
+    font-size: 15px;
+}
+
+.passo-conteudo p {
+    margin: 0;
+
+    color: var(--texto);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* =========================================
+   RODAPÉ DO MODAL
+   ========================================= */
+
+.modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding-top: 16px;
+    border-top: 1px solid #eaeaea;
+}
+
+.footer-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    color: #777;
+    font-size: 12px;
+}
+
+.btn-entendi {
+    padding: 10px 24px;
+
+    border: 0;
+    border-radius: 8px;
+
+    background: var(--verde-escuro);
+
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background var(--transicao);
+}
+
+.btn-entendi:hover {
+    background: var(--verde);
+}
+
+/* =========================================
+   TABLETS
+   Minhoca no topo em todas as páginas
+   ========================================= */
+
+@media (min-width: 768px) and (max-width: 1500px) {
+    .guia-flutuante-container {
+        top: 4px;
+        right: 16px;
+        bottom: auto;
+        left: auto;
+
+        gap: 8px;
+        z-index: 10001;
+    }
+
+    .minhoca-trigger {
+        flex-basis: 64px;
+        width: 64px;
+        height: 64px;
+    }
+
+    .badge-duvida {
+        width: 20px;
+        height: 20px;
+        font-size: 11px;
+    }
+
+    .tooltip-ajuda {
+        padding: 7px 10px;
+        font-size: 13px;
+    }
+
+    .modal-card {
+        width: 92%;
+        padding: 24px;
+    }
+
+    .grid-passos {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .card-passo {
+        gap: 12px;
+        padding: 16px;
+    }
+}
+
+/* =========================================
+   CELULARES
+   Minhoca compacta no topo direito
+   ========================================= */
+
+@media (max-width: 767px) {
+    .guia-flutuante-container {
+        top: 8px;
+        right: 8px;
+        bottom: auto;
+        left: auto;
+
+        gap: 0;
+        z-index: 10001;
+    }
+
+    .tooltip-ajuda {
+        display: none;
+    }
+
+    .minhoca-trigger {
+        flex: 0 0 46px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .badge-duvida {
+        top: -2px;
+        right: -2px;
+
+        width: 16px;
+        height: 16px;
+
+        border-width: 1px;
+        font-size: 10px;
+    }
+
+    .modal-overlay {
+        padding: 12px;
+    }
+
+    .modal-card {
+        width: 100%;
+        max-width: 440px;
+        max-height: 88vh;
+        max-height: 88dvh;
+
+        padding: 18px;
+        border-radius: 16px;
+    }
+
+    .modal-header {
+        gap: 8px;
+        margin-bottom: 18px;
+        padding-bottom: 16px;
+    }
+
+    .header-content {
+        gap: 10px;
+    }
+
+    .header-icon {
+        flex-basis: 46px;
+        width: 46px;
+        height: 46px;
+    }
+
+    .header-text span {
+        font-size: 10px;
+    }
+
+    .header-text h2 {
+        font-size: 18px;
+    }
+
+    .header-text p {
+        font-size: 12px;
+    }
+
+    .btn-fechar {
+        flex-basis: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .grid-passos {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
+
+    .card-passo {
+        gap: 12px;
+        padding: 14px;
+    }
+
+    .modal-footer {
+        flex-wrap: wrap;
+    }
+
+    .btn-entendi {
+        padding: 10px 18px;
+    }
+}
+
+/* =========================================
+   CELULARES ESTREITOS
+   ========================================= */
+
+@media (max-width: 380px) {
+    .guia-flutuante-container {
+        top: 6px;
+        right: 6px;
+    }
+
+    .minhoca-trigger {
+        flex-basis: 42px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .badge-duvida {
+        width: 15px;
+        height: 15px;
+        font-size: 9px;
+    }
+
+    .modal-card {
+        padding: 14px;
+    }
+
+    .header-icon {
+        flex-basis: 38px;
+        width: 38px;
+        height: 38px;
+    }
+
+    .header-text h2 {
+        font-size: 16px;
+    }
+
+    .card-passo {
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .passo-numero {
+        flex-basis: 26px;
+        width: 26px;
+        height: 26px;
+        font-size: 12px;
+    }
+}
+
+/* =========================================
+   ACESSIBILIDADE
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .guia-flutuante-container,
+    .minhoca-trigger,
+    .tooltip-ajuda,
+    .modal-overlay,
+    .modal-card,
+    .card-passo,
+    .btn-fechar,
+    .btn-entendi {
+        transition: none;
+    }
+}
+
+/* =========================================
+   CHAT — POSIÇÃO ESPECIAL EM COMPUTADORES
+   Mantém a minhoca acima do botão de enviar
+   ========================================= */
+
+@media (min-width: 1025px) {
+    :host(.guia-chat) .guia-flutuante-container {
+        top: auto;
+        right: 20px;
+        bottom: 100px;
+        left: auto;
+    }
+}
+
+/* No chat, tablets e celulares mantêm a posição no topo */
+@media (max-width: 1024px) {
+    :host(.guia-chat) .guia-flutuante-container {
+        top: 12px;
+        right: 16px;
+        bottom: auto;
+        left: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    :host(.guia-chat) .guia-flutuante-container {
+        top: 8px;
+        right: 8px;
+        bottom: auto;
+        left: auto;
+    }
+
+    :host(.guia-chat) .minhoca-trigger {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+    }
+}
+
+@media (max-width: 380px) {
+    :host(.guia-chat) .guia-flutuante-container {
+        top: 6px;
+        right: 6px;
+    }
+
+    :host(.guia-chat) .minhoca-trigger {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+}

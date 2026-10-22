@@ -3,7 +3,7 @@
  * OBJETIVO: Centralizar comunicação com backend Flask
  */
 
-const API_URL = "https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net/";
+const API_URL = CONFIG.API_URL;
 
 export const API = {
     // ==========================================

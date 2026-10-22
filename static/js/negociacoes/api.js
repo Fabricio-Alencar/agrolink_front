@@ -3,7 +3,7 @@
  * OBJETIVO: Centralizar comunicação com backend Flask
  */
 
-const API_URL = "https://back-agrolink-bmbkepbbdkabdhhd.eastus-01.azurewebsites.net/";
+const API_URL = CONFIG.API_URL;
 
 export const API = {
     // ==========================================
@@ -110,7 +110,32 @@ export const API = {
             console.error("Erro de conexão com a API:", error.message);
             throw error;
         }
+    },
+
+    /**
+     * Envia a avaliação do estabelecimento para o produtor
+     * @param {number} nota - de 0,5 a 5, de meia em meia estrela
+     * @param {string} comentario - opcional
+     */
+    async avaliarProdutor(id, nota, comentario) {
+        const res = await fetch(`${API_URL}/negociacoes/${id}/avaliar`, {
+            method: 'POST',
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nota, comentario })
+        });
+
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+            // O FastAPI devolve o erro em { detail: { erro: "..." } }
+            throw new Error(data?.detail?.erro || 'Não foi possível enviar a avaliação.');
+        }
+
+        return data;
     }
-    
+
 };
 
