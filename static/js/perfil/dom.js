@@ -14,7 +14,6 @@ export const DOM = {
     // FORMULÁRIO E EDIÇÃO
     inputs: document.querySelectorAll(".form-control"),
     editIcons: document.querySelectorAll(".edit-icon"),
-    allEditable: document.querySelectorAll(".form-control"),
 
     // LOCALIZAÇÃO
     city: document.getElementById("profile-city"),

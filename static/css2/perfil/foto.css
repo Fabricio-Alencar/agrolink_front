@@ -1,173 +1,44 @@
 /* =========================================================
-   LAYOUT DO PERFIL
+   FOTO DE PERFIL E UPLOAD
    ========================================================= */
-
-.profile-container {
-    width: 100%;
-    max-width: var(--container-width);
-
-    margin: 0 auto;
-    padding: var(--space-xl);
-
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 80px;
-
-    position: relative;
-}
-
 
 .profile-upload-zone {
-    margin-top: 40px;
-}
-
-/* =========================================================
-   MASCOTE
-   ========================================================= */
-
-.mascot-img {
-    position: absolute;
-
-    top: 0px;
-    left: -40px;
-
-    width: 90px;
-
-    z-index: 10;
-
-    pointer-events: none;
-}
-
-/* =========================================================
-   LATERAL
-   ========================================================= */
-
-.profile-sidebar {
     position: relative;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: var(--space-xl);
-}
-
-
-/* =========================================================
-   CONTEÚDO
-   ========================================================= */
-
-.profile-content {
-    display: flex;
-    flex-direction: column;
-}
-
-
-.profile-header {
-    margin-bottom: 5px;
-}
-
-
-.user-name {
-    margin-bottom: 5px;
-
-    color: var(--cor-texto-principal);
-
-    font-family: 'Inter', sans-serif;
-
-    font-size: 2.5rem;
-    font-weight: 800;
-
-    letter-spacing: -0.5px;
-    line-height: 1.2;
-}
-
-
-.user-role {
-    color: var(--verde-oliva);
-
-    font-family: 'Inter', sans-serif;
-
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-
-/* =========================================================
-   DIVISÓRIA
-   ========================================================= */
-
-.divider {
     width: 100%;
-
-    margin-top: 15px;
-    margin-bottom: 40px;
-
-    border: none;
-    border-top: 1px solid #b8c4b8;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 13px;
+    background: #e5e9e5;
+    cursor: pointer;
 }
 
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 850px) {
-
-    .profile-container {
-        grid-template-columns: 1fr;
-
-        gap: 50px;
-
-        padding: var(--space-xl) var(--space-md);
-    }
-
-
-    .profile-sidebar {
-        width: min(100%, 320px);
-
-        margin: 0 auto;
-    }
-
-
-    .user-name {
-        font-size: 2rem;
-    }
-
+.profile-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
+.upload-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(0, 45, 25, .62);
+    color: #fff;
+    font-size: .72rem;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
 
-/* =========================================================
-   MOBILE
-   ========================================================= */
+.profile-upload-zone:hover .upload-overlay,
+.profile-upload-zone:focus-within .upload-overlay { opacity: 1; }
+.upload-overlay i { font-size: 1.2rem; }
 
-@media (max-width: 480px) {
-
-    .mascot-img {
-        top: -30px;
-        left: -25px;
-
-        width: 65px;
-    }
-
-    .profile-container {
-        padding: var(--space-lg) var(--space-md);
-
-        gap: 40px;
-    }
-
-
-    .user-name {
-        font-size: 1.8rem;
-    }
-
-
-    .user-role {
-        font-size: 1rem;
-    }
-
-
-    .divider {
-        margin-bottom: 30px;
-    }
-
+@media (max-width: 760px) {
+    .upload-overlay { font-size: .72rem; }
 }

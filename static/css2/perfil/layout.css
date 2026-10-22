@@ -1,536 +1,300 @@
-/* =========================================================
-   PERFIL
-   ========================================================= */
-
 
 /* =========================================================
-   CONTAINER PRINCIPAL
+   PERFIL AGROLINK — LAYOUT
+   Reutiliza os padrões globais de layout/topo do AgroLink.
    ========================================================= */
 
-.profile-container {
-    width: 100%;
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: var(--space-xl);
-
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 80px;
-
-    position: relative;
+:root {
+    --perfil-verde: #00552d;
+    --perfil-verde-escuro: #004523;
+    --perfil-fundo: #f7f8f7;
+    --perfil-texto: #242824;
+    --perfil-secundario: #858b86;
+    --perfil-borda: #e7ebe8;
+    --perfil-sombra: 0 4px 16px rgba(18, 54, 34, .07);
 }
 
 
+
 /* =========================================================
-   LATERAL DO PERFIL
+   LAYOUT PRINCIPAL
    ========================================================= */
 
-.profile-sidebar {
-    position: relative;
+.main.profile-page-wrapper {
+    box-sizing: border-box;
+    width: min(100% - 64px, 1050px);
+    max-width: 1050px;
+    margin: 24px auto 52px;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
 
+/* Cabeçalho da página */
+
+.profile-page-header.topo {
     display: flex;
-    flex-direction: column;
-
-    gap: var(--space-xl);
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0 0 20px;
 }
 
-
-/* =========================================================
-   MASCOTE
-   ========================================================= */
-
-.mascot-img {
-    position: absolute;
-
-    top: -45px;
-    left: -40px;
-
-    width: 90px;
-
-    z-index: 10;
-
-    pointer-events: none;
+.profile-page-header .header-texto {
+    min-width: 0;
 }
 
-
-/* =========================================================
-   FOTO DE PERFIL
-   ========================================================= */
-
-.profile-upload-zone {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-
-    position: relative;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    background: #e0e0e0;
-
-    border-radius: var(--border-radius);
-}
-
-
-.profile-img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-/* =========================================================
-   OVERLAY DA FOTO
-   ========================================================= */
-
-.upload-overlay {
-    position: absolute;
-
-    inset: 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    gap: var(--space-sm);
-
-    background: rgba(0, 0, 0, 0.5);
-
-    color: var(--cor-branco);
-
-    opacity: 0;
-
-    transition: opacity 0.2s ease;
-
-    font-weight: 500;
-}
-
-
-.profile-upload-zone:hover .upload-overlay {
-    opacity: 1;
-}
-
-
-.upload-overlay i {
-    font-size: 1.5rem;
-}
-
-
-/* =========================================================
-   BOTÃO EXCLUIR CONTA
-   ========================================================= */
-
-.btn-delete {
-    width: fit-content;
-
-    margin: 0 auto;
-
-    padding: 14px 28px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: var(--space-sm);
-
-    border-radius: 4px;
-
-    background: var(--cor-primaria);
-
-    color: var(--cor-branco);
-
-    font-family: Inter, sans-serif;
-
-    font-size: 0.95rem;
+.page-title {
+    margin: 0 0 5px;
+    color: #262926;
+    font-size: 1.85rem;
+    line-height: 1.25;
     font-weight: 600;
-
-    transition:
-        background-color 0.2s ease,
-        transform 0.2s ease;
 }
 
-
-.btn-delete:hover {
-    background: var(--cor-primaria-hover);
-}
-
-
-/* =========================================================
-   CONTEÚDO
-   ========================================================= */
-
-.profile-content {
-    display: flex;
-    flex-direction: column;
-}
-
-
-.profile-header {
-    margin-bottom: 5px;
-}
-
-
-.user-name {
-    margin-bottom: 5px;
-
-    color: var(--cor-texto-principal);
-
-    font-family: Inter, sans-serif;
-
-    font-size: 2.5rem;
-    font-weight: 800;
-
-    letter-spacing: -0.5px;
-
-    line-height: 1.2;
-}
-
-
-.user-role {
-    color: var(--verde-oliva);
-
-    font-family: Inter, sans-serif;
-
-    font-size: 1.2rem;
-    font-weight: 700;
-}
-
-
-.divider {
-    width: 100%;
-
-    margin-top: 15px;
-    margin-bottom: 40px;
-
-    border: none;
-    border-top: 1px solid #b8c4b8;
-}
-
-
-/* =========================================================
-   FORMULÁRIO
-   ========================================================= */
-
-.user-info-form {
-    display: flex;
-    flex-direction: column;
-
-    gap: 30px;
-}
-
-
-.form-group label {
-    display: block;
-
-    margin-bottom: 10px;
-
-    color: var(--cor-texto-principal);
-
-    font-family: Inter, sans-serif;
-
-    font-size: 0.95rem;
-    font-weight: 700;
-}
-
-
-.input-wrapper {
-    width: 100%;
-
-    position: relative;
-
-    display: flex;
-    align-items: center;
-}
-
-
-/* =========================================================
-   ÍCONES DOS CAMPOS
-   ========================================================= */
-
-.field-icon {
-    position: absolute;
-
-    left: 15px;
-
-    color: var(--cor-texto-secundario);
-
-    font-size: 1.1rem;
-
-    pointer-events: none;
-
-    z-index: 1;
-}
-
-
-.edit-icon {
-    position: absolute;
-
-    right: 15px;
-
-    color: var(--cor-texto-secundario);
-
-    font-size: 0.95rem;
-
-    cursor: pointer;
-
-    transition: color 0.2s ease;
-}
-
-
-.edit-icon:hover {
-    color: var(--cor-texto-principal);
-}
-
-
-/* =========================================================
-   INPUTS
-   ========================================================= */
-
-.form-control {
-    width: 100%;
-
-    padding: 16px 45px;
-
-    border: 1px solid var(--cor-borda);
-
-    border-radius: 8px;
-
-    background: var(--cor-branco);
-
-    color: var(--cor-texto-secundario);
-
-    font-family: Inter, sans-serif;
-
-    font-size: 0.95rem;
-
-    outline: none;
-
-    transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-
-.form-control:not([readonly]) {
-    color: var(--cor-texto-principal);
-
-    border-color: var(--verde-oliva);
-}
-
-
-.form-control:focus {
-    border-color: var(--verde-oliva);
-
-    box-shadow: 0 0 0 3px rgba(85, 139, 47, 0.15);
-}
-
-
-.form-control[readonly] {
-    cursor: default;
-}
-
-
-/* =========================================================
-   MODAL
-   ========================================================= */
-
-.modal-overlay {
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 3000;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: var(--space-md);
-
-    background: rgba(0, 0, 0, 0.6);
-
-    opacity: 0;
-
-    visibility: hidden;
-
-    transition:
-        opacity 0.2s ease,
-        visibility 0.2s ease;
-}
-
-
-.modal-overlay.active {
-    opacity: 1;
-
-    visibility: visible;
-}
-
-
-.modal-content {
-    width: 90%;
-    max-width: 400px;
-
-    padding: 30px;
-
-    border-radius: 8px;
-
-    background: var(--cor-branco);
-
-    font-family: Inter, sans-serif;
-
-    text-align: center;
-
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-
-.modal-content h2 {
-    margin-bottom: 15px;
-
-    color: var(--cor-texto-escuro);
-
-    font-size: 1.4rem;
-}
-
-
-.modal-content p {
-    margin-bottom: 25px;
-
-    color: var(--cor-texto-secundario);
-
+.page-subtitle {
+    margin: 0;
+    color: #858985;
+    font-size: .92rem;
     line-height: 1.5;
 }
 
-
 /* =========================================================
-   BOTÕES DO MODAL
+   CARTÃO LATERAL E CARTÃO DE INFORMAÇÕES
    ========================================================= */
 
-.modal-actions {
+.profile-container {
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    align-items: start;
+    gap: 18px;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.profile-sidebar {
+    min-width: 0;
     display: flex;
-
-    gap: 15px;
+    flex-direction: column;
+    gap: 14px;
 }
 
+/* Cartão do usuário */
 
-.modal-actions button {
-    flex: 1;
+.profile-user-card-mini {
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    padding: 24px 18px;
+    border: 1px solid #e9eeea;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: var(--perfil-sombra);
+    text-align: center;
+}
 
-    padding: 12px;
+/* Área quadrada da foto */
 
-    border: none;
+.profile-upload-zone {
+    box-sizing: border-box;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    margin: 0 auto 16px;
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-    border-radius: 4px;
+.profile-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    font-size: 1rem;
+.profile-user-mini-info {
+    padding: 0;
+}
+
+.user-mini-name {
+    margin: 0 0 5px;
+    color: #263129;
+    font-size: .95rem;
     font-weight: 600;
-
-    cursor: pointer;
-
-    transition: filter 0.2s ease;
+    overflow-wrap: anywhere;
 }
 
-
-.modal-actions button:hover {
-    filter: brightness(0.95);
+.user-mini-role {
+    display: inline-block;
+    margin-bottom: 6px;
+    padding: 4px 8px;
+    border-radius: 10px;
+    background: #e8f5ec;
+    color: #08713b;
+    font-size: .75rem;
+    font-weight: 600;
 }
 
-
-.btn-cancel {
-    background: #e0e0e0;
-
-    color: var(--cor-texto-escuro);
+.user-mini-member {
+    margin: 0;
+    color: #929a94;
+    font-size: .65rem;
+    line-height: 1.45;
 }
-
-
-.btn-confirm-delete {
-    background: var(--vermelho-texto);
-
-    color: var(--cor-branco);
-}
-
 
 /* =========================================================
-   TABLET
+   CARTÃO DE INFORMAÇÕES PESSOAIS
    ========================================================= */
 
-@media (max-width: 850px) {
+.profile-content {
+    box-sizing: border-box;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 24px 0;
+    border: 1px solid #e9eeea;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: var(--perfil-sombra);
+}
+
+.profile-header-box {
+    margin: 0 0 17px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #eef0ee;
+}
+
+.section-title {
+    margin: 0 0 4px;
+    color: #27352b;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.section-desc {
+    margin: 0;
+    color: #929a94;
+    font-size: .76rem;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   EXCLUSÃO DE CONTA
+   ========================================================= */
+
+.delete-account-section {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin: 16px -24px 0;
+    padding: 15px 24px;
+    border: 0;
+    border-top: 1px solid #ffe1e3;
+    border-radius: 0 0 10px 10px;
+    background: #fff0f1;
+}
+
+.delete-account-text strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #d52c3d;
+    font-size: .76rem;
+    font-weight: 600;
+}
+
+.delete-account-text p {
+    margin: 0;
+    color: #bd777e;
+    font-size: .68rem;
+    line-height: 1.45;
+}
+
+/* =========================================================
+   RESPONSIVIDADE — TABLETS E CELULARES
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .main.profile-page-wrapper {
+        width: min(100% - 36px, 620px);
+        margin-top: 20px;
+    }
 
     .profile-container {
         grid-template-columns: 1fr;
-
-        gap: 50px;
-
-        padding: var(--space-xl) var(--space-md);
+        gap: 15px;
     }
-
 
     .profile-sidebar {
-        width: min(100%, 320px);
-
-        margin: 0 auto;
+        display: block;
     }
 
-
-    .user-name {
-        font-size: 2rem;
+    .profile-user-card-mini {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 13px 15px;
+        text-align: left;
     }
 
+    /* No celular, a foto permanece quadrada e compacta. */
+    .profile-upload-zone {
+        flex: 0 0 76px;
+        width: 76px;
+        height: 76px;
+        aspect-ratio: 1 / 1;
+        margin: 0;
+        border-radius: 8px;
+    }
+
+    .profile-user-mini-info {
+        min-width: 0;
+    }
+
+    .user-mini-name {
+        font-size: .98rem;
+    }
+
+    .user-mini-role {
+        font-size: .72rem;
+    }
+
+    .user-mini-member {
+        font-size: .7rem;
+    }
 }
 
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
+/* Ajustes para telas estreitas */
 
 @media (max-width: 480px) {
-
-    .profile-container {
-        padding: var(--space-lg) var(--space-md);
-
-        gap: 40px;
+    .main.profile-page-wrapper {
+        width: calc(100% - 26px);
     }
 
-
-    .mascot-img {
-        top: -30px;
-        left: -25px;
-
-        width: 65px;
+    .profile-page-header.topo {
+        margin-bottom: 16px;
     }
 
-
-    .user-name {
-        font-size: 1.8rem;
+    .page-title {
+        font-size: 1.55rem;
     }
 
-
-    .user-role {
-        font-size: 1rem;
+    .page-subtitle {
+        font-size: .82rem;
     }
 
-
-    .divider {
-        margin-bottom: 30px;
+    .profile-content {
+        padding: 16px 14px 0;
     }
 
-
-    .user-info-form {
-        gap: 22px;
+    .delete-account-section {
+        margin-right: -14px;
+        margin-left: -14px;
+        padding: 12px 14px;
+        align-items: flex-start;
     }
-
-
-    .form-control {
-        padding: 14px 42px;
-    }
-
-
-    .modal-actions {
-        flex-direction: column;
-    }
-
 }
-

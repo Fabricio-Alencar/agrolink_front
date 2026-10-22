@@ -1,84 +1,191 @@
 
-
-
 /* =========================================================
-   ÁREA DA FOTO
+   FORMULÁRIO — CAMPOS E INPUTS
    ========================================================= */
 
-.profile-upload-zone {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-
-    position: relative;
-
-    overflow: hidden;
-
-    cursor: pointer;
-
-    background: #e0e0e0;
-
-    border-radius: var(--border-radius);
+.user-info-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px 16px;
+    margin: 0;
 }
 
+.form-group {
+    min-width: 0;
+}
 
-/* =========================================================
-   FOTO
-   ========================================================= */
+.form-group.full-width,
+.form-actions.full-width {
+    grid-column: 1 / -1;
+}
 
-.profile-img {
-    width: 100%;
-    height: 100%;
-
+.form-group label {
     display: block;
-
-    object-fit: cover;
+    margin-bottom: 6px;
+    color: #39443c;
+    font-family: 'Inter', sans-serif;
+    font-size: .74rem;
+    font-weight: 600;
 }
 
-
 /* =========================================================
-   OVERLAY
+   ESTRUTURA DOS CAMPOS
    ========================================================= */
 
-.upload-overlay {
-    position: absolute;
-
-    inset: 0;
-
+.input-wrapper {
+    position: relative;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-
-    gap: var(--space-sm);
-
-    background: rgba(0, 0, 0, 0.5);
-
-    color: var(--cor-branco);
-
-    opacity: 0;
-
-    transition: opacity 0.2s ease;
-
-    font-weight: 500;
+    width: 100%;
+    min-width: 0;
 }
 
-
-.profile-upload-zone:hover .upload-overlay {
-    opacity: 1;
+/* Ícone à esquerda do campo */
+.field-icon {
+    position: absolute;
+    z-index: 1;
+    left: 11px;
+    color: #829087;
+    font-size: .82rem;
+    pointer-events: none;
 }
-
-
-.upload-overlay i {
-    font-size: 1.5rem;
-}
-
 
 /* =========================================================
-   MOBILE
+   ÍCONE DE EDIÇÃO
+   ========================================================= */
+
+.edit-icon {
+    position: absolute;
+    z-index: 2;
+    right: 11px;
+    color: #849087;
+    font-size: .76rem;
+    cursor: pointer;
+    transition: color .2s ease;
+}
+
+.edit-icon:hover {
+    color: var(--perfil-verde, #00552d);
+}
+
+/* =========================================================
+   ÍCONE DE MOSTRAR / OCULTAR SENHA
+   ========================================================= */
+
+.toggle-password {
+    position: absolute;
+    z-index: 2;
+    right: 36px;
+    color: #849087;
+    font-size: .82rem;
+    cursor: pointer;
+    transition: color .2s ease;
+}
+
+.toggle-password:hover {
+    color: var(--perfil-verde, #00552d);
+}
+
+/* Garante que o olho permaneça oculto fora da edição */
+.toggle-password[hidden] {
+    display: none !important;
+}
+
+/* =========================================================
+   CAMPOS DE TEXTO
+   ========================================================= */
+
+.form-control {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    padding: 8px 32px 8px 32px;
+    border: 1px solid #e0e8e2;
+    border-radius: 7px;
+    background: #fff;
+    color: #39443c;
+    font-family: 'Inter', sans-serif;
+    font-size: .76rem;
+    line-height: 1.4;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.form-control:not([readonly]):not(:disabled) {
+    color: #26352a;
+}
+
+.form-control:focus {
+    border-color: #087044;
+    box-shadow: 0 0 0 3px rgba(0, 85, 45, .08);
+}
+
+.form-control[readonly] {
+    cursor: default;
+}
+
+.form-control:disabled {
+    opacity: 1;
+    color: #39443c;
+    background: #fff;
+}
+
+/* Reserva espaço para o olho e o lápis nos campos de senha */
+#profile-password,
+#profile-confirm-password {
+    padding-right: 62px;
+}
+
+/* =========================================================
+   CAMPOS DE SELEÇÃO
+   ========================================================= */
+
+/* Remove a seta padrão dos campos de seleção */
+.form-control:is(select) {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: none;
+}
+
+/* =========================================================
+   BOTÕES DE AÇÃO
+   ========================================================= */
+
+.form-actions.full-width {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+/* =========================================================
+   RESPONSIVIDADE — MOBILE FIRST COMPLEMENTAR
    ========================================================= */
 
 @media (max-width: 480px) {
+    .user-info-form {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+    }
 
+    .form-group.full-width,
+    .form-actions.full-width {
+        grid-column: 1;
+    }
 
+    .form-group label {
+        font-size: .78rem;
+    }
 
+    .form-control {
+        min-height: 42px;
+        font-size: .82rem;
+    }
+
+    /* Mantém o espaço dos ícones no celular */
+    #profile-password,
+    #profile-confirm-password {
+        padding-right: 62px;
+    }
 }
