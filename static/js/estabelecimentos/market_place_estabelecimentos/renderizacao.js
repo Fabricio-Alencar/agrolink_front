@@ -426,3 +426,82 @@ export async function renderizarProdutos(listaExterna = null) {
         renderizarErro();
     }
 }
+
+// ============================================================
+// LOCALIZAR PRODUTO E NAVEGAR ATÉ SUA PÁGINA
+// ============================================================
+
+export async function destacarProdutoPorId(id) {
+    try {
+        // Garante que a lista completa esteja carregada.
+        if (!Array.isArray(cacheProdutos)) {
+            cacheProdutos = await API.listarProdutos();
+        }
+
+        if (!Array.isArray(cacheProdutos)) {
+            return false;
+        }
+
+        // Localiza o produto na lista completa, não apenas
+        // nos cards que estão visíveis na página atual.
+        const indiceProduto = cacheProdutos.findIndex(
+            produto => String(produto.id) === String(id)
+        );
+
+        if (indiceProduto === -1) {
+            return false;
+        }
+
+        // Calcula em qual página o produto está.
+        const paginaDestino =
+            Math.floor(indiceProduto / ITENS_POR_PAGINA) + 1;
+
+        const paginacaoAtual = inicializarPaginacao();
+
+        if (!paginacaoAtual) {
+            return false;
+        }
+
+        // Garante que a paginação esteja usando a lista completa.
+        paginacaoAtual.atualizar(cacheProdutos);
+
+        // Vai para a página do produto, se necessário.
+        if (paginaDestino > 1) {
+            paginacaoAtual.irParaPagina(paginaDestino);
+        }
+
+        if (containerPaginacao) {
+            containerPaginacao.hidden = false;
+        }
+
+        // Aguarda a atualização do HTML dos cards.
+        await new Promise(resolve => requestAnimationFrame(resolve));
+
+        const card = Array.from(
+            DOM.grid.querySelectorAll('.product-card')
+        ).find(
+            elemento => String(elemento.dataset.produtoId) === String(id)
+        );
+
+        if (!card) {
+            return false;
+        }
+
+        card.classList.add('produto-destacado');
+
+        card.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+
+        setTimeout(() => {
+            card.classList.remove('produto-destacado');
+        }, 4000);
+
+        return true;
+
+    } catch (erro) {
+        console.error('Erro ao localizar produto:', erro);
+        return false;
+    }
+}
