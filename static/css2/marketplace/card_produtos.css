@@ -1,4 +1,3 @@
-
 /* ==========================================================
    PRODUTOS (GRID + CARD) - MOBILE FIRST
 ========================================================== */
@@ -282,7 +281,7 @@
 @media (min-width: 768px) {
     .grade-produtos {
         grid-template-columns:
-            repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+            repeat(auto-fit, minmax(240px, 1fr));
     }
 
     .product-info {
@@ -301,7 +300,9 @@
 @media (min-width: 1024px) {
     .grade-produtos {
         grid-template-columns:
-            repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+            repeat(auto-fit, minmax(min(100%, 250px), 300px));
+
+        justify-content: start;
     }
 
     .product-img {

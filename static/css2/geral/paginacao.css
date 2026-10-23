@@ -1,0 +1,75 @@
+/* =========================================================
+   PAGINAÇÃO REUTILIZÁVEL
+========================================================= */
+
+.paginacao {
+    width: 100%;
+    margin: 28px 0 20px;
+}
+
+.paginacao[hidden] {
+    display: none !important;
+}
+
+.paginacao-controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.paginacao-btn {
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px 12px;
+
+    border: 1px solid var(--cor-borda-filtro);
+    border-radius: 8px;
+
+    background: var(--white);
+    color: var(--cor-texto-escuro);
+
+    font: inherit;
+    cursor: pointer;
+}
+
+.paginacao-btn:hover:not(:disabled) {
+    background: #f1f8f1;
+}
+
+.paginacao-btn.ativo {
+    background: var(--cor-primaria-variacao);
+    border-color: var(--cor-primaria-variacao);
+    color: #fff;
+    font-weight: 700;
+}
+
+.paginacao-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.paginacao-resumo {
+    margin: 14px 0 0;
+    color: var(--cor-texto-secundario);
+    font-size: 13px;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .paginacao {
+        margin-top: 22px;
+    }
+
+    .paginacao-controles {
+        gap: 5px;
+    }
+
+    .paginacao-btn {
+        min-width: 36px;
+        min-height: 36px;
+        padding: 7px 9px;
+        font-size: 13px;
+    }
+}

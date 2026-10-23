@@ -6,6 +6,7 @@ import './filtros.js';
 import './localizacao.js';
 import './drawer_eventos.js';
 import './filtro_persiana.js';
+import '../../paginacao.js';
 
 import {
     fecharModal,
