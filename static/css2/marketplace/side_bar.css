@@ -20,28 +20,78 @@
     margin-bottom: 15px;
 }
 
+/* =========================================================
+   CABEÇALHO DOS FILTROS
+========================================================= */
+
 .cabecalho-filtro {
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
 
+    width: 100%;
+    padding: 0 0 10px;
+    margin-bottom: 20px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--cor-borda-filtro);
+
+    color: var(--cor-texto-escuro);
+    font-family: inherit;
     font-size: 16px;
     font-weight: 600;
+    text-align: center;
 
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-
-    border-bottom: 1px solid var(--cor-borda-filtro);
     cursor: pointer;
 }
 
 .cabecalho-filtro svg {
     width: 20px;
     height: 20px;
-    margin-right: 10px;
+    margin-right: 0;
     fill: var(--cor-texto-escuro);
     flex-shrink: 0;
 }
+
+.titulo-filtros {
+    flex: 0 1 auto;
+}
+
+.seta-filtros {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+/* Gira a seta quando os filtros estão abertos */
+.sidebar.filtros-abertos .seta-filtros {
+    transform: rotate(180deg);
+}
+
+/* =========================================================
+   CONTEÚDO DOS FILTROS
+========================================================= */
+
+.conteudo-filtros {
+    max-height: 1000px;
+    opacity: 1;
+    overflow: visible;
+
+    transition:
+        max-height 0.3s ease,
+        opacity 0.25s ease;
+}
+
+.conteudo-filtros-interno {
+    padding-top: 0;
+}
+
+/* =========================================================
+   GRUPOS DE FILTROS
+========================================================= */
 
 .grupo-filtro {
     margin-bottom: 15px;
@@ -81,7 +131,6 @@
     font-weight: bold;
     text-align: center;
 }
-
 
 /* =========================================================
    BOTÃO LIMPAR FILTROS
@@ -134,20 +183,67 @@
     outline-offset: 2px;
 }
 
-
 /* =========================================================
    CELULAR
+   Persiana recolhível somente até 600px
 ========================================================= */
 
 @media (max-width: 600px) {
 
     .sidebar {
         width: 100%;
+        margin: 0 auto 20px;
     }
 
     .filtro {
         padding: 16px;
         border-radius: 12px;
+    }
+
+    .cabecalho-filtro {
+        justify-content: flex-start;
+        gap: 10px;
+
+        margin-bottom: 0;
+        padding-bottom: 12px;
+
+        border-bottom: none;
+        text-align: left;
+    }
+
+    .titulo-filtros {
+        flex: 1;
+        text-align: left;
+    }
+
+    .seta-filtros {
+        display: block;
+    }
+
+    /* Persiana fechada */
+    .conteudo-filtros {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+
+        transition:
+            max-height 0.3s ease,
+            opacity 0.25s ease;
+    }
+
+    /* Persiana aberta */
+    .sidebar.filtros-abertos .conteudo-filtros {
+        opacity: 1;
+    }
+
+    .sidebar.filtros-abertos .cabecalho-filtro {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--cor-borda-filtro);
+    }
+
+    .conteudo-filtros-interno {
+        padding-top: 4px;
     }
 
     .btn-limpar-filtros {
@@ -178,9 +274,9 @@
     }
 }
 
-
 /* =========================================================
    TABLET / DESKTOP
+   Mantém os filtros sempre visíveis
 ========================================================= */
 
 @media (min-width: 768px) {
@@ -197,11 +293,35 @@
 
     .cabecalho-filtro {
         justify-content: flex-start;
+        gap: 10px;
+
         font-size: 18px;
 
         cursor: default;
+        margin-bottom: 20px;
         padding-bottom: 0;
+
         border-bottom: none;
+    }
+
+    .titulo-filtros {
+        flex: 0 1 auto;
+    }
+
+    /* Oculta a seta e impede o recolhimento */
+    .seta-filtros {
+        display: none;
+    }
+
+    .conteudo-filtros {
+        max-height: none !important;
+        opacity: 1 !important;
+        overflow: visible;
+        transition: none;
+    }
+
+    .conteudo-filtros-interno {
+        padding-top: 0;
     }
 
     .btn-limpar-filtros {
@@ -211,5 +331,16 @@
 
     .btn-limpar-filtros:hover {
         border-color: #d5e8d5;
+    }
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media (min-width: 1024px) {
+
+    .sidebar {
+        width: 280px;
     }
 }

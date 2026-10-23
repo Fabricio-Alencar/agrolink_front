@@ -111,67 +111,96 @@
     <!-- CONTAINER PRINCIPAL -->
     <div class="main-container">
 
-        <!-- SIDEBAR DE FILTROS -->
-        <aside class="sidebar">
+        
+    <!-- SIDEBAR DE FILTROS -->
+    <aside class="sidebar">
 
-            <div class="filtro">
+        <div class="filtro">
 
-                <!-- TÍTULO DOS FILTROS -->
-                <div class="cabecalho-filtro">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
-                    </svg>
-                    Filtros
+            <!-- CABEÇALHO EXPANSÍVEL -->
+            <button
+                type="button"
+                class="cabecalho-filtro"
+                id="btnToggleFiltros"
+                aria-expanded="true"
+                aria-controls="painelOpcoesFiltros"
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z"/>
+                </svg>
+
+                <span class="titulo-filtros">Filtros</span>
+
+                <i
+                    data-lucide="chevron-down"
+                    class="seta-filtros"
+                    aria-hidden="true"
+                ></i>
+            </button>
+
+            <!-- CONTEÚDO EXPANSÍVEL -->
+            <div
+                class="conteudo-filtros"
+                id="painelOpcoesFiltros"
+            >
+                <div class="conteudo-filtros-interno">
+
+                    <!-- FILTRO POR CATEGORIA -->
+                    <div class="grupo-filtro">
+                        <label for="filterCategory">Categoria</label>
+
+                        <select id="filterCategory">
+                            <option value="Todos">Todos</option>
+                            <option value="frutas">Frutas</option>
+                            <option value="legumes">Legumes</option>
+                            <option value="hortalicas">Hortaliças</option>
+                            <option value="graos">Grãos e Cereais</option>
+                            <option value="oleaginosas">Oleaginosas e Sementes</option>
+                            <option value="ervas">Ervas e Temperos</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <!-- FILTRO POR ESTADO -->
+                    <div class="grupo-filtro">
+                        <label for="filterEstado">Estado</label>
+
+                        <select id="filterEstado">
+                            <option value="">Selecione o estado</option>
+                        </select>
+                    </div>
+
+                    <!-- FILTRO POR CIDADE -->
+                    <div class="grupo-filtro">
+                        <label for="filterCidade">Cidade</label>
+
+                        <select id="filterCidade">
+                            <option value="">Selecione a cidade</option>
+                        </select>
+                    </div>
+
+                    <!-- LIMPAR FILTROS -->
+                    <button
+                        type="button"
+                        id="btnLimparFiltros"
+                        class="btn-limpar-filtros"
+                    >
+                        <i data-lucide="rotate-ccw" aria-hidden="true"></i>
+                        <span>Limpar filtros</span>
+                    </button>
+
                 </div>
-
-                <!-- FILTRO POR CATEGORIA -->
-                <div class="grupo-filtro">
-                    <label>Categoria</label>
-
-                    <select id="filterCategory">
-                        <option value="Todos">Todos</option>
-                        <option value="frutas">Frutas</option>
-                        <option value="legumes">Legumes</option>
-                        <option value="hortalicas">Hortaliças</option>
-                        <option value="graos">Grãos e Cereais</option>
-                        <option value="oleaginosas">Oleaginosas e Sementes</option>
-                        <option value="ervas">Ervas e Temperos</option>
-                        <option value="outros">Outros</option>
-                    </select>
-                </div>
-
-                <!-- FILTRO POR ESTADO -->
-                <div class="grupo-filtro">
-                    <label>Estado</label>
-                    <select id="filterEstado">
-                        <option value="">Selecione o estado</option>
-                    </select>
-                </div>
-
-                <!-- FILTRO POR CIDADE -->
-                <div class="grupo-filtro">
-                    <label>Cidade</label>
-                    <select id="filterCidade">
-                        <option value="">Selecione a cidade</option>
-                    </select>
-                </div>
-
-                <!-- LIMPAR FILTROS -->
-                <button type="button" id="btnLimparFiltros" class="btn-limpar-filtros">
-                    <i data-lucide="rotate-ccw"></i>
-                    <span>Limpar filtros</span>
-                </button>
-
             </div>
 
-           
+        </div>
 
-            <!-- CONTADOR DE RESULTADOS -->
-            <p class="contador-resultados" id="resultsCount">
-                0 Produtos encontrados
-            </p>
+        <!-- CONTADOR DE RESULTADOS -->
+        <p class="contador-resultados" id="resultsCount">
+            0 Produtos encontrados
+        </p>
 
-        </aside>
+    </aside>
+
 
         <!-- GRID DE PRODUTOS -->
         <main class="grade-produtos" id="productsGrid">
@@ -287,6 +316,7 @@
 <script src="../static/js/avaliacoes.js"></script>
 <script type="module" src="../static/js/drawer.js"></script>
 <script type="module" src="../static/js/estabelecimentos/market_place_estabelecimentos/main.js"></script>
+
 <script src="../static/js/notificacao.js"></script>
 <script src="../static/js/barra-navegacao.js" defer></script>
 
