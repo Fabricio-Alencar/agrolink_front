@@ -1,28 +1,31 @@
+
 /* =========================================================
    LAYOUT PRINCIPAL
-   ========================================================= */
+========================================================= */
 
 .main-container {
     display: flex;
     flex-direction: column;
     gap: 30px;
+
+    width: 100%;
+    min-width: 0;
     max-width: 1400px;
     margin: 0 auto;
 
-    /* Espaçamento no topo e no fundo */
-    padding-top: 30px;
-    padding-bottom: 30px;
+    /* Espaçamento no topo, nas laterais e no fundo */
+    padding: 30px 16px;
+
+    box-sizing: border-box;
 }
 
 /* =========================================================
-   TABLET/DESKTOP
-   ========================================================= */
+   TABLET / DESKTOP
+========================================================= */
 
 @media (min-width: 768px) {
-
     .main-container {
         flex-direction: row;
         align-items: flex-start;
     }
-
 }

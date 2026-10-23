@@ -1,3 +1,4 @@
+
 /* ==========================================================
    PRODUTOS (GRID + CARD) - MOBILE FIRST
 ========================================================== */
@@ -8,9 +9,17 @@
 
 .grade-produtos {
     display: grid;
-    grid-template-columns: 1fr;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+
     gap: var(--space-lg);
+
     flex: 1;
+    width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
 }
 
 /* =========================
@@ -20,6 +29,10 @@
 .product-card {
     display: flex;
     flex-direction: column;
+
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 
     background: var(--cor-branco);
     border: 1px solid var(--cor-borda);
@@ -37,30 +50,53 @@
     box-shadow: 0 8px 18px rgba(0, 0, 0, .15);
 }
 
+/* =========================
+   IMAGEM
+========================= */
+
 .product-img {
+    display: block;
+
     width: 100%;
     height: 180px;
+
     object-fit: cover;
+    flex-shrink: 0;
 }
+
+/* =========================
+   INFORMAÇÕES
+========================= */
 
 .product-info {
     display: flex;
     flex-direction: column;
+
     flex: 1;
+    min-width: 0;
+
     padding: var(--space-md);
+
+    box-sizing: border-box;
 }
 
+/* TÍTULO */
+
 .product-title {
-    margin-bottom: .5rem;
+    margin: 0 0 .5rem;
+
     font-size: 1.1rem;
     font-weight: 600;
+
     color: var(--cor-texto-principal);
+
+    overflow-wrap: anywhere;
 }
 
 /* DESCRIÇÃO */
 
 .product-desc {
-    margin-bottom: var(--space-md);
+    margin: 0 0 var(--space-md);
 
     font-size: .9rem;
     line-height: 1.5;
@@ -72,95 +108,145 @@
     -webkit-line-clamp: 2;
 
     overflow: hidden;
+    overflow-wrap: anywhere;
 }
 
-/* PREÇO */
+/* =========================
+   PREÇO E ESTOQUE
+========================= */
 
 .price-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
 
     margin-bottom: var(--space-md);
     padding-bottom: var(--space-md);
 
     border-bottom: 1px solid var(--cor-borda);
+
+    min-width: 0;
 }
 
 .price {
+    min-width: 0;
+
     font-size: 1rem;
     font-weight: 700;
+
     color: var(--cor-primaria);
+
+    overflow-wrap: anywhere;
 }
 
 .price span {
     font-size: .8rem;
     font-weight: 400;
+
     color: var(--cor-texto-secundario);
 }
 
 .stock {
+    min-width: 0;
+
     font-size: .85rem;
     color: var(--cor-texto-principal);
+
+    overflow-wrap: anywhere;
 }
 
-/* PRODUTOR */
+/* =========================
+   PRODUTOR
+========================= */
 
 .producer-info {
+    min-width: 0;
+
     margin-bottom: .35rem;
+
     font-size: .95rem;
     font-weight: 600;
+
     color: var(--cor-texto-principal);
+
+    overflow-wrap: anywhere;
 }
 
-/* AVALIAÇÃO */
+/* =========================
+   AVALIAÇÃO
+========================= */
 
 .rating {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+
     gap: .3rem;
 
+    min-width: 0;
     margin-bottom: .5rem;
 
     color: #f4b400;
 }
 
 .rating span {
+    min-width: 0;
+
     color: var(--cor-texto-secundario);
     font-size: .8rem;
+
+    overflow-wrap: anywhere;
 }
 
-/* LOCALIZAÇÃO */
+/* =========================
+   LOCALIZAÇÃO
+========================= */
 
 .location {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+
     gap: .35rem;
 
+    min-width: 0;
     margin-bottom: var(--space-md);
 
     color: var(--cor-texto-secundario);
     font-size: .8rem;
+
+    overflow-wrap: anywhere;
 }
 
 .location svg {
     width: 14px;
     height: 14px;
+
+    flex-shrink: 0;
+
     fill: currentColor;
 }
 
-/* BOTÃO */
+/* =========================
+   BOTÃO NEGOCIAR
+========================= */
 
 .btn-negociar {
     display: flex;
     justify-content: center;
     align-items: center;
+
     gap: .5rem;
+
     width: 100%;
+    min-width: 0;
 
     margin-top: auto;
-
     padding: .65rem;
+
+    box-sizing: border-box;
 
     border: none;
     border-radius: 999px;
@@ -183,17 +269,20 @@
 .btn-negociar svg {
     width: 18px;
     height: 18px;
+
+    flex-shrink: 0;
+
     fill: currentColor;
 }
 
-/* =========================
+/* =========================================================
    TABLET
-========================= */
+========================================================= */
 
 @media (min-width: 768px) {
-
     .grade-produtos {
-        grid-template-columns: repeat(1, 1fr);
+        grid-template-columns:
+            repeat(auto-fit, minmax(min(100%, 240px), 1fr));
     }
 
     .product-info {
@@ -203,21 +292,19 @@
     .product-img {
         height: 190px;
     }
-
 }
 
-/* =========================
+/* =========================================================
    DESKTOP
-========================= */
+========================================================= */
 
 @media (min-width: 1024px) {
-
     .grade-produtos {
-        grid-template-columns: repeat(3, minmax(280px, 1fr));
+        grid-template-columns:
+            repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     }
 
     .product-img {
         height: 210px;
     }
-
 }
