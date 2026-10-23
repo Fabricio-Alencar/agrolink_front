@@ -5,12 +5,23 @@
  * - Utilizar URLs SAS do Azure Blob Storage quando disponíveis.
  * - Utilizar imagem genérica quando o produto não possuir foto
  *   ou quando a imagem não puder ser carregada.
+ * - Utilizar o componente reutilizável de paginação.
  */
+
+import { criarPaginacao } from '../paginacao.js';
 
 // ==========================================
 // CONSTANTES DE FALLBACK
 // ==========================================
 const FOTO_GENERICA = "../static/assets/produto_generico.png";
+const ITENS_POR_PAGINA = 8;
+
+// ==========================================
+// CONTROLE DA PAGINAÇÃO
+// ==========================================
+let paginacao = null;
+let containerPaginacao = null;
+let containerProdutosPaginados = null;
 
 // ==========================================
 // DICIONÁRIO E AUXILIARES
@@ -162,64 +173,89 @@ function configurarFallbackImagem(imagem) {
 }
 
 // ==========================================
-// BUSCA DADOS E RENDERIZAÇÃO
+// PREPARAR CONTAINER DA PAGINAÇÃO
 // ==========================================
-async function renderProdutos(listaParaRenderizar) {
+function obterContainerPaginacao(container) {
 
-    const container =
-        document.getElementById(
-            "produtosContainer"
+    if (
+        containerPaginacao?.isConnected
+        && containerProdutosPaginados === container
+    ) {
+        return containerPaginacao;
+    }
+
+    // Evita duplicar a paginação caso o container
+    // dos produtos seja recriado.
+    if (paginacao) {
+        paginacao.destruir();
+        paginacao = null;
+    }
+
+    const wrapper = document.createElement("div");
+
+    wrapper.className = "area-lista-produtos";
+    wrapper.style.width = "100%";
+    wrapper.style.minWidth = "0";
+
+    const host = document.createElement("div");
+
+    host.className = "area-controles-paginacao";
+    host.style.width = "100%";
+
+    // Agrupa o grid e a paginação para que os controles
+    // fiquem abaixo dos cards, sem virar outra coluna.
+    const pai = container.parentElement;
+
+    if (!pai) {
+        return null;
+    }
+
+    pai.insertBefore(wrapper, container);
+    wrapper.appendChild(container);
+    wrapper.appendChild(host);
+
+    containerProdutosPaginados = container;
+    containerPaginacao = host;
+
+    return containerPaginacao;
+}
+
+// ==========================================
+// INICIALIZAR PAGINAÇÃO
+// ==========================================
+function inicializarPaginacao(container) {
+
+    const host = obterContainerPaginacao(container);
+
+    if (!host) {
+        console.error(
+            "Não foi possível criar o container da paginação."
         );
 
-    if (!container) {
-        return;
+        return null;
     }
 
-    // ==========================================
-    // MOSTRA LOADING
-    // ==========================================
-    if (!listaParaRenderizar) {
-        renderizarCarregando(container);
+    if (!paginacao) {
+        paginacao = criarPaginacao({
+            container: host,
+
+            itensPorPagina: ITENS_POR_PAGINA,
+
+            aoMudarPagina({ itens }) {
+                renderizarCards(itens, container);
+            }
+        });
     }
 
-    let lista;
+    return paginacao;
+}
 
-    try {
-
-        lista =
-            listaParaRenderizar
-            || await API.meusProdutos();
-
-    } catch (err) {
-
-        renderizarErro(container);
-
-        return;
-    }
-
-    if (!Array.isArray(lista)) {
-        renderizarErro(container);
-        return;
-    }
-
-    if (lista.length === 0) {
-
-        if (listaParaRenderizar) {
-            renderizarSemResultados(container);
-        } else {
-            renderizarSemProdutos(container);
-        }
-
-        return;
-    }
-
-
-    // ==========================================
-    // MEDIÇÃO DA RENDERIZAÇÃO DOS CARDS
-    // ==========================================
+// ==========================================
+// RENDERIZAR CARDS
+// ==========================================
+function renderizarCards(lista, container) {
 
     console.time("⏱️ Renderização dos cards");
-
 
     const htmlCards = lista.map(produto => {
 
@@ -239,12 +275,14 @@ async function renderProdutos(listaParaRenderizar) {
                 }
             ).format(produto.preco || 0);
 
+        const status = produto.status || "indefinido";
+
         return `
             <div class="produtor-card">
 
-                <div class="status ${produto.status || ''}">
+                <div class="status ${status}">
                     <span>
-                      ● ${(produto.status || 'indefinido').charAt(0).toUpperCase() + (produto.status || 'indefinido').slice(1)}
+                        ● ${status.charAt(0).toUpperCase() + status.slice(1)}
                     </span>
                 </div>
 
@@ -263,12 +301,12 @@ async function renderProdutos(listaParaRenderizar) {
                         ${produto.nome}
                     </h2>
 
-                    <span class="categoria ${produto.categoria || 'geral'}">
+                    <span class="categoria ${produto.categoria || "geral"}">
                         ${formatarLabel(produto.categoria)}
                     </span>
 
                     <p class="descricao">
-                        ${produto.descricao || 'Sem descrição disponível.'}
+                        ${produto.descricao || "Sem descrição disponível."}
                     </p>
 
                     <strong class="preco">
@@ -307,26 +345,106 @@ async function renderProdutos(listaParaRenderizar) {
         `;
     }).join("");
 
-
-    // Insere todos os cards no DOM de uma única vez
+    // Insere somente os produtos da página atual.
     container.innerHTML = htmlCards;
 
+    const imagens = container.querySelectorAll(".produto-foto");
 
-    const imagens =
-        container.querySelectorAll(
-            ".produto-foto"
-        );
-
-    imagens.forEach(
-        imagem => configurarFallbackImagem(imagem)
-    );
-
+    imagens.forEach(imagem => {
+        configurarFallbackImagem(imagem);
+    });
 
     atualizarIcones();
 
-
-    // Finaliza a medição da renderização
     console.timeEnd("⏱️ Renderização dos cards");
+}
+
+// ==========================================
+// BUSCA DADOS E RENDERIZAÇÃO
+// ==========================================
+async function renderProdutos(listaParaRenderizar) {
+
+    const container = document.getElementById("produtosContainer");
+
+    if (!container) {
+        return;
+    }
+
+    // Mostra o carregamento apenas quando a lista
+    // ainda será buscada na API.
+    if (listaParaRenderizar === undefined) {
+        renderizarCarregando(container);
+    }
+
+    let lista;
+
+    try {
+
+        lista = listaParaRenderizar !== undefined
+            ? listaParaRenderizar
+            : await API.meusProdutos();
+
+    } catch (err) {
+
+        if (containerPaginacao) {
+            containerPaginacao.hidden = true;
+        }
+
+        renderizarErro(container);
+
+        return;
+    }
+
+    if (!Array.isArray(lista)) {
+
+        if (containerPaginacao) {
+            containerPaginacao.hidden = true;
+        }
+
+        renderizarErro(container);
+
+        return;
+    }
+
+    // ==========================================
+    // NENHUM PRODUTO ENCONTRADO
+    // ==========================================
+    if (lista.length === 0) {
+
+        if (paginacao) {
+            paginacao.atualizar([]);
+        }
+
+        if (containerPaginacao) {
+            containerPaginacao.hidden = true;
+        }
+
+        if (listaParaRenderizar !== undefined) {
+            renderizarSemResultados(container);
+        } else {
+            renderizarSemProdutos(container);
+        }
+
+        return;
+    }
+
+    // ==========================================
+    // ATUALIZAR PAGINAÇÃO
+    // ==========================================
+    const componentePaginacao = inicializarPaginacao(container);
+
+    if (!componentePaginacao) {
+        // Fallback: se a paginação não puder ser
+        // inicializada, mostra todos os produtos.
+        renderizarCards(lista, container);
+        return;
+    }
+
+    containerPaginacao.hidden = false;
+
+    // O componente controla a página atual e chama
+    // renderizarCards() com os itens correspondentes.
+    componentePaginacao.atualizar(lista);
 }
 
 // ==========================================
@@ -334,66 +452,49 @@ async function renderProdutos(listaParaRenderizar) {
 // ==========================================
 let debounceTimer;
 
-const searchInput =
-    document.getElementById("searchInput");
+const searchInput = document.getElementById("searchInput");
 
 if (searchInput) {
 
-    searchInput.addEventListener(
-        "input",
-        (e) => {
+    searchInput.addEventListener("input", (e) => {
 
-            clearTimeout(debounceTimer);
+        clearTimeout(debounceTimer);
 
-            debounceTimer = setTimeout(
-                async () => {
+        debounceTimer = setTimeout(async () => {
 
-                    const termoBusca =
-                        e.target.value
-                            .toLowerCase()
-                            .trim();
+            const termoBusca = e.target.value
+                .toLowerCase()
+                .trim();
 
-                    try {
+            try {
 
-                        const todosProdutos =
-                            await API.meusProdutos();
+                const todosProdutos = await API.meusProdutos();
 
-                        const filtrados =
-                            todosProdutos.filter(
-                                p =>
-                                    p.nome
-                                    && p.nome
-                                        .toLowerCase()
-                                        .includes(termoBusca)
-                            );
+                const filtrados = todosProdutos.filter(
+                    p =>
+                        p.nome
+                        && p.nome.toLowerCase().includes(termoBusca)
+                );
 
-                        renderProdutos(
-                            filtrados
-                        );
+                // atualizar() reinicia a paginação
+                // na primeira página para cada busca.
+                await renderProdutos(filtrados);
 
-                    } catch (err) {
+            } catch (err) {
 
-                        console.error(
-                            "Erro ao filtrar produtos:",
-                            err
-                        );
-                    }
+                console.error(
+                    "Erro ao filtrar produtos:",
+                    err
+                );
+            }
 
-                },
-                300
-            );
-        }
-    );
+        }, 300);
+    });
 }
 
 // ==========================================
 // INICIALIZAÇÃO
 // ==========================================
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-        renderProdutos();
-
-    }
-);
+document.addEventListener("DOMContentLoaded", () => {
+    renderProdutos();
+});
