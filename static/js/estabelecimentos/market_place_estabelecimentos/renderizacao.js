@@ -12,7 +12,7 @@ let cacheProdutos = null;
 
 const API_URL = CONFIG.API_URL;
 const FOTO_PRODUTO_GENERICA = "../static/assets/produto_generico.png";
-const ITENS_POR_PAGINA = 8;
+const ITENS_POR_PAGINA = 9;
 
 // ============================================================
 // PAGINAÇÃO REUTILIZÁVEL

@@ -1,6 +1,7 @@
 import { showDetails } from "./navegacao.js";
 import { deleteOrder } from "./filtros_botao_excluir.js";
 import { API } from './api.js';
+import { criarPaginacao } from "../paginacao.js";
 import { prepararConfirmacaoNegociacao } from "./confirmacao.js";
 import {
     proximaAcaoHTML,
@@ -12,6 +13,12 @@ import {
 } from "./acompanhamento.js";
 
 let cacheNegociacoes = null;
+
+const ITENS_POR_PAGINA = 12;
+
+let paginacaoNegociacoes = null;
+let containerPaginacao = null;
+let gridPaginado = null;
 
 export const getCacheNegociacoes = () => cacheNegociacoes;
 
@@ -34,13 +41,8 @@ function limparGrid() {
 function renderizarCarregando(container) {
     container.innerHTML = `
         <div class="carregando-produtos">
-
             <div class="spinner-produtos"></div>
-
-            <p>
-                Carregando pedidos...
-            </p>
-
+            <p>Carregando pedidos...</p>
         </div>
     `;
 }
@@ -63,11 +65,7 @@ function renderizarSemPedidos(container) {
     container.innerHTML = `
         <div class="sem-produtos">
             <i data-lucide="inbox"></i>
-
-            <h2>
-                Nenhum pedido cadastrado
-            </h2>
-
+            <h2>Nenhum pedido cadastrado</h2>
             <p>
                 Você ainda não possui pedidos ou negociações
                 para visualizar neste momento.
@@ -86,11 +84,7 @@ function renderizarSemResultados(container) {
     container.innerHTML = `
         <div class="sem-produtos">
             <i data-lucide="search-x"></i>
-
-            <h2>
-                Nenhum resultado encontrado
-            </h2>
-
+            <h2>Nenhum resultado encontrado</h2>
             <p>
                 Não encontramos nenhum pedido com os filtros
                 selecionados. Tente alterar os filtros para
@@ -110,11 +104,7 @@ function renderizarErro(container) {
     container.innerHTML = `
         <div class="sem-produtos">
             <i data-lucide="triangle-alert"></i>
-
-            <h2>
-                Não foi possível carregar os pedidos
-            </h2>
-
+            <h2>Não foi possível carregar os pedidos</h2>
             <p>
                 Ocorreu um problema ao carregar suas negociações.
                 Tente novamente em alguns instantes.
@@ -130,32 +120,24 @@ function renderizarErro(container) {
 // ==========================================
 
 export function criarCardNegociacao(order, tipo_de_usuario) {
+    const statusClass = order.status
+        ? order.status.toLowerCase()
+        : 'pendente';
 
-    const statusClass =
-        order.status
-            ? order.status.toLowerCase()
-            : 'pendente';
-
-    const card =
-        document.createElement('div');
-
+    const card = document.createElement('div');
     card.className = 'card';
 
     let botaoSecundario = '';
     let acaoSecundaria = null;
     let novoStatus = '';
 
-
     // ==========================================
     // STATUS PENDENTE
     // ==========================================
 
     if (statusClass === 'pendente') {
-
         if (tipo_de_usuario === 'produtor') {
-
             // Produtor recusa proposta pendente
-
             botaoSecundario = `
                 <button class="btn-acao-secundaria" type="button">
                     Recusar
@@ -164,11 +146,8 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
 
             novoStatus = 'Recusado';
             acaoSecundaria = 'recusar';
-
         } else {
-
             // Estabelecimento cancela proposta pendente
-
             botaoSecundario = `
                 <button class="btn-acao-secundaria" type="button">
                     Cancelar
@@ -179,15 +158,12 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
             acaoSecundaria = 'cancelar';
         }
 
-
     // ==========================================
     // STATUS ACEITO
     // ==========================================
 
     } else if (statusClass === 'aceito') {
-
         // Se foi apenas aceito, ainda pode cancelar
-
         botaoSecundario = `
             <button class="btn-acao-secundaria" type="button">
                 Cancelar
@@ -196,7 +172,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
 
         novoStatus = 'Cancelado';
         acaoSecundaria = 'cancelar';
-
 
     // ==========================================
     // STATUS FINAIS
@@ -207,13 +182,11 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         statusClass === 'cancelado' ||
         statusClass === 'finalizado'
     ) {
-
-        // CICLO MORTO:
         // Mostra a lixeira apenas para limpar a tela
-
         botaoSecundario = `
             <button
                 class="btn-delete"
+                type="button"
                 title="Excluir histórico"
             >
                 <svg
@@ -232,17 +205,12 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         `;
     }
 
-    // OBS:
-    // Se o status for 'entregue', botaoSecundario continua vazio.
-    // Nenhuma ação de exclusão ou cancelamento é mostrada.
-
+    // Se o status for 'entregue', não mostra ação secundária.
 
     // ==========================================
     // HTML DO CARD
     // ==========================================
 
-    // Botão principal = próxima ação de quem está vendo (Aceitar, Confirmar
-    // entrega, Confirmar recebimento ou Avaliar), sem precisar abrir os detalhes
     const principal = acaoPrincipal(order, tipo_de_usuario);
 
     const botaoPrincipal = principal
@@ -250,7 +218,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         : '';
 
     card.innerHTML = `
-
         ${proximaAcaoHTML(order, tipo_de_usuario)}
 
         <div
@@ -262,9 +229,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                 margin-bottom: 12px;
             "
         >
-
             <div>
-
                 <div
                     style="
                         font-weight: 700;
@@ -279,7 +244,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     ${dataDoPedido(order)}
                 </div>
 
-
                 <div
                     style="
                         display: flex;
@@ -290,7 +254,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         color: #555;
                     "
                 >
-
                     <svg
                         viewBox="0 0 24 24"
                         width="16"
@@ -302,7 +265,7 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                             4.44c-.16.12-.36.18-.57.18s-.41-.06-.57-.18
                             l-7.9-4.44A.991.991 0 0 1 3 16.5v-9
                             c0-.38.21-.71.53-.88l7.9-4.44
-                            c-.16.12-.36.18-.57.18s-.41-.06-.57-.18
+                            c-.16-.12-.36-.18-.57-.18s-.41-.06-.57-.18
                             l-7.9 4.44c-.32.17-.53.5-.53.88v9z
                             M12 4.15L6.04 7.5 12 10.85
                             17.96 7.5 12 4.15z
@@ -312,25 +275,17 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     </svg>
 
                     ${order.produto_nome}
-
                 </div>
-
             </div>
-
 
             <span class="badge ${statusClass}">
                 ${order.status}
             </span>
-
         </div>
 
-
         <div class="card-body">
-
             <div class="price-row">
-
                 <div class="qty">
-
                     <span
                         style="
                             display: block;
@@ -341,7 +296,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         Quantidade
                     </span>
 
-
                     <span
                         style="
                             font-size: 16px;
@@ -349,7 +303,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                             color: #333;
                         "
                     >
-
                         ${order.quantidade}
 
                         <span
@@ -360,14 +313,10 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         >
                             ${order.produto_unidade}
                         </span>
-
                     </span>
-
                 </div>
 
-
                 <div class="price">
-
                     <span
                         style="
                             display: block;
@@ -390,14 +339,10 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     >
                         /${order.produto_unidade}
                     </small>
-
                 </div>
-
             </div>
 
-
             <div style="margin-bottom: 16px;">
-
                 <span
                     style="
                         font-size: 12px;
@@ -409,18 +354,13 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     Proposta/Descrição do Pedido
                 </span>
 
-
                 <p class="desc">
                     ${order.descricao || 'Sem descrição'}
                 </p>
-
             </div>
 
-
             <div>
-
                 <div class="info-row">
-
                     <svg
                         viewBox="0 0 24 24"
                         width="16"
@@ -437,17 +377,13 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         "/>
                     </svg>
 
-
                     <span>
                         Entrega:
                         ${order.data_entrega || 'A combinar'}
                     </span>
-
                 </div>
 
-
                 <div class="info-row">
-
                     <svg
                         viewBox="0 0 24 24"
                         width="16"
@@ -464,23 +400,17 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                         "/>
                     </svg>
 
-
                     <span>
                         ${order.negociante_cidade},
                         ${order.negociante_estado}
                     </span>
-
                 </div>
-
             </div>
-
         </div>
-
 
         <div class="card-actions">
             ${
                 botaoPrincipal
-                    // Com ação: Detalhes sozinho em cima, ação + Recusar/Cancelar/lixeira embaixo
                     ? `
                         <div class="linha-acoes">
                             <button class="btn-details" type="button">Detalhes</button>
@@ -491,7 +421,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                             ${botaoSecundario}
                         </div>
                     `
-                    // Sem ação: uma linha só (Detalhes e, se houver, Cancelar ou lixeira)
                     : `
                         <div class="linha-acoes">
                             <button class="btn-details" type="button">Detalhes</button>
@@ -502,85 +431,126 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         </div>
     `;
 
-
     // ==========================================
     // BOTÃO DETALHES
     // ==========================================
 
     card.querySelector('.btn-details').onclick = () => {
-
         showDetails(
             order.id,
             tipo_de_usuario
         );
-
     };
 
-
     // ==========================================
-    // BOTÃO PRINCIPAL (PRÓXIMA AÇÃO)
+    // BOTÃO PRINCIPAL
     // ==========================================
 
     const btnPrincipal = card.querySelector('[data-acao]');
 
     if (btnPrincipal) {
         btnPrincipal.onclick = () => {
-
             if (principal.acao === 'aceitar') {
                 prepararConfirmacaoNegociacao('aceitar', order, 'Aceito');
-
             } else if (principal.acao === 'avaliar') {
                 abrirAvaliacao(order);
-
             } else {
-                // confirmar_entrega / confirmar_recebimento
+                // Confirmar entrega / confirmar recebimento
                 btnPrincipal.disabled = true;
                 executarConfirmacao(order, tipo_de_usuario);
             }
         };
     }
 
-
     // ==========================================
     // AÇÃO SECUNDÁRIA
     // ==========================================
 
     if (acaoSecundaria) {
-
-        card.querySelector(
-            '.btn-acao-secundaria'
-        ).onclick = () => {
-
+        card.querySelector('.btn-acao-secundaria').onclick = () => {
             prepararConfirmacaoNegociacao(
                 acaoSecundaria,
                 order,
                 novoStatus
             );
-
         };
-
 
     } else if (
         statusClass === 'recusado' ||
         statusClass === 'cancelado' ||
         statusClass === 'finalizado'
     ) {
-
         // ==========================================
         // BOTÃO EXCLUIR HISTÓRICO
         // ==========================================
 
         card.querySelector('.btn-delete').onclick = () => {
-
             deleteOrder(order.id);
-
         };
     }
-
 
     return card;
 }
 
+// ==========================================
+// PAGINAÇÃO DOS PEDIDOS
+// ==========================================
+
+function obterContainerPaginacao(grid) {
+    if (
+        containerPaginacao &&
+        containerPaginacao.isConnected &&
+        gridPaginado === grid
+    ) {
+        return containerPaginacao;
+    }
+
+    const host = document.createElement('div');
+    host.className = 'area-controles-paginacao';
+    host.hidden = true;
+
+    grid.insertAdjacentElement('afterend', host);
+
+    containerPaginacao = host;
+    gridPaginado = grid;
+
+    return host;
+}
+
+function inicializarPaginacao(grid, tipo_de_usuario) {
+    const host = obterContainerPaginacao(grid);
+
+    if (!paginacaoNegociacoes) {
+        paginacaoNegociacoes = criarPaginacao({
+            container: host,
+            itensPorPagina: ITENS_POR_PAGINA,
+            aoMudarPagina({ itens }) {
+                renderizarCardsNegociacoes(
+                    itens,
+                    grid,
+                    tipo_de_usuario
+                );
+            }
+        });
+    }
+
+    return host;
+}
+
+function renderizarCardsNegociacoes(lista, grid, tipo_de_usuario) {
+    grid.innerHTML = '';
+
+    lista.forEach(order => {
+        grid.appendChild(
+            criarCardNegociacao(
+                order,
+                tipo_de_usuario
+            )
+        );
+    });
+
+    atualizarIcones();
+}
 
 // ==========================================
 // RENDERIZA PEDIDOS
@@ -590,17 +560,13 @@ export async function renderOrders(
     listaExterna = null,
     tipoUsuarioParam = null
 ) {
-
-    const grid =
-        document.getElementById('orders-grid');
+    const grid = document.getElementById('orders-grid');
 
     if (!grid) {
         return;
     }
 
-
     limparGrid();
-
 
     const tipo_de_usuario =
         tipoUsuarioParam ||
@@ -610,102 +576,73 @@ export async function renderOrders(
                 : 'produtor'
         );
 
-
     try {
-
         // ==========================================
         // BUSCA API / CACHE
         // ==========================================
 
         if (!cacheNegociacoes && !listaExterna) {
-
-            // Mostra o loading enquanto a API responde
-
             renderizarCarregando(grid);
 
-
-            cacheNegociacoes =
-                await API.listarNegociacoes(
-                    tipo_de_usuario
-                );
+            cacheNegociacoes = await API.listarNegociacoes(
+                tipo_de_usuario
+            );
         }
 
-
-        let lista =
-            listaExterna ||
-            cacheNegociacoes ||
-            [];
-
+        const lista = listaExterna || cacheNegociacoes || [];
 
         // ==========================================
         // NENHUM PEDIDO / NENHUM RESULTADO
         // ==========================================
 
         if (lista.length === 0) {
+            const hostPaginacao = obterContainerPaginacao(grid);
+            hostPaginacao.hidden = true;
+
+            if (paginacaoNegociacoes) {
+                paginacaoNegociacoes.atualizar([]);
+            }
 
             if (listaExterna) {
-
-                // Existe uma lista externa, portanto
-                // provavelmente houve filtro/busca.
-
                 renderizarSemResultados(grid);
-
             } else {
-
-                // Não existe lista externa.
-                // A API retornou zero pedidos.
-
                 renderizarSemPedidos(grid);
             }
 
             return;
         }
 
-
         // ==========================================
         // ORDENAÇÃO: ÚLTIMA ATUALIZAÇÃO PRIMEIRO
         // ==========================================
-        // O backend já envia nessa ordem; ordenar aqui também mantém
-        // a ordem certa depois de buscas e filtros.
 
-        const listaOrdenada =
-            [...lista].sort((a, b) =>
-                String(b.data_atualizacao || b.data_criacao || "")
-                    .localeCompare(String(a.data_atualizacao || a.data_criacao || "")) ||
-                Number(b.id) - Number(a.id)
-            );
-
+        const listaOrdenada = [...lista].sort((a, b) =>
+            String(b.data_atualizacao || b.data_criacao || "")
+                .localeCompare(String(a.data_atualizacao || a.data_criacao || "")) ||
+            Number(b.id) - Number(a.id)
+        );
 
         // ==========================================
-        // RENDERIZA CARDS
+        // RENDERIZAÇÃO COM PAGINAÇÃO
         // ==========================================
 
-        // Remove o loading antes de renderizar os pedidos
+        const hostPaginacao = inicializarPaginacao(
+            grid,
+            tipo_de_usuario
+        );
 
-        limparGrid();
-
-
-        listaOrdenada.forEach(order => {
-
-            grid.appendChild(
-                criarCardNegociacao(
-                    order,
-                    tipo_de_usuario
-                )
-            );
-
-        });
-
-        // Ícones dos selos de próxima ação
-        atualizarIcones();
-
+        hostPaginacao.hidden = false;
+        paginacaoNegociacoes.atualizar(listaOrdenada);
 
     } catch (error) {
-
         console.error(
             "Erro ao carregar negociações:",
             error
         );
+
+        if (containerPaginacao) {
+            containerPaginacao.hidden = true;
+        }
 
         renderizarErro(grid);
     }

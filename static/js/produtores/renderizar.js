@@ -14,7 +14,7 @@ import { criarPaginacao } from '../paginacao.js';
 // CONSTANTES DE FALLBACK
 // ==========================================
 const FOTO_GENERICA = "../static/assets/produto_generico.png";
-const ITENS_POR_PAGINA = 8;
+const ITENS_POR_PAGINA = 9;
 
 // ==========================================
 // CONTROLE DA PAGINAÇÃO

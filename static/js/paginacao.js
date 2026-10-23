@@ -8,7 +8,7 @@
 
 export function criarPaginacao({
     container,
-    itensPorPagina = 8,
+    itensPorPagina = 12,
     aoMudarPagina
 }) {
     if (!container) {
