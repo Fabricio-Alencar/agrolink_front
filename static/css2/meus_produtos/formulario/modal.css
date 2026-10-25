@@ -6,13 +6,15 @@
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 999;
+    z-index: 99999;
 
     justify-content: center;
     align-items: flex-start;
 
     padding: 1rem;
+    box-sizing: border-box;
 
+    overflow-x: hidden;
     overflow-y: auto;
 
     background: rgba(0, 0, 0, 0.6);
@@ -31,16 +33,19 @@
 
     width: 100%;
     max-width: 100%;
+    min-width: 0;
+    max-height: none;
+    box-sizing: border-box;
+
+    margin: auto 0;
 
     background: #fff;
-
-    border-radius: 1rem;
-
-    padding: 1rem;
+    border-radius: .85rem;
+    padding: .9rem;
 
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: .85rem;
 }
 
 /* =========================================================
@@ -50,22 +55,25 @@
 .titulo-modal {
     display: flex;
     align-items: center;
-    gap: .75rem;
+    gap: .6rem;
+    min-width: 0;
+    padding-right: 2rem;
 
     font-family: 'Fredoka', sans-serif;
 }
 
 .titulo-modal img {
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 2rem;
+    height: 2rem;
     object-fit: contain;
+    flex-shrink: 0;
 }
 
 .titulo-modal h2 {
     margin: 0;
-
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
 
 /* =========================================================
@@ -74,12 +82,11 @@
 
 .btn-fechar {
     position: absolute;
+    top: .65rem;
+    right: .65rem;
 
-    top: .75rem;
-    right: .75rem;
-
-    width: 2rem;
-    height: 2rem;
+    width: 1.9rem;
+    height: 1.9rem;
 
     border: none;
     border-radius: 50%;
@@ -91,7 +98,6 @@
     background-size: 230%;
 
     cursor: pointer;
-
     transition: background-color .2s;
 }
 
@@ -106,26 +112,29 @@
 .campo {
     display: flex;
     flex-direction: column;
-    gap: .35rem;
+    gap: .3rem;
+    min-width: 0;
 }
 
 .campo label {
-    font-size: .95rem;
+    font-size: .9rem;
     font-weight: 500;
 }
 
-input,
-select {
+.modal-content input,
+.modal-content select {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 
-    padding: .9rem;
+    padding: .75rem;
 
     border: 1px solid #433838;
     border-radius: .5rem;
-
     background: #F0FFC0;
 
-    font-size: .95rem;
+    font-size: 16px;
 }
 
 /* =========================================================
@@ -135,11 +144,13 @@ select {
 .linha-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: .85rem;
+    min-width: 0;
 }
 
 .linha-form .campo {
     flex: 1;
+    min-width: 0;
 }
 
 /* =========================================================
@@ -147,30 +158,30 @@ select {
 ========================================================= */
 
 @media (min-width: 768px) {
-
     .modal {
-        padding: 2rem;
-        align-items: center;
+        padding: 1.5rem;
+        align-items: flex-start;
     }
 
     .modal-content {
         width: 90%;
-
-        padding: 2rem;
+        max-width: 760px;
+        padding: 1.5rem;
+        gap: 1rem;
     }
 
     .titulo-modal img {
-        width: 2.7rem;
-        height: 2.7rem;
+        width: 2.4rem;
+        height: 2.4rem;
     }
 
     .titulo-modal h2 {
-        font-size: 1.8rem;
+        font-size: 1.6rem;
     }
 
     .btn-fechar {
-        width: 2.2rem;
-        height: 2.2rem;
+        width: 2rem;
+        height: 2rem;
     }
 
     .linha-form {
@@ -183,18 +194,20 @@ select {
 ========================================================= */
 
 @media (min-width: 1024px) {
-
     .modal-content {
-        width: min(95%, 1020px);
-        padding: 2rem;
+        width: 100%;
+        max-width: 900px;
+        padding: 1.6rem;
     }
 
     .titulo-modal img {
-        width: 3rem;
-        height: 3rem;
+        width: 2.6rem;
+        height: 2.6rem;
     }
 
     .titulo-modal h2 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 }
+
+

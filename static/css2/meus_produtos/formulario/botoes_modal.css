@@ -99,6 +99,16 @@
     border-radius: clamp(0.5rem, 1vw, 0.6rem);
 
     transition: border-color 0.2s ease;
+
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: .3rem;
+    border: 1px solid #433838;
+    border-radius: .5rem;
+    background: #F0FFC0;
+    font-size: 16px;
 }
 
 .input-preco-wrapper:focus-within {
