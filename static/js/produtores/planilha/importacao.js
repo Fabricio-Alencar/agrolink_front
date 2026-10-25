@@ -21,6 +21,8 @@ import {
     fecharModalPlanilha
 } from "./modal.js";
 
+import { renderProdutos } from '../renderizar.js';
+
 // =====================================================
 // IMPORTAÇÃO FINAL VIA API
 // =====================================================

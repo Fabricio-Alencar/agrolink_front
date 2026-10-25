@@ -3,6 +3,8 @@
  * OBJETIVO: Lógica exclusiva para criação de novos produtos.
  */
 
+import { renderProdutos } from './renderizar.js';
+
 // CRIAÇÃO DE PRODUTO: Envia os dados do formulário para a API e lida com a resposta
 async function executarCriacao(formData) {
     // 🛡️ Prevenção: Se não houver dados, não faz nada.
@@ -45,3 +47,7 @@ function abrirModalCriar() {
     // Exibe o modal na tela
     document.getElementById("modalProduto").classList.add("active");
 }
+
+// Disponibiliza as funções para o HTML e outros scripts
+window.abrirModalCriar = abrirModalCriar;
+window.executarCriacao = executarCriacao;
