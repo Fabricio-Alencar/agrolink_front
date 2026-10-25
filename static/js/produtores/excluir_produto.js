@@ -2,7 +2,7 @@
  * ARQUIVO: exclusao.js
  * OBJETIVO: Gerenciar o fluxo de exclusão de produtos
  */
-
+import { renderProdutos } from './renderizar.js';
 // Variável de escopo global para o arquivo: armazena temporariamente o ID
 // do produto que o usuário clicou, para ser usado no momento da confirmação final.
 let idGlobalParaExcluir = null;
@@ -65,3 +65,7 @@ document.getElementById("btnConfirmarExclusao").onclick = async (event) => {
 function fecharModalExcluir() {
     document.getElementById("modalExcluir").classList.remove("active");
 }
+
+// Disponibiliza as funções para os onclick do HTML
+window.prepararExclusao = prepararExclusao;
+window.fecharModalExcluir = fecharModalExcluir;

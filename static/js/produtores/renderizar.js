@@ -362,7 +362,7 @@ function renderizarCards(lista, container) {
 // ==========================================
 // BUSCA DADOS E RENDERIZAÇÃO
 // ==========================================
-async function renderProdutos(listaParaRenderizar) {
+export async function renderProdutos(listaParaRenderizar) {
 
     const container = document.getElementById("produtosContainer");
 
@@ -383,6 +383,9 @@ async function renderProdutos(listaParaRenderizar) {
         lista = listaParaRenderizar !== undefined
             ? listaParaRenderizar
             : await API.meusProdutos();
+
+        // Produtos com ID maior aparecem primeiro
+        lista.sort((a, b) => b.id - a.id);    
 
     } catch (err) {
 

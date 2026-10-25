@@ -3,6 +3,8 @@
  * OBJETIVO: Lógica para edição recebendo o objeto direto da lista.
  */
 
+import { renderProdutos } from './renderizar.js';
+
 async function prepararEdicao(produto) {
     if (!produto) return;
 
@@ -73,3 +75,8 @@ async function executarEdicao(formData) {
         exibirNotificacao('erro', "Erro de conexão com o servidor!");
     }
 }
+
+
+// Disponibiliza as funções para os onclick do HTML
+window.prepararEdicao = prepararEdicao;
+window.executarEdicao = executarEdicao;
