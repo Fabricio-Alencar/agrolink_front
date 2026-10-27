@@ -242,3 +242,53 @@ function agendarReconexaoChat(negociacaoId) {
         conectarWebSocket(negociacaoId, callbacksChatAtivo);
     }, atraso);
 }
+
+
+
+export function desconectarWebSockets() {
+    // Cancela a reconexão do WebSocket geral.
+    if (timerReconexaoGeral !== null) {
+        clearTimeout(timerReconexaoGeral);
+        timerReconexaoGeral = null;
+    }
+
+    // Cancela a reconexão do chat da negociação.
+    if (timerReconexaoChat !== null) {
+        clearTimeout(timerReconexaoChat);
+        timerReconexaoChat = null;
+    }
+
+    // Impede novas reconexões e descarta callbacks antigos.
+    callbacksGerais = {};
+    callbacksChatAtivo = {};
+    negociacaoAtiva = null;
+
+    tentativasReconexaoGeral = 0;
+    tentativasReconexaoChat = 0;
+
+    // Remove as referências antes de fechar os sockets.
+    // Assim, os eventos onclose antigos não agendam reconexões.
+    const socketGeralAnterior = socketGeral;
+    const socketChatAnterior = getSocket();
+
+    socketGeral = null;
+    setSocket(null);
+
+    // Encerra as conexões ativas.
+    if (
+        socketGeralAnterior &&
+        socketGeralAnterior.readyState !== WebSocket.CLOSED
+    ) {
+        socketGeralAnterior.close(1000, "Logout");
+    }
+
+    if (
+        socketChatAnterior &&
+        socketChatAnterior.readyState !== WebSocket.CLOSED
+    ) {
+        socketChatAnterior.close(1000, "Logout");
+    }
+}
+
+
+window.desconectarWebSockets = desconectarWebSockets;

@@ -88,13 +88,20 @@ const Auth = {
     // LOGOUT
     // =========================
 
+    
     logout() {
-
-        localStorage.removeItem("user");
-
-        window.location.href = "/login";
-
+    // Encerra as conexões do chat, caso a função esteja disponível.
+    if (typeof window.desconectarWebSockets === "function") {
+        window.desconectarWebSockets();
     }
+
+    localStorage.removeItem("user");
+    localStorage.removeItem("access_token");
+
+    document.cookie = "access_token=; Max-Age=0; path=/";
+
+    window.location.href = "/login";
+}
 
 };
 
