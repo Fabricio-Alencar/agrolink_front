@@ -60,9 +60,19 @@
 
             <div class="input-group">
                 <label for="phone">Telefone</label>
+
                 <div class="input-wrapper">
                     <i data-lucide="phone"></i>
-                    <input type="tel" id="phone" placeholder="(11) 99999-9999" required>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="(11) 99999-9999"
+                        inputmode="numeric"
+                        autocomplete="tel"
+                        maxlength="15"
+                        required
+                    >
                 </div>
             </div>
 
@@ -126,7 +136,7 @@
     </main>
     <script src="../static/js/config.js"></script>
     <script src="../static/js/cadastro/localizacao.js"></script>
-    <script src="../static/js/cadastro/logica.js"></script>
+    <script type="module" src="../static/js/cadastro/logica.js"></script>
 
 
 </body>
