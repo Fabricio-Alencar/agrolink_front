@@ -1,3 +1,4 @@
+
 /**
  * ARQUIVO: importacao.js
  * OBJETIVO:
@@ -6,6 +7,7 @@
  * - Registrar falhas individuais
  * - Permitir tentar novamente os produtos que falharam
  * - Atualizar o marketplace após importações bem-sucedidas
+ * - Exibir loader e barra de progresso durante o envio
  */
 
 import {
@@ -21,7 +23,119 @@ import {
     fecharModalPlanilha
 } from "./modal.js";
 
-import { renderProdutos } from '../renderizar.js';
+import { renderProdutos } from "../renderizar.js";
+
+// =====================================================
+// FUNÇÕES DE AUXÍLIO PARA A BARRA DE PROGRESSO
+// =====================================================
+
+function criarOverlayProgresso() {
+    let overlay = document.getElementById("overlayProgressoModal");
+
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "overlayProgressoModal";
+        overlay.className = "progresso-overlay";
+
+        overlay.innerHTML = `
+            <div
+                class="progresso-card"
+                role="status"
+                aria-live="polite"
+                aria-label="Importação de produtos em andamento"
+            >
+                <div class="loader-container" aria-hidden="true">
+                    <span class="loader"></span>
+                </div>
+
+                <h3>Cadastrando produtos...</h3>
+
+                <p id="textoProgressoModal">
+                    Preparando sua colheita...
+                </p>
+
+                <div
+                    class="progresso-trilho"
+                    role="progressbar"
+                    aria-label="Progresso da importação"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    id="progressoAcessivel"
+                >
+                    <div
+                        id="barraProgressoInterna"
+                        class="progresso-barra"
+                    ></div>
+                </div>
+
+                <p id="textoPorcentagem">0% concluído</p>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+    }
+
+    const barra = document.getElementById("barraProgressoInterna");
+    const porcentagem = document.getElementById("textoPorcentagem");
+    const texto = document.getElementById("textoProgressoModal");
+    const progressoAcessivel = document.getElementById("progressoAcessivel");
+
+    // Reinicia o progresso caso o modal seja reutilizado.
+    if (barra) barra.style.width = "0%";
+    if (porcentagem) porcentagem.textContent = "0% concluído";
+    if (texto) texto.textContent = "Preparando sua colheita...";
+    if (progressoAcessivel) {
+        progressoAcessivel.setAttribute("aria-valuenow", "0");
+    }
+
+    overlay.style.display = "flex";
+}
+
+// =====================================================
+// ATUALIZAR PROGRESSO
+// =====================================================
+
+function atualizarProgresso(atual, total, nomeProduto) {
+    const barra = document.getElementById("barraProgressoInterna");
+    const textoPorcentagem = document.getElementById("textoPorcentagem");
+    const textoProgresso = document.getElementById("textoProgressoModal");
+    const progressoAcessivel = document.getElementById("progressoAcessivel");
+
+    const porcentagem = Math.round((atual / total) * 100);
+
+    if (barra) {
+        barra.style.width = `${porcentagem}%`;
+    }
+
+    if (textoPorcentagem) {
+        textoPorcentagem.textContent = `${porcentagem}% concluído`;
+    }
+
+    if (textoProgresso) {
+        textoProgresso.textContent =
+            `Enviando (${atual}/${total}): ${nomeProduto}`;
+    }
+
+    if (progressoAcessivel) {
+        progressoAcessivel.setAttribute(
+            "aria-valuenow",
+            String(porcentagem)
+        );
+    }
+}
+
+// =====================================================
+// REMOVER OVERLAY DE PROGRESSO
+// =====================================================
+
+function removerOverlayProgresso() {
+    const overlay = document.getElementById("overlayProgressoModal");
+
+    if (overlay) {
+        overlay.style.display = "none";
+    }
+}
 
 // =====================================================
 // IMPORTAÇÃO FINAL VIA API
@@ -36,23 +150,30 @@ export async function importarProdutos() {
 
     const btn = document.getElementById("btnConfirmarPlanilha");
 
-    if (!btn) {
-        return;
+    if (btn) {
+        btn.disabled = true;
     }
 
-    btn.disabled = true;
-    btn.textContent = "Enviando para o Servidor...";
+    criarOverlayProgresso();
 
     let totalSucessos = 0;
-
     const listaErrosServidor = [];
     const produtosQueFalharam = [];
+    const totalProdutos = produtos.length;
 
     // =================================================
     // ENVIAR CADA PRODUTO
     // =================================================
 
-    for (const produto of produtos) {
+    for (let i = 0; i < totalProdutos; i++) {
+        const produto = produtos[i];
+
+        atualizarProgresso(
+            i + 1,
+            totalProdutos,
+            produto.nome
+        );
+
         try {
             const formData = new FormData();
 
@@ -83,7 +204,6 @@ export async function importarProdutos() {
 
             if (resposta && !resposta.erro) {
                 totalSucessos++;
-
             } else {
                 listaErrosServidor.push({
                     linha: "API",
@@ -114,6 +234,13 @@ export async function importarProdutos() {
 
             produtosQueFalharam.push(produto);
         }
+    }
+
+    // Esconde a barra ao terminar.
+    removerOverlayProgresso();
+
+    if (btn) {
+        btn.disabled = false;
     }
 
     // =================================================

@@ -1,0 +1,383 @@
+
+/* =====================================================
+   CONTAINER DE FUNDO
+   ===================================================== */
+
+.progresso-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    padding: 20px;
+    overflow-y: auto;
+
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* =====================================================
+   CARD CENTRAL
+   ===================================================== */
+
+.progresso-card {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 400px;
+    max-width: 100%;
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
+
+    padding: 30px;
+    border-radius: 16px;
+
+    background: #ffffff;
+    color: #263528;
+
+    text-align: center;
+
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+
+    animation: aparecerProgresso 0.25s ease-out;
+}
+
+@keyframes aparecerProgresso {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =====================================================
+   CONTAINER DO LOADER
+   ===================================================== */
+
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    margin: 8px 0 28px;
+}
+
+/* =====================================================
+   LOADER ANIMADO DE ESCRITA
+   ===================================================== */
+
+.loader {
+    --color-1: #ffffff;
+    --color-2: transparent;
+    --color-3: #22de00;
+    --color-4: rgba(0, 0, 0, 0.18);
+    --color-5: #525751;
+    --size: 0.75;
+
+    position: relative;
+    flex-shrink: 0;
+
+    width: calc(100px * var(--size));
+    height: calc(130px * var(--size));
+
+    background: var(--color-1);
+    border: 1px solid #e8eee7;
+    border-radius: calc(8px * var(--size));
+
+    box-shadow: 0 4px 10px var(--color-4);
+}
+
+.loader::before {
+    content: "";
+
+    position: absolute;
+    z-index: 1;
+
+    width: calc(54px * var(--size));
+    height: calc(25px * var(--size));
+
+    left: 50%;
+    top: 0;
+
+    background-image:
+        radial-gradient(
+            ellipse at center,
+            var(--color-2) 24%,
+            var(--color-3) 25%,
+            var(--color-3) 64%,
+            var(--color-2) 65%
+        ),
+        linear-gradient(
+            to bottom,
+            var(--color-2) 34%,
+            var(--color-3) 35%
+        );
+
+    background-size:
+        calc(12px * var(--size)) calc(12px * var(--size)),
+        100% auto;
+
+    background-repeat: no-repeat;
+    background-position: center top;
+
+    transform: translate(-50%, -65%);
+
+    box-shadow:
+        0 calc(-3px * var(--size)) var(--color-4) inset;
+}
+
+.loader::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 20%;
+
+    width: 66%;
+    height: 60%;
+
+    background: linear-gradient(
+        to bottom,
+        var(--color-5) 30%,
+        var(--color-2) 31%
+    );
+
+    background-size: 100% calc(16px * var(--size));
+    background-repeat: repeat-y;
+
+    transform: translateX(-50%);
+
+    animation: writeDown 2s ease-out infinite;
+}
+
+@keyframes writeDown {
+    0% {
+        height: 0%;
+        opacity: 0;
+    }
+
+    20% {
+        height: 0%;
+        opacity: 1;
+    }
+
+    80% {
+        height: 65%;
+        opacity: 1;
+    }
+
+    100% {
+        height: 65%;
+        opacity: 0;
+    }
+}
+
+/* =====================================================
+   TÍTULO
+   ===================================================== */
+
+.progresso-card h3 {
+    width: 100%;
+
+    margin: 0 0 10px;
+
+    color: #2b7a78;
+
+    font-size: clamp(18px, 4vw, 22px);
+    font-weight: 700;
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   TEXTO DO PRODUTO ATUAL
+   ===================================================== */
+
+.progresso-card #textoProgressoModal {
+    width: 100%;
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    color: #647067;
+
+    font-size: clamp(13px, 3.5vw, 15px);
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* =====================================================
+   TRILHO DA BARRA
+   ===================================================== */
+
+.progresso-trilho {
+    flex-shrink: 0;
+
+    background: #e2e8f0;
+    border-radius: 20px;
+
+    height: 12px;
+    width: 100%;
+
+    overflow: hidden;
+
+    margin: 16px 0 8px;
+}
+
+/* =====================================================
+   BARRA PREENCHIDA
+   ===================================================== */
+
+.progresso-barra {
+    background: linear-gradient(
+        90deg,
+        #2b7a78,
+        #22de00
+    );
+
+    height: 100%;
+    width: 0%;
+
+    border-radius: 20px;
+
+    transition: width 0.3s ease;
+}
+
+/* =====================================================
+   PORCENTAGEM
+   ===================================================== */
+
+.progresso-card #textoPorcentagem {
+    margin: 6px 0 0;
+
+    color: #2b7a78;
+
+    font-size: 14px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+/* =====================================================
+   TABLETS E CELULARES
+   ===================================================== */
+
+@media (max-width: 600px) {
+    .progresso-overlay {
+        padding: 16px;
+    }
+
+    .progresso-card {
+        width: 100%;
+        max-width: 400px;
+
+        padding: 26px 22px;
+        border-radius: 18px;
+    }
+
+    .loader-container {
+        margin: 6px 0 24px;
+    }
+
+    .loader {
+        --size: 0.65;
+    }
+
+    .progresso-trilho {
+        height: 10px;
+    }
+}
+
+/* =====================================================
+   CELULARES PEQUENOS
+   ===================================================== */
+
+@media (max-width: 360px) {
+    .progresso-overlay {
+        padding: 12px;
+    }
+
+    .progresso-card {
+        padding: 22px 16px;
+        border-radius: 14px;
+    }
+
+    .loader {
+        --size: 0.58;
+    }
+
+    .progresso-card h3 {
+        font-size: 18px;
+    }
+
+    .progresso-card #textoProgressoModal {
+        font-size: 13px;
+    }
+}
+
+/* =====================================================
+   TELAS COM POUCA ALTURA
+   ===================================================== */
+
+@media (max-height: 500px) {
+    .progresso-overlay {
+        align-items: flex-start;
+    }
+
+    .progresso-card {
+        margin-block: auto;
+        padding-block: 18px;
+    }
+
+    .loader-container {
+        margin: 4px 0 18px;
+    }
+
+    .loader {
+        --size: 0.48;
+    }
+}
+
+/* =====================================================
+   ACESSIBILIDADE: MOVIMENTO REDUZIDO
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .progresso-card {
+        animation: none;
+    }
+
+    .loader::after {
+        animation: none;
+        height: 65%;
+        opacity: 1;
+    }
+
+    .progresso-barra {
+        transition: none;
+    }
+}

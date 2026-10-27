@@ -57,6 +57,32 @@
     overflow-x: hidden;
 }
 
+/* Modal de exclusão: compacto */
+#modalExcluir .modal-content {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    max-height: calc(100vh - 2rem);
+    min-height: 0;
+    margin: auto;
+}
+
+/* Modal de planilha: tamanho intermediário */
+#modalPlanilha .modal-content {
+    width: 100%;
+    max-width: 650px;
+    height: auto;
+    max-height: calc(100vh - 2rem);
+    min-height: 0;
+    margin: auto;
+}
+
+/* Centraliza verticalmente os modais */
+#modalExcluir,
+#modalPlanilha {
+    align-items: center;
+}
+
 /* =========================================================
    TÍTULO
 ========================================================= */
