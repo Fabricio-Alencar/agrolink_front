@@ -14,8 +14,6 @@
     --perfil-sombra: 0 4px 16px rgba(18, 54, 34, .07);
 }
 
-
-
 /* =========================================================
    LAYOUT PRINCIPAL
    ========================================================= */
@@ -26,7 +24,6 @@
     max-width: 1050px;
     margin: 24px auto 52px;
     padding: 0;
-    font-family: 'Inter', sans-serif;
 }
 
 /* Cabeçalho da página */
@@ -59,7 +56,7 @@
 }
 
 /* =========================================================
-   CARTÃO LATERAL E CARTÃO DE INFORMAÇÕES
+   LAYOUT PRINCIPAL DO PERFIL
    ========================================================= */
 
 .profile-container {
@@ -75,14 +72,30 @@
     box-shadow: none;
 }
 
+/* =========================================================
+   COLUNA DA SIDEBAR E AVALIAÇÕES
+   ========================================================= */
+
+.profile-sidebar-container {
+    display: flex;
+    flex-direction: column;
+    align-self: start;
+    width: 100%;
+    min-width: 0;
+}
+
 .profile-sidebar {
+    box-sizing: border-box;
+    width: 100%;
     min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
 
-/* Cartão do usuário */
+/* =========================================================
+   CARTÃO DO USUÁRIO
+   ========================================================= */
 
 .profile-user-card-mini {
     box-sizing: border-box;
@@ -140,9 +153,20 @@
 
 .user-mini-member {
     margin: 0;
-    color: #929a94;
+    color: #21542e;
     font-size: .65rem;
     line-height: 1.45;
+}
+
+/* =========================================================
+   CARTÃO DE AVALIAÇÕES ABAIXO DA SIDEBAR
+   ========================================================= */
+
+.profile-sidebar-container .profile-rating-card {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    margin-top: 14px;
 }
 
 /* =========================================================
@@ -229,8 +253,16 @@
         gap: 15px;
     }
 
+    .profile-sidebar-container {
+        width: 100%;
+    }
+
     .profile-sidebar {
         display: block;
+    }
+
+    .profile-sidebar-container .profile-rating-card {
+        margin-top: 12px;
     }
 
     .profile-user-card-mini {
@@ -268,7 +300,9 @@
     }
 }
 
-/* Ajustes para telas estreitas */
+/* =========================================================
+   AJUSTES PARA TELAS ESTREITAS
+   ========================================================= */
 
 @media (max-width: 480px) {
     .main.profile-page-wrapper {

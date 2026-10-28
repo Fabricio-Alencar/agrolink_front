@@ -1,5 +1,5 @@
-
 import { DOM } from './dom.js';
+import '../avaliacoes.js';
 import { API } from './api.js';
 import { preencherLocalizacao } from './localizacao.js';
 import {
@@ -92,6 +92,7 @@ export async function carregarDadosIniciais() {
                 )}
                 <a class="link-produtor" href="/produtor/${Number(data.id)}">
                     Ver meu perfil público e avaliações
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                 </a>
             `;
 

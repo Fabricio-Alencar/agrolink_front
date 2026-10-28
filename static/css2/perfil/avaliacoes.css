@@ -1,0 +1,136 @@
+
+/* =========================================================
+   BLOCO INDEPENDENTE DE AVALIAÇÕES
+   ========================================================= */
+
+.profile-rating-card {
+    box-sizing: border-box;
+    display: none;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+
+    width: 100%;
+    min-width: 0;
+    margin-top: 14px;
+    padding: 14px;
+
+    background: #f6faf7;
+    border: 1px solid #e3eee6;
+    border-radius: 10px;
+
+    text-align: left;
+}
+
+/* Resumo da avaliação */
+
+.profile-rating-card .avaliacao-resumo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+}
+
+/* Estrelas */
+
+.profile-rating-card .estrelas {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 2px;
+}
+
+.profile-rating-card .estrelas svg {
+    display: block;
+    width: 17px;
+    height: 17px;
+}
+
+/* Nota e quantidade */
+
+.profile-rating-card .avaliacao-texto {
+    color: #657168;
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+
+.profile-rating-card .avaliacao-texto strong {
+    color: var(--perfil-verde);
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+/* Sem avaliações */
+
+.profile-rating-card .sem-avaliacoes .avaliacao-texto {
+    color: #7c857e;
+}
+
+/* Link para o perfil público */
+
+.profile-rating-card .link-produtor {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: var(--perfil-verde);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-decoration: none;
+
+    overflow-wrap: anywhere;
+    transition: color 0.2s ease;
+}
+
+.profile-rating-card .link-produtor:hover {
+    color: var(--perfil-verde-escuro);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.profile-rating-card .link-produtor:focus-visible {
+    outline: 2px solid var(--perfil-verde);
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+
+.profile-rating-card .link-produtor i {
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+}
+
+.profile-rating-card .link-produtor:hover i {
+    transform: translateX(3px);
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 760px) {
+    .profile-rating-card {
+        margin-top: 12px;
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .profile-rating-card .estrelas svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-rating-card {
+        padding: 11px;
+        border-radius: 8px;
+    }
+
+    .profile-rating-card .link-produtor {
+        font-size: 0.76rem;
+    }
+}
