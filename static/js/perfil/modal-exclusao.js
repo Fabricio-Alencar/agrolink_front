@@ -27,7 +27,8 @@ export function configurarModalExclusao() {
                 agendarNotificacao("exclusao", "Conta excluída com sucesso!");
             }
 
-            window.location.href = "/login";
+            // Limpa a sessão local e volta para o login
+            Auth.logout();
 
         } catch (error) {
             if (typeof exibirNotificacao === "function") {

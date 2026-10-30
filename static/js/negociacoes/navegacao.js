@@ -14,7 +14,7 @@ import {
 // CONFIGURAÇÃO E ESTADO GLOBAL
 // ============================================================
 const API_URL = CONFIG.API_URL;
-const FOTO_GENERICA = "../static/assets/produto_generico.png";
+export const FOTO_GENERICA = "../static/assets/produto_generico.png";
 
 // ============================================================
 // AUXILIARES: NORMALIZAR STATUS E FOTO
@@ -27,7 +27,7 @@ function normalizarStatus(status) {
         .replace(/[\u0300-\u036f]/g, "");
 }
 
-function resolverCaminhoFoto(order) {
+export function resolverCaminhoFoto(order) {
     if (!order || !order.produto_foto) {
         return FOTO_GENERICA;
     }
@@ -222,7 +222,9 @@ export function showDetails(id, tipoUsuario) {
                         Descrição do Pedido:
                     </span>
 
-                    <textarea class="desc-box" readonly>${order.descricao || "Descrição adicional."}</textarea>
+                    ${order.descricao
+                        ? `<textarea class="desc-box" readonly>${order.descricao}</textarea>`
+                        : `<span class="info-text">Sem descrição</span>`}
                 </div>
             </div>
 
@@ -250,6 +252,11 @@ export function showDetails(id, tipoUsuario) {
                         : ""}
                 </div>
 
+                ${order.negociante_conta_excluida
+                    ? `<p class="aviso-conta-excluida">
+                           Esta conta foi excluída. Não é mais possível entrar em contato.
+                       </p>`
+                    : `
                 <div class="info-group">
                     <span class="info-label">
                         <i data-lucide="phone"></i>
@@ -284,6 +291,7 @@ export function showDetails(id, tipoUsuario) {
 
                     <!-- O whatsapp.js deve inserir o botão WhatsApp aqui -->
                 </div>
+                `}
             </div>
         </div>
 

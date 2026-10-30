@@ -116,6 +116,21 @@ function resolverCaminhoFoto(produto) {
 }
 
 // ============================================================
+// PRODUTO DO PRÓPRIO USUÁRIO LOGADO?
+// (o produtor não pode fazer pedido do próprio produto)
+// ============================================================
+
+function ehProdutoDoUsuario(produto) {
+    const usuario = typeof Auth !== "undefined" ? Auth.get() : null;
+
+    return Boolean(
+        usuario &&
+        produto.produtor_id &&
+        Number(usuario.id) === Number(produto.produtor_id)
+    );
+}
+
+// ============================================================
 // AUXILIARES DA UI
 // ============================================================
 
@@ -334,9 +349,15 @@ export function criarCard(prod) {
                 ${prod.produtor_cidade || 'Região'}, ${prod.produtor_estado || 'UF'}
             </div>
 
-            <button class="btn-negociar" type="button">
-                Fazer pedido
-            </button>
+            ${
+                ehProdutoDoUsuario(prod)
+                    ? `<button class="btn-negociar" type="button" disabled title="Você não pode fazer pedido do seu próprio produto">
+                           Seu produto
+                       </button>`
+                    : `<button class="btn-negociar" type="button">
+                           Fazer pedido
+                       </button>`
+            }
         </div>
     `;
 
@@ -353,7 +374,7 @@ export function criarCard(prod) {
         });
     }
 
-    const btnNegociar = card.querySelector('.btn-negociar');
+    const btnNegociar = card.querySelector('.btn-negociar:not([disabled])');
 
     if (btnNegociar) {
         btnNegociar.addEventListener('click', () => {

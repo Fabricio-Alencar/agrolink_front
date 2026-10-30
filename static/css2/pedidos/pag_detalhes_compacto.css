@@ -1,0 +1,44 @@
+/* =========================================================
+   DETALHES DO PEDIDO MAIS COMPACTO
+   Ajusta só os espaçamentos por cima das regras antigas
+   (pag_detalhes.css continua igual).
+   Para voltar ao visual antigo, basta remover este arquivo
+   do pedidos.html.
+========================================================= */
+
+/* As duas colunas começam no topo, sem esticar */
+.details-grid {
+    align-items: start;
+}
+
+/* Espaço igual entre os blocos de informação */
+#details-content .info-group {
+    margin-bottom: 16px;
+}
+
+/* Foto do produto mais baixa, para equilibrar com a coluna da esquerda */
+#details-content .product-img {
+    height: clamp(9rem, 20vw, 12rem);
+    margin-bottom: 16px;
+}
+
+/* Caixa de descrição do tamanho do texto */
+#details-content .desc-box {
+    min-height: 4.5rem;
+}
+
+/* Aviso no lugar dos contatos quando a conta foi excluída */
+.aviso-conta-excluida {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #f3f5f4;
+    color: #5f6b66;
+    font-size: .85rem;
+}
+
+/* Botão "Avaliar produtor" centralizado com o texto da caixa */
+#details-content .avaliacao-pedido #btnAbrirAvaliacao {
+    display: block;
+    margin: 0 auto;
+}

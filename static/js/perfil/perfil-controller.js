@@ -49,6 +49,37 @@ function abrirSelect(select) {
 }
 
 /* =========================================================
+   CONTROLE DE ALTERAÇÕES NÃO SALVAS
+   Os botões Cancelar/Salvar só aparecem quando algum campo
+   ficou diferente do que está salvo.
+========================================================= */
+
+let valoresSalvos = null;
+
+function lerValoresDoFormulario() {
+    return JSON.stringify(
+        Array.from(DOM.inputs).map(input => input.value)
+    );
+}
+
+function temAlteracoes() {
+    return valoresSalvos !== null && lerValoresDoFormulario() !== valoresSalvos;
+}
+
+function atualizarBotoesDeAcao() {
+    const acoes = document.getElementById("profile-form-actions");
+
+    if (acoes) {
+        acoes.hidden = !temAlteracoes();
+    }
+}
+
+function marcarComoSalvo() {
+    valoresSalvos = lerValoresDoFormulario();
+    atualizarBotoesDeAcao();
+}
+
+/* =========================================================
    CARREGAMENTO INICIAL
 ========================================================= */
 
@@ -91,7 +122,7 @@ export async function carregarDadosIniciais() {
                     20
                 )}
                 <a class="link-produtor" href="/produtor/${Number(data.id)}">
-                    Ver meu perfil público e avaliações
+                    Ver perfil público
                     <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                 </a>
             `;
@@ -130,6 +161,9 @@ export async function carregarDadosIniciais() {
         }
 
         configurarVisibilidadeEdicaoSenha(false);
+
+        // Guarda os valores carregados para saber depois se algo mudou
+        marcarComoSalvo();
 
     } catch (error) {
         console.error("Falha ao inicializar perfil:", error);
@@ -199,6 +233,9 @@ export function configurarEdicaoESalvamento() {
                     confirmarSenha.disabled = false;
                 }
 
+                // Ao começar a trocar a senha, já mostra Cancelar/Salvar
+                atualizarBotoesDeAcao();
+
                 input.focus();
                 return;
             }
@@ -213,6 +250,29 @@ export function configurarEdicaoESalvamento() {
 
     if (form && form.dataset.submitConfigurado !== "true") {
         form.dataset.submitConfigurado = "true";
+
+        /* MOSTRAR CANCELAR/SALVAR QUANDO ALGO MUDAR */
+        form.addEventListener("input", atualizarBotoesDeAcao);
+        form.addEventListener("change", atualizarBotoesDeAcao);
+
+        /* CANCELAR: volta para os dados salvos */
+        const btnCancelar = document.getElementById("btn-cancel-changes");
+
+        if (btnCancelar) {
+            btnCancelar.addEventListener("click", async () => {
+                await carregarDadosIniciais();
+                bloquearCamposAposSalvar();
+                marcarComoSalvo();
+            });
+        }
+
+        /* AVISAR AO SAIR DA PÁGINA SEM SALVAR */
+        window.addEventListener("beforeunload", event => {
+            if (temAlteracoes()) {
+                event.preventDefault();
+                event.returnValue = "";
+            }
+        });
 
         form.addEventListener("submit", async event => {
             event.preventDefault();
@@ -349,6 +409,7 @@ export async function salvarDadosGerais(dadosExtras = {}) {
         }
 
         bloquearCamposAposSalvar();
+        marcarComoSalvo();
 
     } catch (error) {
         console.error("Erro ao salvar perfil:", error);

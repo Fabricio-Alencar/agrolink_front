@@ -48,6 +48,40 @@
     color: var(--cor-primaria-hover, #0e5e58);
 }
 
+/* Etiqueta de conta excluída (fica embaixo do nome) */
+.etiqueta-conta-excluida {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    width: fit-content;
+    margin-top: 5px;
+    padding: 3px 10px;
+    border: 1px solid #f5c2bd;
+    border-radius: 999px;
+    background: #fdecea;
+    color: #b42318;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+/* Ícone de alerta antes do texto */
+.etiqueta-conta-excluida::before {
+    content: "!";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #b42318;
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 800;
+}
+
 
 /* Card do marketplace aberto a partir do perfil do produtor */
 .product-card.produto-destacado {
@@ -264,6 +298,14 @@
 .proxima-acao.concluido {
     background: var(--verde-menta-claro, #D1FFDA);
     color: var(--verde-texto-ativo, #008137);
+}
+
+/* Conta excluída: aparece no lugar do status no topo do card */
+.proxima-acao.conta-excluida {
+    background: #fdecea;
+    color: #b42318;
+    text-transform: uppercase;
+    letter-spacing: .03em;
 }
 
 .data-pedido {

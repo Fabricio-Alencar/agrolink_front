@@ -1,0 +1,80 @@
+/* =========================================================
+   CARD DE PEDIDO MAIS COMPACTO
+   Ajusta só os espaçamentos por cima das regras antigas
+   (card_pedidos.css e badges_status.css continuam iguais).
+   Para voltar ao visual antigo, basta remover este arquivo
+   do pedidos.html.
+========================================================= */
+
+/* Foto um pouco mais baixa */
+.card .card-foto-produto {
+    height: 8rem;
+    margin-bottom: 10px;
+}
+
+/* Cabeçalho (nome, data, produto): o espaço vem inline no HTML */
+.card .card-header {
+    margin-bottom: 0 !important;
+}
+
+/* Quantidade e preço */
+.card .price-row {
+    margin: 12px 0 10px;
+}
+
+/* Linha da entrega */
+.card .info-row {
+    margin-bottom: 0;
+}
+
+/* Botões no rodapé do card (os cards da mesma linha têm a mesma altura) */
+.card .card-actions {
+    margin-top: 14px;
+}
+
+/* Botões lado a lado não saem do card: podem encolher,
+   com fonte um pouco menor quando há duas ações (ex.: Confirmar recebimento + Cancelar) */
+.card .linha-acoes > button {
+    min-width: 0;
+}
+
+.card .linha-acoes:has(.btn-acao-principal) > button {
+    padding-inline: 8px;
+    font-size: .8rem;
+}
+
+.card .linha-acoes > .btn-acao-principal {
+    flex: 2 1 0;
+}
+
+.card .linha-acoes:has(.btn-acao-principal) > .btn-acao-secundaria {
+    flex: 1 1 0;
+}
+
+/* Selo de status (Pendente, Aceito...) acima do nome */
+.card .card-header {
+    flex-direction: column-reverse !important;
+    align-items: flex-start !important;
+    gap: 6px;
+}
+
+/* Nome do produtor/estabelecimento em uma linha só
+   (o limite de caracteres do nome garante que cabe;
+   o "…" fica só de segurança para nomes antigos maiores) */
+.card .card-header > div {
+    width: 100%;
+    min-width: 0;
+}
+
+/* Fonte do nome um pouco menor para nomes de até 22 caracteres caberem */
+.card .nome-card {
+    font-size: 1rem !important;
+}
+
+.card .nome-card .link-produtor,
+.card .nome-card .nome-negociante {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

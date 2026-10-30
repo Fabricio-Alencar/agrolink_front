@@ -265,6 +265,13 @@
     background: var(--cor-primaria-hover);
 }
 
+/* Produto do próprio produtor: não dá para fazer pedido */
+.btn-negociar:disabled,
+.btn-negociar:disabled:hover {
+    background: #b9c2bd;
+    cursor: not-allowed;
+}
+
 .btn-negociar svg {
     width: 18px;
     height: 18px;
