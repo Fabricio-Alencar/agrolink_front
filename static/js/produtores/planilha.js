@@ -304,7 +304,7 @@ function validarDadosDaPlanilha(produtosRecebidos) {
         // PREÇO
         // ===============================
 
-        const precoRaw = item.precorporunidadeescolhida || item.precor || item.preco;
+        const precoRaw = item.precoporunidadeescolhida || item.precor || item.preco;
         const preco = parseFloat(precoRaw);
 
         if (isNaN(preco) || preco <= 0) {
