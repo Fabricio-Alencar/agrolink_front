@@ -5,11 +5,9 @@ import {
     expect,
     beforeAll,
     beforeEach,
+    afterEach,
     vi
 } from "vitest";
-
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 
 describe("Login do Agrolink", () => {
     let loginForm;
@@ -18,8 +16,8 @@ describe("Login do Agrolink", () => {
     let toastFire;
     let authSave;
 
-    beforeAll(() => {
-        // Simula o HTML necessário para executar o login
+    beforeAll(async () => {
+        // Cria o HTML antes de carregar a lógica do login.
         document.body.innerHTML = `
             <button id="btn-produtor" class="active">
                 Produtor
@@ -36,12 +34,14 @@ describe("Login do Agrolink", () => {
             </form>
         `;
 
-        // Simula a configuração da API
-        window.CONFIG = {
+        // Disponibiliza a configuração global.
+        globalThis.CONFIG = {
             API_URL: "http://localhost:5000"
         };
 
-        // Simula as notificações do SweetAlert
+        window.CONFIG = globalThis.CONFIG;
+
+        // Simula o Toast do SweetAlert.
         toastFire = vi.fn().mockResolvedValue({});
 
         window.Swal = {
@@ -50,24 +50,20 @@ describe("Login do Agrolink", () => {
             }))
         };
 
-        // Simula o armazenamento do usuário
+        // Simula o serviço de autenticação.
         authSave = vi.fn();
 
         window.Auth = {
             save: authSave
         };
 
-        // Carrega o login.js original, sem modificá-lo
-        const caminho = resolve(
-            process.cwd(),
-            "static/js/login/lógica.js"
-        );
+        // Importa o script somente depois de preparar o ambiente.
+        await import("../static/js/login/lógica.js");
 
-        const codigo = readFileSync(caminho, "utf8");
-        window.eval(codigo);
-
+        // Recupera os elementos do DOM.
         loginForm = document.getElementById("login-form");
         btnProdutor = document.getElementById("btn-produtor");
+
         btnEstabelecimento = document.getElementById(
             "btn-estabelecimento"
         );
@@ -82,6 +78,7 @@ describe("Login do Agrolink", () => {
         document.getElementById("password").value =
             "senha123";
 
+        // Restaura o perfil inicial.
         btnProdutor.click();
 
         vi.stubGlobal(
@@ -97,6 +94,10 @@ describe("Login do Agrolink", () => {
                 })
             })
         );
+    });
+
+    afterEach(() => {
+        vi.unstubAllGlobals();
     });
 
     async function enviarFormulario() {
@@ -134,6 +135,19 @@ describe("Login do Agrolink", () => {
         ).toBe(false);
     });
 
+    it("deve voltar para o perfil produtor", () => {
+        btnEstabelecimento.click();
+        btnProdutor.click();
+
+        expect(
+            btnProdutor.classList.contains("active")
+        ).toBe(true);
+
+        expect(
+            btnEstabelecimento.classList.contains("active")
+        ).toBe(false);
+    });
+
     it("deve enviar os dados corretos para a API", async () => {
         await enviarFormulario();
 
@@ -154,7 +168,7 @@ describe("Login do Agrolink", () => {
         );
     });
 
-    it("deve salvar o usuário quando o login funcionar", async () => {
+    it("deve salvar o usuário após login válido", async () => {
         await enviarFormulario();
 
         await vi.waitFor(() => {
@@ -166,7 +180,7 @@ describe("Login do Agrolink", () => {
         });
     });
 
-    it("deve mostrar sucesso após um login válido", async () => {
+    it("deve mostrar mensagem de sucesso", async () => {
         await enviarFormulario();
 
         await vi.waitFor(() => {
@@ -177,7 +191,7 @@ describe("Login do Agrolink", () => {
         });
     });
 
-    it("deve enviar o perfil estabelecimento quando selecionado", async () => {
+    it("deve enviar o perfil estabelecimento", async () => {
         vi.stubGlobal(
             "fetch",
             vi.fn().mockResolvedValue({
@@ -207,11 +221,11 @@ describe("Login do Agrolink", () => {
             })
         );
 
-        expect(authSave).toHaveBeenCalledWith(
-            expect.objectContaining({
-                tipo: "estabelecimento"
-            })
-        );
+        expect(authSave).toHaveBeenCalledWith({
+            id: 2,
+            nome: "Mercado Central",
+            tipo: "estabelecimento"
+        });
     });
 
     it("deve mostrar erro quando a API rejeitar o login", async () => {
@@ -231,6 +245,27 @@ describe("Login do Agrolink", () => {
             expect(toastFire).toHaveBeenCalledWith({
                 icon: "error",
                 title: "Email ou senha incorretos"
+            });
+        });
+
+        expect(authSave).not.toHaveBeenCalled();
+    });
+
+    it("deve usar a mensagem padrão quando a API não informar o erro", async () => {
+        vi.stubGlobal(
+            "fetch",
+            vi.fn().mockResolvedValue({
+                ok: false,
+                json: async () => ({})
+            })
+        );
+
+        await enviarFormulario();
+
+        await vi.waitFor(() => {
+            expect(toastFire).toHaveBeenCalledWith({
+                icon: "error",
+                title: "Erro no login"
             });
         });
 
@@ -276,5 +311,22 @@ describe("Login do Agrolink", () => {
         });
 
         expect(authSave).not.toHaveBeenCalled();
+    });
+
+    it("deve funcionar sem Auth disponível", async () => {
+        delete window.Auth;
+
+        await enviarFormulario();
+
+        await vi.waitFor(() => {
+            expect(toastFire).toHaveBeenCalledWith({
+                icon: "success",
+                title: "Login realizado com sucesso!"
+            });
+        });
+
+        window.Auth = {
+            save: authSave
+        };
     });
 });

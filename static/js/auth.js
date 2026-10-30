@@ -5,12 +5,10 @@ const Auth = {
     // =========================
 
     save(user) {
-
         localStorage.setItem(
             "user",
             JSON.stringify(user)
         );
-
     },
 
 
@@ -19,9 +17,7 @@ const Auth = {
     // =========================
 
     get() {
-
         try {
-
             const user = localStorage.getItem("user");
 
             if (!user) {
@@ -31,12 +27,13 @@ const Auth = {
             return JSON.parse(user);
 
         } catch (error) {
-
-            console.error("Erro ao recuperar usuário:", error);
+            console.error(
+                "Erro ao recuperar usuário:",
+                error
+            );
 
             return null;
         }
-
     },
 
 
@@ -45,9 +42,7 @@ const Auth = {
     // =========================
 
     isLogged() {
-
         return this.get() !== null;
-
     },
 
 
@@ -56,9 +51,7 @@ const Auth = {
     // =========================
 
     getId() {
-
         return this.get()?.id || null;
-
     },
 
 
@@ -67,9 +60,7 @@ const Auth = {
     // =========================
 
     getType() {
-
         return this.get()?.tipo || null;
-
     },
 
 
@@ -78,9 +69,7 @@ const Auth = {
     // =========================
 
     getName() {
-
         return this.get()?.nome || null;
-
     },
 
 
@@ -88,20 +77,25 @@ const Auth = {
     // LOGOUT
     // =========================
 
-    
     logout() {
-    // Encerra as conexões do chat, caso a função esteja disponível.
-    if (typeof window.desconectarWebSockets === "function") {
-        window.desconectarWebSockets();
+        // Encerra as conexões do chat, caso a função exista.
+        if (
+            typeof window.desconectarWebSockets === "function"
+        ) {
+            window.desconectarWebSockets();
+        }
+
+        // Remove os dados da sessão.
+        localStorage.removeItem("user");
+        localStorage.removeItem("access_token");
+
+        // Remove o cookie de autenticação.
+        document.cookie =
+            "access_token=; Max-Age=0; path=/";
+
+        // Redireciona para a página de login.
+        window.location.href = "/login";
     }
-
-    localStorage.removeItem("user");
-    localStorage.removeItem("access_token");
-
-    document.cookie = "access_token=; Max-Age=0; path=/";
-
-    window.location.href = "/login";
-}
 
 };
 
@@ -111,3 +105,5 @@ const Auth = {
 // =========================
 
 window.Auth = Auth;
+
+export { Auth };

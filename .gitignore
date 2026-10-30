@@ -1,0 +1,9 @@
+
+# Dependências do Node.js
+node_modules/
+
+# Variáveis de ambiente e credenciais
+.env
+.env.*
+# Permite manter um exemplo sem credenciais
+!.env.example

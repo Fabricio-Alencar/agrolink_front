@@ -1,4 +1,3 @@
-
 import {
     describe,
     it,
@@ -8,76 +7,18 @@ import {
     vi
 } from "vitest";
 
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { Auth } from "../static/js/auth.js";
 
-let Auth;
+
 
 describe("Auth", () => {
-    beforeAll(() => {
-        const caminho = resolve(
-            process.cwd(),
-            "static/js/auth.js"
-        );
-
-        const codigo = readFileSync(caminho, "utf8");
-
-        // Executa o arquivo original no ambiente de navegador simulado.
-        window.eval(codigo);
-
-        Auth = window.Auth;
-
-        
-    },
-    
-    it("deve remover o usuário e o token ao fazer logout", () => {
-        localStorage.setItem("user", JSON.stringify({
-            id: 1,
-            nome: "Maria",
-            tipo: "produtor"
-        }));
-
-        localStorage.setItem("access_token", "token-ficticio");
-
-        Auth.logout();
-
-        expect(localStorage.getItem("user")).toBeNull();
-        expect(localStorage.getItem("access_token")).toBeNull();
-    }),
-
-    it("deve desconectar os WebSockets quando a função existir", () => {
-        const desconectar = vi.fn();
-        window.desconectarWebSockets = desconectar;
-
-        Auth.logout();
-
-        expect(desconectar).toHaveBeenCalledTimes(1);
-
-        delete window.desconectarWebSockets;
-    }),
-
-    it("deve funcionar sem a função de desconectar WebSockets", () => {
-        delete window.desconectarWebSockets;
-
-        expect(() => Auth.logout()).not.toThrow();
-
-        expect(localStorage.getItem("user")).toBeNull();
-        expect(localStorage.getItem("access_token")).toBeNull();
-    }),
-
-    it("deve limpar o cookie access_token", () => {
-        document.cookie = "access_token=token-ficticio; path=/";
-
-        Auth.logout();
-
-        expect(document.cookie).not.toContain(
-            "access_token=token-ficticio"
-        );
-    }),
-);
 
     beforeEach(() => {
         localStorage.clear();
+        document.cookie =
+            "access_token=; Max-Age=0; path=/";
+
+        delete window.desconectarWebSockets;
     });
 
     it("deve disponibilizar Auth globalmente", () => {
@@ -117,16 +58,16 @@ describe("Auth", () => {
     it("deve retornar null se o JSON estiver inválido", () => {
         localStorage.setItem("user", "{json inválido");
 
-        const erroOriginal = console.error;
         const erroMock = vi
             .spyOn(console, "error")
             .mockImplementation(() => {});
 
-        expect(Auth.get()).toBeNull();
-        expect(erroMock).toHaveBeenCalled();
-
-        erroMock.mockRestore();
-        console.error = erroOriginal;
+        try {
+            expect(Auth.get()).toBeNull();
+            expect(erroMock).toHaveBeenCalled();
+        } finally {
+            erroMock.mockRestore();
+        }
     });
 
     it("deve indicar que o usuário está logado", () => {
@@ -179,5 +120,59 @@ describe("Auth", () => {
         expect(Auth.getId()).toBeNull();
         expect(Auth.getType()).toBeNull();
         expect(Auth.getName()).toBeNull();
+    });
+
+    it("deve remover o usuário e o token ao fazer logout", () => {
+        localStorage.setItem(
+            "user",
+            JSON.stringify({
+                id: 1,
+                nome: "Maria",
+                tipo: "produtor"
+            })
+        );
+
+        localStorage.setItem(
+            "access_token",
+            "token-ficticio"
+        );
+
+        Auth.logout();
+
+        expect(localStorage.getItem("user")).toBeNull();
+        expect(localStorage.getItem("access_token")).toBeNull();
+    });
+
+    it("deve desconectar os WebSockets quando a função existir", () => {
+        const desconectar = vi.fn();
+        window.desconectarWebSockets = desconectar;
+
+        try {
+            Auth.logout();
+
+            expect(desconectar).toHaveBeenCalledTimes(1);
+        } finally {
+            delete window.desconectarWebSockets;
+        }
+    });
+
+    it("deve funcionar sem a função de desconectar WebSockets", () => {
+        delete window.desconectarWebSockets;
+
+        expect(() => Auth.logout()).not.toThrow();
+
+        expect(localStorage.getItem("user")).toBeNull();
+        expect(localStorage.getItem("access_token")).toBeNull();
+    });
+
+    it("deve limpar o cookie access_token", () => {
+        document.cookie =
+            "access_token=token-ficticio; path=/";
+
+        Auth.logout();
+
+        expect(document.cookie).not.toContain(
+            "access_token=token-ficticio"
+        );
     });
 });
