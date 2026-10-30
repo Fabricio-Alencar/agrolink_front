@@ -51,10 +51,12 @@ function cabecalhoHTML(p) {
             <div class="pp-dados">
                 <span class="pp-etiqueta">Produtor</span>
                 <h1>${escaparHTML(p.nome)}</h1>
-                <p class="pp-local">
+                ${p.conta_excluida
+                    ? `<span class="etiqueta-conta-excluida">Conta excluída</span>`
+                    : `<p class="pp-local">
                     <i data-lucide="map-pin"></i>
                     ${escaparHTML(p.cidade || "Cidade não informada")}${p.estado ? `, ${escaparHTML(p.estado)}` : ""}
-                </p>
+                </p>`}
                 <div>${resumo(p.media_avaliacoes, p.total_avaliacoes, 20)}</div>
             </div>
         </section>`;
@@ -122,15 +124,21 @@ function produtosHTML(p) {
             </section>`;
     }
 
+    // O próprio produtor não pode comprar de si mesmo:
+    // no perfil dele, os produtos levam para "Meus produtos"
+    const ehMeuPerfil = Number(Auth.get()?.id) === Number(p.id);
+
     // Cada produto leva ao card dele no marketplace, onde dá para fazer o pedido
     const cards = p.produtos.map(prod => `
-        <a class="pp-produto" href="/marketplace?produto=${Number(prod.id)}" title="Ver no marketplace e fazer pedido">
+        <a class="pp-produto"
+           href="${ehMeuPerfil ? "/meus_produtos" : `/marketplace?produto=${Number(prod.id)}`}"
+           title="${ehMeuPerfil ? "Gerenciar meus produtos" : "Ver no marketplace e fazer pedido"}">
             <img src="${escaparHTML(prod.foto || FOTO_PRODUTO)}" alt="${escaparHTML(prod.nome)}"
                  onerror="this.onerror=null; this.src='${FOTO_PRODUTO}';">
             <div>
                 <strong>${escaparHTML(prod.nome)}</strong>
                 <span>R$ ${Number(prod.preco || 0).toFixed(2).replace(".", ",")} / ${escaparHTML(prod.unidade || "un")}</span>
-                <span class="pp-produto-acao">Ver e fazer pedido →</span>
+                <span class="pp-produto-acao">${ehMeuPerfil ? "Gerenciar →" : "Ver e fazer pedido →"}</span>
             </div>
         </a>`).join("");
 

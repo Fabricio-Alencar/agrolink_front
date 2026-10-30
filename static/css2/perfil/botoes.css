@@ -23,6 +23,28 @@
 .btn-save-changes:hover { background: #007047; }
 .btn-save-changes:active { transform: translateY(1px); }
 
+/* Os botões só aparecem quando algum campo foi alterado */
+.form-actions.full-width { gap: 8px; }
+.form-actions.full-width[hidden] { display: none; }
+
+.btn-cancel-changes {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 17px;
+    border: 1px solid #c9d3cc;
+    border-radius: 6px;
+    background: #fff;
+    color: #39443c;
+    font-family: 'Inter', sans-serif;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+.btn-cancel-changes:hover { background: #f1f4f2; }
+
 .btn-delete {
     display: inline-flex;
     align-items: center;
@@ -44,6 +66,8 @@
 
 @media (max-width: 480px) {
     .form-actions.full-width { justify-content: stretch; }
-    .btn-save-changes { width: 100%; min-height: 42px; font-size: .82rem; }
+    .btn-save-changes,
+    .btn-cancel-changes { width: 100%; min-height: 42px; font-size: .82rem; }
+    .form-actions.full-width { flex-direction: column-reverse; }
     .btn-delete { padding: 9px 11px; font-size: .72rem; }
 }

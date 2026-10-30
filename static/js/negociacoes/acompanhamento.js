@@ -34,14 +34,25 @@ export function dataDoPedido(order) {
  * Nome do produtor que leva ao perfil público dele.
  * Para o produtor, o "negociante" é o estabelecimento: aí mostra só o texto.
  */
-export function nomeNegocianteHTML(order, tipoUsuario) {
+export function nomeNegocianteHTML(order, tipoUsuario, { comEtiqueta = true } = {}) {
     const nome = escaparHTML(order.negociante_nome || "Não informado");
 
+    // Conta excluída: mantém o nome e mostra uma etiqueta embaixo
+    // (no card a etiqueta fica ao lado do status: comEtiqueta = false)
+    const etiqueta = comEtiqueta ? etiquetaContaExcluidaHTML(order) : "";
+
     if (tipoUsuario !== "estabelecimento" || !order.produtor_id) {
-        return nome;
+        return `<span class="nome-negociante" title="${nome}">${nome}</span>${etiqueta}`;
     }
 
-    return `<a class="link-produtor" href="/produtor/${Number(order.produtor_id)}" title="Ver perfil e avaliações do produtor">${nome}</a>`;
+    return `<a class="link-produtor" href="/produtor/${Number(order.produtor_id)}" title="${nome} · ver perfil e avaliações">${nome}</a>${etiqueta}`;
+}
+
+/** Etiqueta "Conta excluída" (vazia quando a conta está ativa). */
+export function etiquetaContaExcluidaHTML(order) {
+    return order.negociante_conta_excluida
+        ? `<span class="etiqueta-conta-excluida">Conta excluída</span>`
+        : "";
 }
 
 
@@ -88,7 +99,12 @@ export function proximaAcao(order, tipoUsuario) {
 }
 
 export function proximaAcaoHTML(order, tipoUsuario) {
-    const acao = proximaAcao(order, tipoUsuario);
+    // Conta excluída: a faixa avisa isso no lugar do status
+    // (o status do pedido continua nos Detalhes)
+    const acao = order.negociante_conta_excluida
+        ? { texto: "Conta excluída", classe: "conta-excluida", icone: "user-x" }
+        : proximaAcao(order, tipoUsuario);
+
     if (!acao) return "";
 
     return `

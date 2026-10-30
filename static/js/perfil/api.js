@@ -39,7 +39,11 @@ export const API = {
                 method: 'DELETE',
                 credentials: 'include'
             });
-            if (!res.ok) throw new Error('Erro ao excluir a conta.');
+            if (!res.ok) {
+                // Ex.: pedidos ainda em andamento impedem a exclusão
+                const erro = await res.json().catch(() => ({}));
+                throw new Error(erro.erro || 'Erro ao excluir a conta.');
+            }
             return await res.json();
         } catch (error) {
             console.error("Erro na API excluirConta:", error.message);

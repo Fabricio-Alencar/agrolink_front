@@ -1,4 +1,4 @@
-import { showDetails } from "./navegacao.js";
+import { showDetails, resolverCaminhoFoto, FOTO_GENERICA } from "./navegacao.js";
 import { deleteOrder } from "./filtros_botao_excluir.js";
 import { API } from './api.js';
 import { criarPaginacao } from "../paginacao.js";
@@ -7,7 +7,6 @@ import {
     proximaAcaoHTML,
     acaoPrincipal,
     executarConfirmacao,
-    dataDoPedido,
     nomeNegocianteHTML,
     abrirAvaliacao
 } from "./acompanhamento.js";
@@ -220,6 +219,14 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
     card.innerHTML = `
         ${proximaAcaoHTML(order, tipo_de_usuario)}
 
+        <img
+            class="card-foto-produto"
+            src="${resolverCaminhoFoto(order)}"
+            alt="Foto de ${order.produto_nome}"
+            loading="lazy"
+            onerror="if (this.dataset.fallback === 'true') return; this.dataset.fallback = 'true'; this.src='${FOTO_GENERICA}';"
+        >
+
         <div
             class="card-header"
             style="
@@ -231,17 +238,14 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
         >
             <div>
                 <div
+                    class="nome-card"
                     style="
                         font-weight: 700;
                         font-size: 1.1rem;
                         color: #333;
                     "
                 >
-                    ${nomeNegocianteHTML(order, tipo_de_usuario)}
-                </div>
-
-                <div class="data-pedido">
-                    ${dataDoPedido(order)}
+                    ${nomeNegocianteHTML(order, tipo_de_usuario, { comEtiqueta: false })}
                 </div>
 
                 <div
@@ -339,71 +343,6 @@ export function criarCardNegociacao(order, tipo_de_usuario) {
                     >
                         /${order.produto_unidade}
                     </small>
-                </div>
-            </div>
-
-            <div style="margin-bottom: 16px;">
-                <span
-                    style="
-                        font-size: 12px;
-                        color: var(--text-muted);
-                        display: block;
-                        margin-bottom: 4px;
-                    "
-                >
-                    Proposta/Descrição do Pedido
-                </span>
-
-                <p class="desc">
-                    ${order.descricao || 'Sem descrição'}
-                </p>
-            </div>
-
-            <div>
-                <div class="info-row">
-                    <svg
-                        viewBox="0 0 24 24"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                    >
-                        <path d="
-                            M19 4h-1V2h-2v2H8V2H6v2H5
-                            c-1.11 0-1.99.9-1.99 2L3 20
-                            a2 2 0 0 0 2 2h14c1.1 0 2-.9
-                            2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z
-                            M9 14H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2zm-8
-                            4H7v-2h2v2zm4 0h-2v-2h2v2zm4 0h-2v-2h2v2z
-                        "/>
-                    </svg>
-
-                    <span>
-                        Entrega:
-                        ${order.data_entrega || 'A combinar'}
-                    </span>
-                </div>
-
-                <div class="info-row">
-                    <svg
-                        viewBox="0 0 24 24"
-                        width="16"
-                        height="16"
-                        fill="currentColor"
-                    >
-                        <path d="
-                            M12 2C8.13 2 5 5.13 5 9
-                            c0 5.25 7 13 7 13s7-7.75
-                            7-13c0-3.87-3.13-7-7-7zm0
-                            9.5c-1.38 0-2.5-1.12-2.5-2.5
-                            s1.12-2.5 2.5-2.5 2.5
-                            1.12 2.5 2.5-1.12 2.5-2.5 2.5z
-                        "/>
-                    </svg>
-
-                    <span>
-                        ${order.negociante_cidade},
-                        ${order.negociante_estado}
-                    </span>
                 </div>
             </div>
         </div>
